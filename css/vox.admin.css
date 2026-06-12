@@ -1,0 +1,1043 @@
+/**
+ * vox.admin.css — minimal module-scoped admin styles.
+ *
+ * The Vox admin uses native ProcessWire AdminThemeUikit components and
+ * --pw-* design tokens (per mxmsmnv/pw-design-system), so it inherits the
+ * Konkat skin and adapts to light/dark automatically. The only thing that
+ * needs bespoke CSS is the dashboard activity bar chart below. Everything
+ * is scoped under .ProcessVox so it cannot leak into the rest of the admin.
+ */
+
+.ProcessVox .Vox-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 120px;
+}
+.ProcessVox .Vox-chart__bar {
+  flex: 1 1 0;
+  min-height: 2px;
+  border-radius: 2px 2px 0 0;
+  background: var(--pw-border-color, rgba(0,0,0,.15));
+  transition: background .15s;
+}
+.ProcessVox .Vox-chart__bar--active {
+  background: var(--pw-main-color, #eb1d61);
+}
+.ProcessVox .Vox-chart__bar:hover {
+  background: var(--pw-text-color, #111);
+}
+
+/* Shared admin surfaces */
+.ProcessVox .uk-card {
+  border: 1px solid var(--pw-border-color, rgba(0,0,0,.12));
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.04);
+}
+.ProcessVox .Vox-admin-head {
+  gap: 8px 12px;
+}
+.ProcessVox .Vox-admin-head .uk-button {
+  margin-bottom: 4px;
+}
+.ProcessVox a.uk-button,
+.ProcessVox a.uk-button:hover,
+.ProcessVox a.uk-button:focus,
+.ProcessVox a.uk-icon-button,
+.ProcessVox a.uk-icon-button:hover,
+.ProcessVox a.uk-icon-button:focus {
+  text-decoration: none;
+}
+.ProcessVox .Vox-section-nav {
+  gap: 0 24px;
+}
+.ProcessVox .Vox-section-nav > * {
+  padding-left: 0;
+}
+.ProcessVox .Vox-stat-grid > div > .uk-card,
+.ProcessVox .Vox-stat-grid > div > a.uk-card {
+  min-height: 104px;
+  border-left: 3px solid var(--pw-main-color, #eb1d61);
+}
+.ProcessVox .Vox-stat-grid .uk-text-meta.uk-text-uppercase {
+  font-size: 12px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.ProcessVox .Vox-stat-grid .uk-text-large {
+  line-height: 1.15;
+}
+.ProcessVox .Vox-inline-tabs {
+  gap: 6px;
+  margin-left: 0;
+  margin-bottom: 16px;
+}
+.ProcessVox .Vox-inline-tabs > * {
+  padding-left: 0;
+}
+.ProcessVox .Vox-inline-tabs > * > a {
+  border: 1px solid var(--pw-border-color, rgba(0,0,0,.15));
+  border-radius: 6px;
+  background: var(--pw-input-bg-color, rgba(0,0,0,.03));
+  color: var(--pw-text-color, #222);
+  min-height: 32px;
+  padding: 6px 11px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-decoration: none;
+  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.ProcessVox .Vox-inline-tabs > .uk-active > a {
+  border-color: var(--pw-main-color, #eb1d61);
+  background: var(--pw-main-color, #eb1d61);
+  color: #fff;
+}
+.ProcessVox .Vox-inline-tabs > * > a:hover,
+.ProcessVox .Vox-inline-tabs > * > a:focus {
+  border-color: var(--pw-main-color, #eb1d61);
+  color: var(--pw-main-color, #eb1d61);
+  text-decoration: none;
+}
+.ProcessVox .Vox-inline-tabs > .uk-active > a:hover,
+.ProcessVox .Vox-inline-tabs > .uk-active > a:focus {
+  color: #fff;
+}
+.ProcessVox .Vox-inline-tabs .uk-badge {
+  margin-left: 4px;
+}
+.ProcessVox .Vox-filter-panel,
+.ProcessVox .Vox-table-panel,
+.ProcessVox .Vox-form-panel {
+  border-top: 1px solid var(--pw-border-color, rgba(0,0,0,.15));
+}
+.ProcessVox .Vox-filter-panel {
+  padding: 20px;
+}
+.ProcessVox .Vox-table-panel .uk-table {
+  margin-bottom: 0;
+}
+.ProcessVox .Vox-empty-state {
+  padding: 28px 16px;
+  text-align: center;
+  color: var(--pw-muted-color, #777);
+}
+.ProcessVox .Vox-empty-state [uk-icon] {
+  opacity: .75;
+}
+.ProcessVox .Vox-bulk-bar {
+  border-left: 3px solid var(--pw-main-color, #eb1d61);
+}
+.ProcessVox .Vox-action-row {
+  gap: 6px;
+}
+.ProcessVox .Vox-stopword-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ProcessVox .Vox-stopword-tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  max-width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--pw-border-color, rgba(0,0,0,.15));
+  border-radius: 6px;
+  background: var(--pw-input-bg-color, rgba(0,0,0,.03));
+  color: var(--pw-text-color, #222);
+  box-shadow: 0 1px 1px rgba(0,0,0,.03);
+}
+.ProcessVox .Vox-stopword-tag--reject {
+  border-color: rgba(205,10,10,.35);
+}
+.ProcessVox .Vox-stopword-tag--flag {
+  border-color: rgba(246,172,0,.45);
+}
+.ProcessVox .Vox-stopword-tag__word {
+  min-width: 0;
+  overflow: hidden;
+  padding: 6px 9px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ProcessVox .Vox-stopword-tag__action {
+  align-self: stretch;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 8px;
+  border-left: 1px solid var(--pw-border-color, rgba(0,0,0,.15));
+  font-size: 11px;
+  font-weight: 700;
+}
+.ProcessVox .Vox-stopword-tag--reject .Vox-stopword-tag__action {
+  background: rgba(205,10,10,.12);
+  color: var(--pw-error-inline-text-color, #cd0a0a);
+}
+.ProcessVox .Vox-stopword-tag--flag .Vox-stopword-tag__action {
+  background: rgba(246,172,0,.16);
+  color: #9a6400;
+}
+.ProcessVox .Vox-stopword-tag__remove {
+  align-self: stretch;
+  min-width: 30px;
+  border: 0;
+  border-left: 1px solid var(--pw-border-color, rgba(0,0,0,.15));
+  background: transparent;
+  color: var(--pw-muted-color, #777);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+.ProcessVox .Vox-stopword-tag__remove:hover,
+.ProcessVox .Vox-stopword-tag__remove:focus {
+  background: rgba(205,10,10,.10);
+  color: var(--pw-error-inline-text-color, #cd0a0a);
+  outline: none;
+}
+.ProcessVox .Vox-local-stopword-group + .Vox-local-stopword-group {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--pw-border-color, rgba(0,0,0,.15));
+}
+.ProcessVox .Vox-entry-hero {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--pw-border-color, rgba(0,0,0,.12));
+  border-radius: 8px;
+  background: var(--pw-input-bg-color, rgba(0,0,0,.03));
+  box-shadow: 0 1px 2px rgba(0,0,0,.04);
+}
+.ProcessVox .Vox-entry-hero__main {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 10px;
+}
+.ProcessVox .Vox-entry-avatar {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: var(--pw-main-color, #eb1d61);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+}
+.ProcessVox .Vox-entry-title {
+  min-width: 0;
+}
+.ProcessVox .Vox-entry-title h2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 19px;
+  line-height: 1.2;
+}
+.ProcessVox .Vox-entry-kicker,
+.ProcessVox .Vox-entry-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  color: var(--pw-muted-color, #777);
+  font-size: 12px;
+}
+.ProcessVox .Vox-entry-kicker {
+  margin-bottom: 2px;
+  font-weight: 700;
+}
+.ProcessVox .Vox-entry-meta code {
+  font-size: 12px;
+}
+.ProcessVox .Vox-entry-hero__side {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+}
+.ProcessVox .Vox-entry-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.ProcessVox .Vox-entry-actions .uk-button {
+  min-height: 30px;
+  padding: 0 13px;
+  line-height: 28px;
+}
+.ProcessVox .Vox-status-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--pw-border-color, rgba(0,0,0,.15));
+  background: var(--pw-body-bg-color, #fff);
+  font-size: 12px;
+  font-weight: 800;
+}
+.ProcessVox .Vox-status-pill--success {
+  border-color: rgba(50,160,90,.35);
+  background: rgba(50,160,90,.12);
+  color: #1b7f44;
+}
+.ProcessVox .Vox-status-pill--warning {
+  border-color: rgba(246,172,0,.45);
+  background: rgba(246,172,0,.16);
+  color: #9a6400;
+}
+.ProcessVox .Vox-status-pill--danger {
+  border-color: rgba(205,10,10,.35);
+  background: rgba(205,10,10,.12);
+  color: var(--pw-error-inline-text-color, #cd0a0a);
+}
+.ProcessVox .Vox-entry-content-card {
+  border-left: 3px solid var(--pw-main-color, #eb1d61);
+}
+.ProcessVox .Vox-entry-body-input {
+  min-height: 138px;
+  resize: vertical;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.ProcessVox .Vox-entry-note-input {
+  min-height: 64px;
+  resize: vertical;
+}
+.ProcessVox .Vox-admin-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.ProcessVox .Vox-admin-star {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--pw-muted-color, #777);
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+  padding: 0;
+}
+.ProcessVox .Vox-admin-star:hover,
+.ProcessVox .Vox-admin-star.is-active {
+  color: var(--pw-main-color, #eb1d61);
+}
+.ProcessVox .Vox-admin-star:focus-visible {
+  outline: 2px solid var(--pw-main-color, #eb1d61);
+  outline-offset: 2px;
+}
+.ProcessVox .Vox-admin-stars__value {
+  margin-left: 6px;
+  color: var(--pw-muted-color, #777);
+  font-size: 12px;
+  font-weight: 700;
+}
+.ProcessVox .Vox-recommend-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ProcessVox .Vox-recommend-choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 6px 12px;
+  border: 1px solid var(--pw-border-color, rgba(0,0,0,.15));
+  border-radius: 999px;
+  background: var(--pw-input-bg-color, rgba(0,0,0,.03));
+  color: var(--pw-text-color, #222);
+  cursor: pointer;
+  font-weight: 700;
+}
+.ProcessVox .Vox-recommend-choice input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.ProcessVox .Vox-recommend-choice:has(input:focus-visible) {
+  outline: 2px solid var(--pw-main-color, #eb1d61);
+  outline-offset: 2px;
+}
+.ProcessVox .Vox-recommend-choice--yes:has(input:checked) {
+  border-color: rgba(50,160,90,.45);
+  background: rgba(50,160,90,.16);
+  color: #1b7f44;
+}
+.ProcessVox .Vox-recommend-choice--no:has(input:checked) {
+  border-color: rgba(205,10,10,.35);
+  background: rgba(205,10,10,.12);
+  color: var(--pw-error-inline-text-color, #cd0a0a);
+}
+.ProcessVox .Vox-entry-status-card {
+  margin-bottom: 12px;
+}
+.ProcessVox .Vox-status-choices {
+  display: grid;
+  gap: 6px;
+}
+.ProcessVox .Vox-status-choice {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 38px;
+  padding: 7px 9px;
+  border: 1px solid var(--pw-border-color, rgba(0,0,0,.15));
+  border-radius: 6px;
+  background: var(--pw-input-bg-color, rgba(0,0,0,.03));
+  color: var(--pw-text-color, #222);
+  cursor: pointer;
+}
+.ProcessVox .Vox-status-choice input {
+  margin: 0;
+}
+.ProcessVox .Vox-status-choice strong,
+.ProcessVox .Vox-status-choice em {
+  display: block;
+}
+.ProcessVox .Vox-status-choice em {
+  color: var(--pw-muted-color, #777);
+  font-size: 11px;
+  font-style: normal;
+  line-height: 1.2;
+}
+.ProcessVox .Vox-status-choice:has(input:checked) {
+  border-color: var(--pw-main-color, #eb1d61);
+  box-shadow: inset 3px 0 0 var(--pw-main-color, #eb1d61);
+}
+.ProcessVox .Vox-entry-side-card {
+  margin-bottom: 12px !important;
+  height: 100%;
+}
+.ProcessVox .Vox-entry-side-card .uk-card-title,
+.ProcessVox .Vox-entry-danger .uk-card-title {
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+.ProcessVox .Vox-entry-side-card .uk-description-list {
+  margin-bottom: 0;
+}
+.ProcessVox .Vox-entry-side-card .uk-description-list > dt {
+  margin-top: 8px;
+  font-size: 11px;
+}
+.ProcessVox .Vox-entry-side-card .uk-description-list > dd {
+  margin-bottom: 8px;
+}
+.ProcessVox .Vox-entry-danger {
+  margin-top: 0;
+}
+.ProcessVox .Vox-entry-danger .uk-button {
+  min-height: 32px;
+  line-height: 30px;
+}
+.ProcessVox .Vox-entry-savebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--pw-border-color, rgba(0,0,0,.15));
+}
+.ProcessVox .Vox-install-layout {
+  align-items: flex-start;
+}
+.ProcessVox .Vox-install-guide {
+  border-left: 3px solid var(--pw-main-color, #eb1d61);
+}
+.ProcessVox .Vox-install-steps {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ProcessVox .Vox-install-steps li {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  align-items: start;
+}
+.ProcessVox .Vox-install-steps li > span {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--pw-main-color, #eb1d61);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+}
+.ProcessVox .Vox-install-steps strong {
+  display: block;
+  line-height: 1.25;
+}
+.ProcessVox .Vox-install-steps p {
+  margin: 2px 0 0;
+  color: var(--pw-muted-color, #777);
+}
+.ProcessVox .Vox-widget-option {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  height: 100%;
+  padding: 10px;
+  border: 1px solid var(--pw-border-color, rgba(0,0,0,.15));
+  border-radius: 6px;
+  background: var(--pw-input-bg-color, rgba(0,0,0,.03));
+  cursor: pointer;
+}
+.ProcessVox .Vox-widget-option:hover {
+  border-color: var(--pw-main-color, #eb1d61);
+}
+.ProcessVox .Vox-widget-option--inline {
+  height: auto;
+}
+.ProcessVox .Vox-dashboard-breakdown .Vox-dashboard-meter-row,
+.ProcessVox .Vox-dashboard-top-pages .Vox-dashboard-meter-row {
+  margin-top: 18px;
+  margin-bottom: 9px;
+  line-height: 1.55;
+}
+.ProcessVox .Vox-dashboard-breakdown .uk-progress,
+.ProcessVox .Vox-dashboard-top-pages .uk-progress {
+  margin-bottom: 12px !important;
+}
+.ProcessVox .Vox-dashboard-breakdown .uk-flex.uk-margin-small-top {
+  margin-top: 18px !important;
+}
+.ProcessVox .Vox-schema-context {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ProcessVox .Vox-schema-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 4px 9px;
+  border: 1px solid var(--pw-border-color, rgba(0,0,0,.15));
+  border-radius: 999px;
+  background: var(--pw-input-bg-color, rgba(0,0,0,.03));
+  color: var(--pw-muted-color, #777);
+  font-size: 12px;
+  font-weight: 700;
+}
+.ProcessVox .Vox-schema-chip--active {
+  border-color: var(--pw-main-color, #eb1d61);
+  background: rgba(235,29,97,.12);
+  color: var(--pw-main-color, #eb1d61);
+}
+.ProcessVox .Vox-schema-layout {
+  align-items: flex-start;
+}
+.ProcessVox .Vox-schema-layout > * {
+  min-width: 0;
+}
+.ProcessVox .Vox-schema-sidebar {
+  max-height: calc(100vh - 220px);
+  overflow: auto;
+}
+.ProcessVox .Vox-schema-filter {
+  margin-bottom: 10px;
+}
+.ProcessVox .Vox-schema-template-list {
+  display: grid;
+  gap: 5px;
+}
+.ProcessVox .Vox-schema-template-list > li > a.Vox-schema-template {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px 9px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--pw-text-color, #222);
+  text-decoration: none;
+}
+.ProcessVox .Vox-schema-template-list > li > a.Vox-schema-template:hover,
+.ProcessVox .Vox-schema-template-list > li > a.Vox-schema-template:focus {
+  border-color: var(--pw-main-color, #eb1d61);
+  background: var(--pw-input-bg-color, rgba(0,0,0,.03));
+}
+.ProcessVox .Vox-schema-template-list > li.uk-active > a.Vox-schema-template {
+  border-color: var(--pw-main-color, #eb1d61);
+  background: rgba(235,29,97,.12);
+}
+.ProcessVox .Vox-schema-template__name {
+  overflow: hidden;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ProcessVox .Vox-schema-template__meta {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 6px;
+  font-size: 11px;
+}
+.ProcessVox .Vox-schema-template__types {
+  overflow: hidden;
+  color: var(--pw-muted-color, #777);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ProcessVox .Vox-schema-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-left: 3px solid var(--pw-main-color, #eb1d61);
+}
+.ProcessVox .Vox-schema-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.ProcessVox .Vox-schema-type-tabs {
+  margin-top: 0;
+}
+.ProcessVox .Vox-schema-ready {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+  min-height: 86px;
+}
+.ProcessVox .Vox-schema-ready__icon {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(50,160,90,.16);
+  color: #1b7f44;
+}
+.ProcessVox .Vox-schema-ready .uk-card-title {
+  font-size: 20px;
+  line-height: 1.25;
+}
+.ProcessVox .Vox-schema-ready p {
+  max-width: 760px;
+}
+.ProcessVox .Vox-schema-field-head,
+.ProcessVox .Vox-schema-field-row,
+.ProcessVox .Vox-schema-add {
+  display: grid;
+  grid-template-columns: minmax(130px, 1fr) minmax(140px, 1.1fr) 120px minmax(150px, 1.3fr) 88px 42px;
+  gap: 8px;
+  align-items: center;
+}
+.ProcessVox .Vox-schema-field-head {
+  padding: 0 8px 7px;
+  color: var(--pw-muted-color, #777);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.ProcessVox .Vox-schema-field-list {
+  display: grid;
+  gap: 7px;
+}
+.ProcessVox .Vox-schema-field-row,
+.ProcessVox .Vox-schema-add {
+  padding: 8px;
+  border: 1px solid var(--pw-border-color, rgba(0,0,0,.15));
+  border-radius: 6px;
+  background: var(--pw-input-bg-color, rgba(0,0,0,.03));
+}
+.ProcessVox .Vox-schema-add {
+  margin-top: 12px;
+  border-style: dashed;
+}
+.ProcessVox .Vox-schema-field-row code {
+  overflow-wrap: anywhere;
+}
+.ProcessVox .Vox-schema-required {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--pw-muted-color, #777);
+  font-size: 12px;
+  font-weight: 700;
+}
+.ProcessVox .Vox-schema-empty {
+  border: 1px dashed var(--pw-border-color, rgba(0,0,0,.18));
+  border-radius: 6px;
+}
+.ProcessVox .Vox-schema-builtin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 10px;
+}
+.ProcessVox .Vox-schema-builtin {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 64px;
+  padding: 11px 12px;
+  border: 1px solid var(--pw-border-color, rgba(0,0,0,.15));
+  border-radius: 6px;
+  background: var(--pw-input-bg-color, rgba(0,0,0,.03));
+}
+.ProcessVox .Vox-schema-builtin__main {
+  min-width: 0;
+}
+.ProcessVox .Vox-schema-builtin__main strong,
+.ProcessVox .Vox-schema-builtin__main code {
+  display: block;
+}
+.ProcessVox .Vox-schema-builtin__main strong {
+  overflow: hidden;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ProcessVox .Vox-schema-builtin__main code {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  margin-top: 7px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(255,255,255,.06);
+  color: var(--pw-muted-color, #777);
+  font-size: 12px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ProcessVox .Vox-schema-builtin__badges {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 5px;
+  max-width: 42%;
+}
+.ProcessVox .Vox-schema-type-badge,
+.ProcessVox .Vox-schema-required-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 23px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+.ProcessVox .Vox-schema-type-badge {
+  background: var(--pw-main-color, #eb1d61);
+  color: #fff;
+}
+.ProcessVox .Vox-schema-required-badge {
+  border: 1px solid var(--pw-border-color, rgba(0,0,0,.15));
+  background: transparent;
+  color: var(--pw-muted-color, #777);
+}
+.ProcessVox .Vox-schema-required-badge.is-required {
+  border-color: rgba(50,160,90,.35);
+  background: rgba(50,160,90,.16);
+  color: #1b7f44;
+}
+@media (max-width: 1180px) {
+  .ProcessVox .Vox-schema-field-head {
+    display: none;
+  }
+  .ProcessVox .Vox-schema-field-row,
+  .ProcessVox .Vox-schema-add {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 760px) {
+  .ProcessVox .Vox-admin-head {
+    align-items: flex-start;
+  }
+  .ProcessVox .Vox-schema-layout.uk-grid {
+    display: block;
+    margin-left: 0;
+  }
+  .ProcessVox .Vox-schema-layout.uk-grid > * {
+    width: 100%;
+    padding-left: 0;
+  }
+  .ProcessVox .Vox-schema-layout.uk-grid > * + * {
+    margin-top: 14px;
+  }
+  .ProcessVox .Vox-stat-grid.uk-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-left: 0;
+  }
+  .ProcessVox .Vox-stat-grid.uk-grid > * {
+    width: auto;
+    display: flex;
+    padding-left: 0;
+  }
+  .ProcessVox .Vox-stat-grid > div > .uk-card,
+  .ProcessVox .Vox-stat-grid > div > a.uk-card {
+    width: 100%;
+    height: 100%;
+    min-height: 88px;
+  }
+  .ProcessVox .Vox-stat-grid .uk-text-large {
+    font-size: 22px;
+  }
+  .ProcessVox .Vox-schema-sidebar {
+    max-height: none;
+  }
+  .ProcessVox .Vox-schema-context {
+    width: 100%;
+    margin-top: 8px;
+  }
+  .ProcessVox .Vox-schema-hero,
+  .ProcessVox .Vox-schema-ready {
+    display: block;
+  }
+  .ProcessVox .Vox-schema-hero__meta,
+  .ProcessVox .Vox-schema-ready .uk-button {
+    margin-top: 10px;
+  }
+  .ProcessVox .Vox-schema-hero__meta {
+    justify-content: flex-start;
+  }
+  .ProcessVox .Vox-schema-field-row,
+  .ProcessVox .Vox-schema-add,
+  .ProcessVox .Vox-schema-builtin-grid {
+    grid-template-columns: 1fr;
+  }
+  .ProcessVox .Vox-schema-builtin-grid {
+    gap: 7px;
+  }
+  .ProcessVox .Vox-schema-field-row,
+  .ProcessVox .Vox-schema-add {
+    gap: 7px;
+  }
+  .ProcessVox .Vox-schema-builtin {
+    min-height: 0;
+  }
+  .ProcessVox .Vox-schema-builtins .uk-card-title,
+  .ProcessVox .Vox-schema-builder .uk-card-title,
+  .ProcessVox .Vox-schema-ready .uk-card-title {
+    font-size: 18px;
+    line-height: 1.25;
+  }
+  .ProcessVox .Vox-schema-type-tabs > * > a {
+    width: 100%;
+    justify-content: center;
+  }
+}
+@media (max-width: 560px) {
+  .ProcessVox .Vox-stat-grid.uk-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ProcessVox .Vox-stat-grid.uk-grid > *:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Danger card: red accent without the theme's full-width text-danger bar */
+.ProcessVox .Vox-danger {
+  border-left: 3px solid var(--pw-error-inline-text-color, #cd0a0a);
+}
+.ProcessVox .Vox-danger .uk-card-title {
+  color: var(--pw-error-inline-text-color, #cd0a0a);
+}
+
+/* REST API reference table — monospace endpoints, tidy method column */
+.ProcessVox .Vox-api-table td { vertical-align: top; }
+.ProcessVox .Vox-api-table code { white-space: nowrap; }
+.ProcessVox .Vox-method {
+  display: inline-block;
+  min-width: 44px;
+  text-align: center;
+}
+
+/* Badge marks (icon / image) */
+.ProcessVox .vox-badge-mark i { font-size: 18px; color: var(--pw-main-color, #eb1d61); }
+.ProcessVox .vox-badge-mark.uk-text-muted i { color: var(--pw-muted-color, #999); }
+.ProcessVox .vox-badge-img { width: 22px; height: 22px; object-fit: cover; border-radius: 4px; vertical-align: middle; }
+.ProcessVox .vox-badge-img-lg { width: 44px; height: 44px; object-fit: cover; border-radius: 6px; border: 1px solid var(--pw-border-color, rgba(0,0,0,.15)); }
+
+/* ── Icon picker (FontAwesome) ──────────────────────────────────────── */
+.vox-ip-field { display: flex; align-items: center; gap: 8px; }
+.vox-ip-overlay {
+  --vox-ip-bg: #fff;
+  --vox-ip-surface: #f7f7f8;
+  --vox-ip-item-bg: #fff;
+  --vox-ip-text: #202124;
+  --vox-ip-muted: #667085;
+  --vox-ip-border: rgba(0,0,0,.18);
+}
+.vox-ip-preview {
+  width: 34px; height: 34px; flex: 0 0 34px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--pw-border-color, rgba(0,0,0,.15));
+  border-radius: 6px; font-size: 16px;
+  color: var(--pw-main-color, #eb1d61);
+  background: var(--pw-input-bg-color, rgba(0,0,0,.03));
+  cursor: pointer;
+  padding: 0;
+}
+.vox-ip-preview:hover,
+.vox-ip-preview:focus {
+  border-color: var(--pw-main-color, #eb1d61);
+  background: rgba(235,29,97,.06);
+  outline: none;
+}
+.vox-ip-input {
+  display: none;
+}
+
+.vox-ip-overlay {
+  display: none; position: fixed; inset: 0; z-index: 1010;
+  background: rgba(0,0,0,.55); align-items: flex-start; justify-content: center;
+  padding: 6vh 16px;
+}
+.vox-ip-overlay.vox-ip-open { display: flex; }
+.vox-ip-dialog {
+  background: var(--vox-ip-bg);
+  color: var(--vox-ip-text);
+  width: 100%; max-width: 640px; max-height: 80vh;
+  border: 1px solid var(--vox-ip-border);
+  border-radius: 8px; box-shadow: 0 12px 40px rgba(0,0,0,.45);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.vox-ip-head {
+  display: flex; gap: 8px; padding: 12px;
+  border-bottom: 1px solid var(--vox-ip-border);
+  background: var(--vox-ip-surface);
+}
+.vox-ip-head .vox-ip-search {
+  background: var(--vox-ip-bg);
+  color: var(--vox-ip-text);
+  border-color: var(--vox-ip-border);
+}
+.vox-ip-head .vox-ip-close {
+  color: var(--vox-ip-text);
+  background: var(--vox-ip-bg);
+  border: 1px solid var(--vox-ip-border);
+}
+.vox-ip-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 6px; padding: 12px; overflow: auto;
+  background: var(--vox-ip-bg);
+}
+.vox-ip-item {
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  min-height: 60px;
+  padding: 10px 4px; border: 1px solid var(--vox-ip-border); border-radius: 6px;
+  background: var(--vox-ip-item-bg); color: var(--vox-ip-text); cursor: pointer;
+}
+.vox-ip-item i { font-size: 20px; color: var(--vox-ip-text); }
+.vox-ip-item span { font-size: 10px; color: var(--vox-ip-muted); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vox-ip-item:hover { border-color: #eb1d61; background: rgba(235,29,97,.06); }
+.vox-ip-item:hover i, .vox-ip-item:hover span { color: #eb1d61; }
+.vox-ip-foot {
+  padding: 8px 12px;
+  border-top: 1px solid var(--vox-ip-border);
+  color: var(--vox-ip-muted);
+  background: var(--vox-ip-surface);
+}
+
+@media (prefers-color-scheme: dark) {
+  .vox-ip-overlay {
+    --vox-ip-bg: #111418;
+    --vox-ip-surface: #1a1f26;
+    --vox-ip-item-bg: #151a20;
+    --vox-ip-text: #f3f5f7;
+    --vox-ip-muted: #a9b1bd;
+    --vox-ip-border: rgba(255,255,255,.18);
+  }
+}
+
+/* Install tab: copy-ready code block */
+.ProcessVox .Vox-code {
+  background: var(--pw-input-bg-color, rgba(0,0,0,.04));
+  border: 1px solid var(--pw-border-color, rgba(0,0,0,.15));
+  border-radius: 4px;
+  padding: 12px 14px;
+  margin: 0 0 10px;
+  overflow: auto;
+}
+.ProcessVox .Vox-code code {
+  display: block;
+  white-space: pre;
+  background: none;
+  padding: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--pw-text-color, #222);
+}
+
+@media (max-width: 640px) {
+  .ProcessVox .Vox-section-nav {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0 18px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+  .ProcessVox .Vox-section-nav > * {
+    flex: 0 0 auto;
+  }
+  .ProcessVox .Vox-section-nav > * > a {
+    white-space: nowrap;
+  }
+  .ProcessVox .Vox-inline-tabs {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .ProcessVox .Vox-inline-tabs > * > a {
+    white-space: nowrap;
+  }
+  .ProcessVox .Vox-admin-head .uk-button,
+  .ProcessVox .Vox-action-row .uk-button {
+    width: 100%;
+  }
+  .ProcessVox .Vox-entry-hero,
+  .ProcessVox .Vox-entry-hero__main,
+  .ProcessVox .Vox-entry-hero__side,
+  .ProcessVox .Vox-entry-actions,
+  .ProcessVox .Vox-entry-savebar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .ProcessVox .Vox-entry-title h2 {
+    white-space: normal;
+  }
+  .ProcessVox .Vox-entry-status-card {
+    margin-bottom: 12px;
+  }
+}
