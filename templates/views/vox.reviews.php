@@ -89,7 +89,7 @@ require_once __DIR__ . '/vox.helpers.php';
             <?php $depth = 0; include __DIR__ . '/vox.entry.php'; ?>
         <?php endforeach ?>
         <?php if (!$reviews): ?>
-            <div class="vox-empty"><i class="fa-regular fa-comment" aria-hidden="true"></i> No reviews yet. Be the first!</div>
+            <div class="vox-empty"><?= vox_icon('comment') ?> No reviews yet. Be the first!</div>
         <?php endif ?>
         <div data-vox-no-results hidden class="vox-no-results">No reviews match this filter.</div>
     </div>
@@ -106,7 +106,7 @@ require_once __DIR__ . '/vox.helpers.php';
     <!-- Write a review -->
     <div class="vox-card vox-card--mt-22" id="write-review">
         <div class="vox-card__head">
-            <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> Write a review
+            <?= vox_icon('pen-to-square') ?> Write a review
         </div>
         <div class="vox-form">
             <form data-vox-form data-entry-list="vox-reviews-list">
@@ -158,8 +158,8 @@ require_once __DIR__ . '/vox.helpers.php';
                 <div class="vox-field vox-field--spacious" data-vox-rec>
                     <label class="vox-form__label">Recommendation</label>
                     <div class="vox-recommend-row">
-                        <button type="button" class="vox-btn" data-rec-value="1"><i class="fa-regular fa-thumbs-up" aria-hidden="true"></i> I recommend</button>
-                        <button type="button" class="vox-btn" data-rec-value="0"><i class="fa-regular fa-thumbs-down" aria-hidden="true"></i> Would not recommend</button>
+                        <button type="button" class="vox-btn" data-rec-value="1"><?= vox_icon('thumbs-up') ?> I recommend</button>
+                        <button type="button" class="vox-btn" data-rec-value="0"><?= vox_icon('thumbs-down') ?> Would not recommend</button>
                         <input type="hidden" name="recommend" data-vox-rec-input value="">
                     </div>
                 </div>
@@ -168,7 +168,7 @@ require_once __DIR__ . '/vox.helpers.php';
                 <div class="vox-field vox-field--spacious">
                     <label class="vox-form__label">Photos <span class="vox-inline-note">(max <?= (int)$vox->cfg('photo_max') ?>)</span></label>
                     <div class="vox-dropzone" data-vox-dropzone>
-                        <i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i>
+                        <?= vox_icon('cloud-arrow-up') ?>
                         <div class="vox-dropzone__line">Drag & drop or <label class="vox-file-link vox-file-link--compact">browse<input type="file" name="photos[]" multiple accept="image/*" data-vox-photo-input data-max="<?= (int)$vox->cfg('photo_max') ?>"></label></div>
                         <div class="vox-dropzone__meta">Max <?= (int)$vox->cfg('photo_max_size') ?> MB per image</div>
                         <div data-vox-photo-preview class="vox-photo-preview"></div>
@@ -177,7 +177,7 @@ require_once __DIR__ . '/vox.helpers.php';
                 <?php endif ?>
 
                 <div class="vox-form__actions">
-                    <button type="submit" class="vox-btn vox-btn--primary"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Publish Review</button>
+                    <button type="submit" class="vox-btn vox-btn--primary"><?= vox_icon('paper-plane') ?> Publish Review</button>
                 </div>
                 <span data-vox-feedback hidden></span>
             </form>

@@ -13,6 +13,8 @@
 $vox    = $vox ?? wire('modules')->get('Vox');
 $depth  = $depth ?? 0;
 $user   = wire('user');
+$showChildren = empty($voxEntryNoChildren);
+$showReplyForm = empty($voxEntryNoReplyForm);
 $entryKey = $vox->publicKey('entry', (int)$entry['id']);
 $pageKey  = $vox->publicKey('page', (int)$pageId);
 
@@ -24,7 +26,7 @@ $likeTotal = $likes['total'];
 
 // Child entries (replies)
 $previewCount = (int)$vox->cfg('preview_count');
-$children     = $vox->getChildEntries((int)$entry['id'], $previewCount);
+$children     = $showChildren ? $vox->getChildEntries((int)$entry['id'], $previewCount) : [];
 $hasMore      = count($children) > $previewCount;
 if ($hasMore) array_pop($children);
 
@@ -57,12 +59,12 @@ require_once __DIR__ . '/vox.helpers.php';
         <?php endif ?>
         <?php if ($entry['is_owner_reply']): ?>
             <span class="vox-rank-badge vox-staff-badge">
-                <i class="fa-solid fa-circle-check" aria-hidden="true"></i> Staff
+                <?= vox_icon('circle-check') ?> Staff
             </span>
         <?php endif ?>
         <span class="vox-entry__time"><?= vox_time_ago($entry['created']) ?></span>
         <span class="vox-best-badge" data-vox-best-badge <?= $entry['is_best_answer'] ? '' : 'hidden' ?>>
-            <i class="fa-solid fa-star" aria-hidden="true"></i> Best Answer
+            <?= vox_icon('star', 'fill') ?> Best Answer
         </span>
     </div>
 
@@ -96,14 +98,13 @@ require_once __DIR__ . '/vox.helpers.php';
     <!-- Actions -->
     <div class="vox-entry__actions">
         <button class="vox-vote-btn<?= $userLiked ? ' vox-vote-btn--liked' : '' ?>" data-entry-key="<?= htmlspecialchars($entryKey) ?>" data-value="1" aria-label="Like">
-            <i class="<?= $userLiked ? 'fa-solid' : 'fa-regular' ?> fa-heart"
-               data-vox-heart aria-hidden="true"></i>
+            <?= str_replace('<i ', '<i data-vox-heart ', vox_icon('heart', $userLiked ? 'fill' : 'line')) ?>
             <span data-vox-likes><?= $likeTotal ?></span>
         </button>
 
-        <?php if ($depth < Vox::MAX_DEPTH): ?>
+        <?php if ($showReplyForm && $depth < Vox::MAX_DEPTH): ?>
         <button class="vox-reply-btn" data-reply-target="reply-<?= htmlspecialchars($entryKey) ?>" aria-label="Reply">
-            <i class="fa-solid fa-reply" aria-hidden="true"></i> Reply
+            <?= vox_icon('reply') ?> Reply
         </button>
         <?php endif ?>
 
@@ -111,19 +112,19 @@ require_once __DIR__ . '/vox.helpers.php';
         <button type="button" class="vox-vote-btn"
                 data-vox-comments-toggle="<?= htmlspecialchars($entryKey) ?>"
                 aria-expanded="false">
-            <i class="fa-regular fa-comment" aria-hidden="true"></i>
+            <?= vox_icon('comment') ?>
             <span data-vox-toggle-label>Comments</span>
         </button>
         <?php endif ?>
 
         <?php if ($canBest && !$entry['is_best_answer']): ?>
         <button class="vox-vote-btn vox-best-btn" data-vox-best-btn data-entry-key="<?= htmlspecialchars($entryKey) ?>">
-            <i class="fa-regular fa-star" aria-hidden="true"></i> Mark as best
+            <?= vox_icon('star') ?> Mark as best
         </button>
         <?php endif ?>
 
         <button class="vox-report-btn" data-entry-key="<?= htmlspecialchars($entryKey) ?>" data-reason="inappropriate">
-            <i class="fa-regular fa-flag" data-vox-flag aria-hidden="true"></i>
+            <?= str_replace('<i ', '<i data-vox-flag ', vox_icon('flag')) ?>
             <span data-vox-report-label>Report</span>
         </button>
 
@@ -131,7 +132,7 @@ require_once __DIR__ . '/vox.helpers.php';
     </div>
 
     <!-- Reply form -->
-    <?php if ($depth < Vox::MAX_DEPTH): ?>
+    <?php if ($showReplyForm && $depth < Vox::MAX_DEPTH): ?>
     <div class="vox-reply-form" id="reply-<?= htmlspecialchars($entryKey) ?>"
          data-vox-reply-form="reply-<?= htmlspecialchars($entryKey) ?>" hidden>
         <form data-vox-form data-entry-list="replies-<?= htmlspecialchars($entryKey) ?>">
@@ -144,7 +145,7 @@ require_once __DIR__ . '/vox.helpers.php';
             <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
             <div class="vox-form__actions">
                 <button type="submit" class="vox-btn vox-btn--primary vox-btn--sm">
-                    <i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Post
+                    <?= vox_icon('paper-plane') ?> Post
                 </button>
                 <button type="button" class="vox-btn vox-btn--sm"
                         onclick="this.closest('[data-vox-reply-form]').hidden=true">Cancel</button>
@@ -155,6 +156,7 @@ require_once __DIR__ . '/vox.helpers.php';
     <?php endif ?>
 
     <!-- Children -->
+    <?php if ($showChildren): ?>
     <div class="vox-entry__replies" id="replies-<?= htmlspecialchars($entryKey) ?>" data-vox-replies="<?= htmlspecialchars($entryKey) ?>">
     <?php
     // Render children in an isolated scope (see vox_render_entry) so recursion
@@ -165,8 +167,9 @@ require_once __DIR__ . '/vox.helpers.php';
     }
     ?>
     </div>
+    <?php endif ?>
 
-    <?php if ($hasMore): ?>
+    <?php if ($showChildren && $hasMore): ?>
     <button class="vox-btn vox-btn--sm vox-entry__show-more"
             data-vox-show-more
             data-entry-key="<?= htmlspecialchars($entryKey) ?>"

@@ -108,6 +108,7 @@ class VoxGamification extends Wire {
 
         return [
             'reviews'         => (int) ($counts['reviews'] ?? 0),
+            'questions'       => (int) ($counts['questions'] ?? 0),
             'answers'         => (int) ($counts['answers'] ?? 0),
             'threads'         => (int) ($counts['threads'] ?? 0),
             'best_answers'    => (int) ($counts['best_answers'] ?? 0),

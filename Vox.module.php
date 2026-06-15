@@ -8,7 +8,7 @@ require_once __DIR__ . '/VoxGamification.php';
  *
  * @author  Maxim Semenov <maxim@smnv.org>
  * @link    https://smnv.org
- * @version 1.0.0
+ * @version 1.6.2
  * @license MIT
  */
 class Vox extends WireData implements Module, ConfigurableModule {
@@ -33,14 +33,14 @@ class Vox extends WireData implements Module, ConfigurableModule {
         return [
             'title'    => 'Vox',
             'summary'  => 'Community discussions: reviews, Q&A, threads and block comments for any page.',
-            'version'  => 100,
+            'version'  => 162,
             'author'   => 'Maxim Semenov',
             'href'     => 'https://smnv.org',
             'icon'     => 'comments',
             'autoload' => true,
             'singular' => true,
             'requires' => ['PHP>=8.2', 'ProcessWire>=3.0.200'],
-            'installs' => ['ProcessVox', 'VoxApi'],
+            'installs' => ['ProcessVox', 'VoxApi', 'TextformatterVox'],
         ];
     }
 
@@ -48,7 +48,7 @@ class Vox extends WireData implements Module, ConfigurableModule {
     // Semantic version for display. The integer in getModuleInfo() (used by
     // ProcessWire for upgrade detection) does not round-trip through
     // formatVersion() to this string, so keep this in sync on each release.
-    const VERSION = '1.0.0';
+    const VERSION = '1.6.2';
 
     // ── Table names ───────────────────────────────────────────────────────
 
@@ -1290,12 +1290,22 @@ class Vox extends WireData implements Module, ConfigurableModule {
             if ($rank !== null) $rank['points'] = $points;
             $result[] = [
                 'user_id'  => $userId,
-                'name'     => $user->name,
+                'name'     => $this->displayUserName($user),
                 'points'   => (int) $row['total'],
                 'rank'     => $rank,
             ];
         }
         return $result;
+    }
+
+    private function displayUserName(User $user): string {
+        $display = trim((string)($user->title ?: ''));
+        if ($display !== '') return $display;
+        return ucwords(str_replace(['-', '_'], ' ', (string)$user->name));
+    }
+
+    public function displayText(string $text): string {
+        return html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     }
 
     // ── Frontend data methods (used by templates — NO SQL in templates) ─
@@ -1359,6 +1369,273 @@ class Vox extends WireData implements Module, ConfigurableModule {
         }
 
         return ['entries' => $entries, 'total' => $total];
+    }
+
+    /**
+     * Resolve a ProcessWire user for public profile views.
+     * Accepts a user id, user name, user_key or User object. Defaults to the
+     * current logged-in user when no explicit profile target is provided.
+     */
+    public function resolveProfileUser(mixed $target = null): ?User {
+        if ($target instanceof User && $target->id) return $target;
+        if ($target === null || $target === '') {
+            $user = $this->wire->user;
+            return ($user && $user->isLoggedIn()) ? $user : null;
+        }
+
+        if (is_numeric($target)) {
+            $user = $this->wire->users->get((int)$target);
+            return ($user && $user->id) ? $user : null;
+        }
+
+        $value = trim((string)$target);
+        $userId = $this->resolvePublicKey('user', $value);
+        if ($userId) {
+            $user = $this->wire->users->get($userId);
+            return ($user && $user->id) ? $user : null;
+        }
+
+        $name = $this->wire->sanitizer->pageName($value);
+        if ($name !== '') {
+            $user = $this->wire->users->get($name);
+            return ($user && $user->id) ? $user : null;
+        }
+
+        return null;
+    }
+
+    /**
+     * Complete data set for modular public profile sections.
+     */
+    public function getUserProfileData(mixed $target = null, int $activityLimit = 10): array {
+        $user = $this->resolveProfileUser($target);
+        if (!$user) return [];
+
+        $userId = (int)$user->id;
+        $gami = new VoxGamification($this);
+        $stats = $gami->getUserStats($userId);
+        $stmtTotal = $this->wire->database->prepare("
+            SELECT COUNT(*) FROM `" . self::TABLE_ENTRIES . "`
+            WHERE user_id = ? AND status = 'published'
+        ");
+        $stmtTotal->execute([$userId]);
+        $stats['total'] = (int)$stmtTotal->fetchColumn();
+
+        $rank = $this->getUserRank($userId);
+        $ranks = $this->getRanks();
+        $rankProgress = $this->getUserRankProgress($userId);
+        $badges = $this->getUserBadgeProgress($userId, $stats);
+
+        return [
+            'user' => [
+                'id' => $userId,
+                'user_key' => $this->publicKey('user', $userId),
+                'name' => (string)$user->name,
+                'display_name' => $this->displayUserName($user),
+                'created' => $user->created ? date('Y-m-d H:i:s', (int)$user->created) : '',
+            ],
+            'stats' => $stats,
+            'rank' => $rank,
+            'ranks' => $ranks,
+            'rank_progress' => $rankProgress,
+            'badges' => $badges,
+            'activity' => $this->getUserActivity($userId, $activityLimit),
+            'points' => [
+                'total' => $this->getUserPoints($userId),
+                'breakdown' => $this->getUserPointBreakdown($userId),
+            ],
+        ];
+    }
+
+    /**
+     * Rank progression data for profile views.
+     */
+    public function getUserRankProgress(int $userId): array {
+        $points = $this->getUserPoints($userId);
+        $ranks = $this->getRanks();
+        usort($ranks, fn($a, $b) => (int)$a['min_points'] <=> (int)$b['min_points']);
+
+        $currentIndex = -1;
+        foreach ($ranks as $i => $rank) {
+            if ($points >= (int)$rank['min_points']) $currentIndex = $i;
+        }
+        $current = $currentIndex >= 0 ? $ranks[$currentIndex] : null;
+        $next = $ranks[$currentIndex + 1] ?? null;
+        $base = $current ? (int)$current['min_points'] : 0;
+        $target = $next ? (int)$next['min_points'] : max($points, $base);
+        $range = max(1, $target - $base);
+
+        return [
+            'points' => $points,
+            'current' => $current,
+            'current_index' => $currentIndex,
+            'next' => $next,
+            'to_next' => $next ? max(0, $target - $points) : 0,
+            'percent' => $next ? min(100, max(0, (int)round((($points - $base) / $range) * 100))) : 100,
+        ];
+    }
+
+    /**
+     * Badge definitions split into earned and locked with simple progress.
+     */
+    public function getUserBadgeProgress(int $userId, ?array $stats = null): array {
+        $stats = $stats ?? (new VoxGamification($this))->getUserStats($userId);
+        $earnedKeys = $this->getUserBadges($userId);
+        $defs = $this->getBadgeDefs(false);
+        $earned = [];
+        $locked = [];
+
+        foreach ($defs as $def) {
+            $metric = (string)($def['metric'] ?? '');
+            $threshold = max(0, (int)($def['threshold'] ?? 0));
+            $value = $metric === 'leaderboard_top3'
+                ? (!empty($stats['leaderboard_top3']) ? 1 : 0)
+                : (int)($stats[$metric] ?? 0);
+            $row = $def;
+            $row['earned'] = in_array((string)$def['badge_key'], $earnedKeys, true);
+            $row['progress_value'] = $value;
+            $row['progress_percent'] = $threshold > 0 ? min(100, (int)round(($value / $threshold) * 100)) : 100;
+            if ($row['earned']) $earned[] = $row;
+            else $locked[] = $row;
+        }
+
+        return ['earned' => $earned, 'locked' => $locked, 'all' => array_merge($earned, $locked)];
+    }
+
+    /**
+     * Recent published entries for one user, enriched for profile activity.
+     */
+    public function getUserActivity(int $userId, int $limit = 10): array {
+        if (!$userId) return [];
+        $limit = min(50, max(1, $limit));
+        $stmt = $this->wire->database->prepare("
+            SELECT e.*, u.name AS user_name, ft.data AS page_title
+            FROM `" . self::TABLE_ENTRIES . "` e
+            LEFT JOIN pages u ON u.id = e.user_id
+            LEFT JOIN field_title ft ON ft.pages_id = e.page_id
+            WHERE e.user_id = ? AND e.status = 'published'
+            ORDER BY e.created DESC
+            LIMIT {$limit}
+        ");
+        $stmt->execute([$userId]);
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $this->preloadEntryData(array_column($rows, 'id'));
+        foreach ($rows as &$row) {
+            $row = $this->enrichEntry($row);
+            $row['page_title'] = $this->displayText((string)($row['page_title'] ?? ''));
+        }
+        return $rows;
+    }
+
+    /**
+     * Points grouped by action for a profile sidebar/breakdown section.
+     */
+    public function getUserPointBreakdown(int $userId): array {
+        if (!$userId) return [];
+        $stmt = $this->wire->database->prepare("
+            SELECT action, COALESCE(SUM(points), 0) AS points, COUNT(*) AS events
+            FROM `" . self::TABLE_POINTS . "`
+            WHERE user_id = ?
+            GROUP BY action
+            ORDER BY points DESC
+        ");
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Get Q&A-style question rows for Answers mode.
+     * Filters: newest, active, unanswered, solved, voted.
+     */
+    public function getAnswerQuestions(int $pageId = 0, string $filter = 'active', int $perPage = 15, int $page = 1): array {
+        $db = $this->wire->database;
+        $filter = $this->wire->sanitizer->option($filter, ['newest', 'active', 'unanswered', 'solved', 'voted']) ?: 'active';
+        $perPage = min(50, max(1, $perPage));
+        $page = max(1, $page);
+        $offset = ($page - 1) * $perPage;
+
+        $where = ["q.status = ?", "q.type = ?", "q.depth = 0"];
+        $params = [self::STATUS_PUBLISHED, self::TYPE_QUESTION];
+        if ($pageId) {
+            $where[] = "q.page_id = ?";
+            $params[] = $pageId;
+        }
+
+        $replyCountSql = "(SELECT COUNT(*) FROM `" . self::TABLE_ENTRIES . "` a WHERE a.status = 'published' AND a.type = 'comment' AND (a.parent_id = q.id OR a.root_id = q.id))";
+        $bestSql = "(SELECT COUNT(*) FROM `" . self::TABLE_ENTRIES . "` b WHERE b.status = 'published' AND b.is_best_answer = 1 AND (b.parent_id = q.id OR b.root_id = q.id))";
+        $lastActivitySql = "(SELECT MAX(a2.created) FROM `" . self::TABLE_ENTRIES . "` a2 WHERE a2.status = 'published' AND (a2.id = q.id OR a2.parent_id = q.id OR a2.root_id = q.id))";
+        $votesSql = "(SELECT " . $this->voteTotalSql() . " FROM `" . self::TABLE_VOTES . "` v WHERE v.entry_id = q.id)";
+
+        if ($filter === 'unanswered') $where[] = "{$replyCountSql} = 0";
+        if ($filter === 'solved') $where[] = "{$bestSql} > 0";
+
+        $order = match($filter) {
+            'newest' => 'q.created DESC',
+            'voted' => 'votes DESC, last_activity DESC, q.created DESC',
+            default => 'last_activity DESC, q.created DESC',
+        };
+
+        $ws = implode(' AND ', $where);
+        $stmtC = $db->prepare("SELECT COUNT(*) FROM `" . self::TABLE_ENTRIES . "` q WHERE {$ws}");
+        $stmtC->execute($params);
+        $total = (int)$stmtC->fetchColumn();
+
+        $stmt = $db->prepare("
+            SELECT q.*, u.name AS user_name,
+                   {$replyCountSql} AS answer_count,
+                   {$bestSql} AS best_count,
+                   COALESCE({$lastActivitySql}, q.created) AS last_activity,
+                   COALESCE({$votesSql}, 0) AS votes
+            FROM `" . self::TABLE_ENTRIES . "` q
+            LEFT JOIN pages u ON u.id = q.user_id
+            WHERE {$ws}
+            ORDER BY {$order}
+            LIMIT {$perPage} OFFSET {$offset}
+        ");
+        $stmt->execute($params);
+        $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $this->preloadEntryData(array_column($rows, 'id'));
+        $this->getUserPointsBatch(array_column($rows, 'user_id'));
+        foreach ($rows as &$row) {
+            $row = $this->enrichEntry($row);
+            $row['answer_count'] = (int)($row['answer_count'] ?? 0);
+            $row['best_count'] = (int)($row['best_count'] ?? 0);
+            $row['votes'] = (int)($row['votes'] ?? 0);
+            $row['last_activity'] = (string)($row['last_activity'] ?? $row['created']);
+        }
+
+        return ['entries' => $rows, 'total' => $total, 'filter' => $filter];
+    }
+
+    /**
+     * Summary counts for Answers mode filters.
+     */
+    public function getAnswerStats(int $pageId = 0): array {
+        $where = ["q.status = ?", "q.type = ?", "q.depth = 0"];
+        $params = [self::STATUS_PUBLISHED, self::TYPE_QUESTION];
+        if ($pageId) {
+            $where[] = "q.page_id = ?";
+            $params[] = $pageId;
+        }
+        $ws = implode(' AND ', $where);
+        $replyCountSql = "(SELECT COUNT(*) FROM `" . self::TABLE_ENTRIES . "` a WHERE a.status = 'published' AND a.type = 'comment' AND (a.parent_id = q.id OR a.root_id = q.id))";
+        $bestSql = "(SELECT COUNT(*) FROM `" . self::TABLE_ENTRIES . "` b WHERE b.status = 'published' AND b.is_best_answer = 1 AND (b.parent_id = q.id OR b.root_id = q.id))";
+        $stmt = $this->wire->database->prepare("
+            SELECT COUNT(*) AS total,
+                   SUM({$replyCountSql} = 0) AS unanswered,
+                   SUM({$bestSql} > 0) AS solved
+            FROM `" . self::TABLE_ENTRIES . "` q
+            WHERE {$ws}
+        ");
+        $stmt->execute($params);
+        $row = $stmt->fetch(\PDO::FETCH_ASSOC) ?: [];
+        return [
+            'total' => (int)($row['total'] ?? 0),
+            'unanswered' => (int)($row['unanswered'] ?? 0),
+            'solved' => (int)($row['solved'] ?? 0),
+        ];
     }
 
     /**
@@ -1555,6 +1832,32 @@ class Vox extends WireData implements Module, ConfigurableModule {
     }
 
     /**
+     * Count published direct and nested replies under one root entry.
+     */
+    public function getEntryReplyCount(int $entryId): int {
+        if (!$entryId) return 0;
+        $stmt = $this->wire->database->prepare("
+            SELECT COUNT(*) FROM `" . self::TABLE_ENTRIES . "`
+            WHERE status = 'published' AND (parent_id = ? OR root_id = ?)
+        ");
+        $stmt->execute([$entryId, $entryId]);
+        return (int)$stmt->fetchColumn();
+    }
+
+    /**
+     * Latest published activity timestamp for a thread root, including replies.
+     */
+    public function getEntryLastActivity(int $entryId): string {
+        if (!$entryId) return '';
+        $stmt = $this->wire->database->prepare("
+            SELECT MAX(created) FROM `" . self::TABLE_ENTRIES . "`
+            WHERE status = 'published' AND (id = ? OR parent_id = ? OR root_id = ?)
+        ");
+        $stmt->execute([$entryId, $entryId, $entryId]);
+        return (string)($stmt->fetchColumn() ?: '');
+    }
+
+    /**
      * Get the user_id of an entry's author.
      */
     public function getEntryOwnerId(int $entryId): int {
@@ -1673,11 +1976,8 @@ class Vox extends WireData implements Module, ConfigurableModule {
     public function enrichEntry(array $entry, bool $forPublic = false): array {
         $userId = (int)($entry['user_id'] ?? 0);
         if ($userId) {
-            $pwUserName = $entry['user_name'] ?? '';
-            if (!$pwUserName && $userId) {
-                $pwUser = $this->wire->users->get($userId);
-                $pwUserName = ($pwUser && $pwUser->id) ? $pwUser->name : '';
-            }
+            $pwUser = $this->wire->users->get($userId);
+            $pwUserName = ($pwUser && $pwUser->id) ? $this->displayUserName($pwUser) : ($entry['user_name'] ?? '');
             $entry['author_name'] = $pwUserName ?: "User #{$userId}";
             $rank = $this->getUserRank($userId);
             $entry['author_rank'] = $rank['label'] ?? '';
@@ -2199,7 +2499,9 @@ class Vox extends WireData implements Module, ConfigurableModule {
         $template = $this->ensureDemoTemplate();
         $pages = $this->ensureDemoPages($template);
         $this->seedDemoSchema($template);
+        $demoUsers = $this->ensureDemoUsers();
         $this->seedDemoEntries($pages);
+        $this->seedDemoUserEntries($pages, $demoUsers);
         $this->seedDemoStopwords((int)$pages['restaurant']->id);
 
         return $this->getDemoStatus();
@@ -2250,6 +2552,8 @@ class Vox extends WireData implements Module, ConfigurableModule {
         foreach ([['scam', 'reject'], ['counterfeit', 'flag']] as $w) {
             $stmt->execute($w);
         }
+
+        $this->removeDemoUsers();
 
         if ($removeTemplateFile) {
             $file = $this->wire->config->paths->templates . 'vox-demo.php';
@@ -2382,6 +2686,43 @@ class Vox extends WireData implements Module, ConfigurableModule {
         return $result;
     }
 
+    private function ensureDemoUsers(): array {
+        $users = $this->wire->users;
+        $result = [];
+        $defs = [
+            'sofia' => ['name' => 'sofia-keller', 'title' => 'Sofia Keller'],
+            'marc'  => ['name' => 'marc-bianchi', 'title' => 'Marc Bianchi'],
+            'elena' => ['name' => 'elena-meier', 'title' => 'Elena Meier'],
+        ];
+        foreach ($defs as $key => $def) {
+            $user = $users->get($def['name']);
+            if (!$user || !$user->id) {
+                $user = $users->add($def['name']);
+                $user->pass = bin2hex(random_bytes(12));
+                $user->email = $def['name'] . '@example.test';
+            }
+            $user->title = $def['title'];
+            $user->save();
+            $result[$key] = $user;
+        }
+        return $result;
+    }
+
+    private function removeDemoUsers(): void {
+        foreach (['sofia-keller', 'marc-bianchi', 'elena-meier', 'vox_demo_sofia', 'vox_demo_marc', 'vox_demo_elena'] as $name) {
+            $user = $this->wire->users->get($name);
+            if ($user && $user->id) {
+                $this->wire->database
+                    ->prepare("DELETE FROM `" . self::TABLE_BADGES . "` WHERE user_id = ?")
+                    ->execute([(int)$user->id]);
+                $this->wire->database
+                    ->prepare("DELETE FROM `" . self::TABLE_POINTS . "` WHERE user_id = ?")
+                    ->execute([(int)$user->id]);
+                try { $this->wire->users->delete($user); } catch (\Throwable $e) {}
+            }
+        }
+    }
+
     private function seedDemoSchema(Template $template): void {
         $this->saveSchemaFields((int)$template->id, self::TYPE_REVIEW, [
             ['field_name' => 'service', 'field_label' => 'Service', 'field_type' => 'rating', 'field_options' => '', 'required' => 0],
@@ -2436,6 +2777,47 @@ class Vox extends WireData implements Module, ConfigurableModule {
         $this->addReport($r2, null, 'Demo report for moderation preview.', 'reporter@example.test');
     }
 
+    private function seedDemoUserEntries(array $pages, array $users): void {
+        $root = $pages['root'];
+        $restaurant = $pages['restaurant'];
+        $hotel = $pages['hotel'];
+        $product = $pages['product'];
+        $templateId = (int)$restaurant->template->id;
+        $sofia = (int)$users['sofia']->id;
+        $marc = (int)$users['marc']->id;
+        $elena = (int)$users['elena']->id;
+
+        $qa1 = $this->demoEntry($root, self::TYPE_QUESTION, '', 'How should I add Vox Answers mode to a ProcessWire site?', null, '', self::STATUS_PUBLISHED, $this->demoCreatedAt(9, 11, 12), $elena);
+        $ans1 = $this->demoReply($root, $qa1, '', 'Install the module, include vox.init.php once, then include vox.answers.php on a dedicated page. The demo also shows smaller sections if you want a custom layout.', $this->demoCreatedAt(8, 13, 20), $sofia);
+        $this->markBestAnswer($ans1, 1, true);
+        $this->awardPoints($elena, 'post', (int)$this->cfg('points_post'), $qa1);
+        $this->awardPoints($sofia, 'answer', (int)$this->cfg('points_answer'), $ans1);
+        $this->awardPoints($sofia, 'best_answer', (int)$this->cfg('points_best_answer'), $ans1);
+        $this->toggleVote($qa1, 1, $marc, '');
+        $this->toggleVote($ans1, 1, $marc, '');
+
+        $qa2 = $this->demoEntry($root, self::TYPE_QUESTION, '', 'Can Vox profile sections be placed separately in a custom account page?', null, '', self::STATUS_PUBLISHED, $this->demoCreatedAt(7, 15, 45), $marc);
+        $this->demoReply($root, $qa2, '', 'Yes. Fetch $voxProfile once and include only the sections you need: header, rank, badges, activity, points or leaderboard.', $this->demoCreatedAt(6, 10, 10), $sofia);
+        $this->awardPoints($marc, 'post', (int)$this->cfg('points_post'), $qa2);
+
+        $qa3 = $this->demoEntry($root, self::TYPE_QUESTION, '', 'Which filters are useful for a small community Q&A page?', null, '', self::STATUS_PUBLISHED, $this->demoCreatedAt(5, 9, 30), $sofia);
+        $this->awardPoints($sofia, 'post', (int)$this->cfg('points_post'), $qa3);
+
+        $r = $this->demoEntry($restaurant, self::TYPE_REVIEW, '', 'As a demo editor, I like how reviews, questions and profile reputation are connected. This entry exists so the profile activity section has real review data.', 1, '', self::STATUS_PUBLISHED, $this->demoCreatedAt(4, 12, 15), $sofia);
+        $this->saveEntryRating($r, 5);
+        $this->demoSchemaValues($templateId, $r, ['service' => '5', 'atmosphere' => '4', 'taste_profile' => '5', 'visit_type' => 'Dinner']);
+        $this->awardPoints($sofia, 'post', (int)$this->cfg('points_post'), $r);
+        $this->toggleVote($r, 1, $marc, '');
+
+        $thread = $this->demoEntry($hotel, self::TYPE_THREAD, '', 'What should a hotel demo page show first: reviews, questions or open discussions?', null, '', self::STATUS_PUBLISHED, $this->demoCreatedAt(3, 17, 5), $marc);
+        $this->demoReply($hotel, $thread, '', 'For a client demo, start with the real page context and then show profile/activity so they understand the complete loop.', $this->demoCreatedAt(2, 14, 44), $elena);
+        $this->awardPoints($marc, 'post', (int)$this->cfg('points_post'), $thread);
+
+        (new VoxGamification($this))->checkAndAward($sofia);
+        (new VoxGamification($this))->checkAndAward($marc);
+        (new VoxGamification($this))->checkAndAward($elena);
+    }
+
     private function demoCreatedAt(int $daysAgo, int $hour, int $minute): string {
         $daysAgo = max(0, min(29, $daysAgo));
         $hour = max(0, min(23, $hour));
@@ -2444,13 +2826,14 @@ class Vox extends WireData implements Module, ConfigurableModule {
         return sprintf('%s %02d:%02d:00', $day, $hour, $minute);
     }
 
-    private function demoEntry(Page $page, string $type, string $guestName, string $body, ?int $recommend = null, string $blockId = '', string $status = self::STATUS_PUBLISHED, string $created = ''): int {
+    private function demoEntry(Page $page, string $type, string $guestName, string $body, ?int $recommend = null, string $blockId = '', string $status = self::STATUS_PUBLISHED, string $created = '', int $userId = 0): int {
         $entryId = $this->createEntry([
             'page_id'      => (int)$page->id,
             'block_id'     => $blockId ?: null,
             'template_id'  => (int)$page->template->id,
             'type'         => $type,
-            'guest_name'   => $guestName,
+            'user_id'      => $userId ?: null,
+            'guest_name'   => $userId ? null : $guestName,
             'body'         => $body,
             'status'       => $status,
             'recommend'    => $recommend,
@@ -2460,7 +2843,7 @@ class Vox extends WireData implements Module, ConfigurableModule {
         return $entryId;
     }
 
-    private function demoReply(Page $page, int $parentId, string $guestName, string $body, string $created = ''): int {
+    private function demoReply(Page $page, int $parentId, string $guestName, string $body, string $created = '', int $userId = 0): int {
         $parent = $this->getEntry($parentId);
         $entryId = $this->createEntry([
             'page_id'      => (int)$page->id,
@@ -2469,7 +2852,8 @@ class Vox extends WireData implements Module, ConfigurableModule {
             'parent_id'    => $parentId,
             'root_id'      => $parent['root_id'] ?: $parentId,
             'depth'        => min(self::MAX_DEPTH, (int)$parent['depth'] + 1),
-            'guest_name'   => $guestName,
+            'user_id'      => $userId ?: null,
+            'guest_name'   => $userId ? null : $guestName,
             'body'         => $body,
             'status'       => self::STATUS_PUBLISHED,
             'ip'           => '127.0.0.1',
@@ -2550,21 +2934,25 @@ $demoTitle = html_entity_decode((string)$page->title, ENT_QUOTES, 'UTF-8');
     <title><?= htmlspecialchars($demoTitle, ENT_NOQUOTES, 'UTF-8') ?> · Vox Demo</title>
     <?php include $voxPath . 'vox.init.php'; ?>
     <style>
-        body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f6f7f9;color:#17202a}
+        body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f7f2fa;color:#1d1b20;font-size:16px}
         .demo-shell{max-width:1120px;margin:0 auto;padding:32px 20px 64px}
         .demo-nav{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:28px}
         .demo-brand{font-weight:800;color:#111;text-decoration:none}.demo-links{display:flex;gap:10px;flex-wrap:wrap}
-        .demo-links a{color:#334155;text-decoration:none;padding:8px 10px;border-radius:6px;background:#fff;border:1px solid #e2e8f0}
-        .demo-hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:28px;align-items:center;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:32px;margin-bottom:24px}
-        .demo-kicker{text-transform:uppercase;font-size:12px;letter-spacing:.08em;color:#2563eb;font-weight:700}.demo-hero h1{font-size:40px;line-height:1.05;margin:.2em 0}.demo-lead{font-size:18px;line-height:1.6;color:#475569}
-        .demo-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.demo-button{display:inline-flex;align-items:center;text-decoration:none;border-radius:6px;padding:10px 14px;border:1px solid #cbd5e1;background:#fff;color:#17202a;font-weight:700}.demo-button--primary{background:#2563eb;color:#fff;border-color:#2563eb}
-        .demo-visual{min-height:240px;border-radius:8px;background:#111827;position:relative;overflow:hidden}.demo-visual img{width:100%;height:100%;min-height:240px;display:block;object-fit:cover}.demo-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,23,42,0) 45%,rgba(15,23,42,.24))}
-        .demo-card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:24px}.demo-card{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:20px}.demo-card h2,.demo-card h3{margin-top:0}
-        .demo-card__image{height:128px;margin:-20px -20px 16px;border-radius:8px 8px 0 0;overflow:hidden;background:#e2e8f0}.demo-card__image img{width:100%;height:100%;display:block;object-fit:cover}
-        .demo-panel{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:24px;margin-bottom:24px}.demo-code{overflow:auto;background:#0f172a;color:#e2e8f0;border-radius:8px;padding:18px}
+        .demo-links a{color:#49454f;text-decoration:none;padding:9px 12px;border-radius:4px;background:#fffbfe;border:1px solid #cac4d0}
+        .demo-hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:28px;align-items:center;background:#fffbfe;border:1px solid #cac4d0;border-radius:4px;padding:32px;margin-bottom:24px}
+        .demo-kicker{text-transform:uppercase;font-size:14px;letter-spacing:.08em;color:#6750a4;font-weight:700}.demo-hero h1{font-size:42px;line-height:1.05;margin:.2em 0}.demo-lead{font-size:19px;line-height:1.6;color:#49454f}
+        .demo-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.demo-button{display:inline-flex;align-items:center;text-decoration:none;border-radius:4px;padding:11px 16px;border:1px solid #cac4d0;background:#fffbfe;color:#1d1b20;font-weight:700}.demo-button--primary{background:#6750a4;color:#fff;border-color:#6750a4}
+        .demo-visual{min-height:240px;border-radius:4px;background:#f3edf7;position:relative;overflow:hidden}.demo-visual img{width:100%;height:100%;min-height:240px;display:block;object-fit:cover}
+        .demo-card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:24px}.demo-card{background:#fffbfe;border:1px solid #cac4d0;border-radius:4px;padding:20px}.demo-card h2,.demo-card h3{margin-top:0}
+        .demo-card__image{height:128px;margin:-20px -20px 16px;border-radius:4px 4px 0 0;overflow:hidden;background:#f3edf7}.demo-card__image img{width:100%;height:100%;display:block;object-fit:cover}
+        .demo-panel{background:#fffbfe;border:1px solid #cac4d0;border-radius:4px;padding:28px;margin-bottom:24px}.demo-panel>.vox-wrap{max-width:none}.demo-code{overflow:auto;background:#1d1b20;color:#f7f2fa;border-radius:4px;padding:18px;font-size:15px;line-height:1.5}
         .demo-widget-grid{display:grid;gap:24px}.demo-widget-wide{grid-column:1/-1}
+        .demo-section-title{margin:0 0 14px;font-size:26px}.demo-muted{color:#625b71;line-height:1.6}
+        .demo-feature-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:24px}.demo-feature{background:#fffbfe;border:1px solid #cac4d0;border-radius:4px;padding:16px}.demo-feature strong{display:block;margin-bottom:6px}.demo-feature span{font-size:14px;color:#625b71;line-height:1.45}
+        .demo-two-col{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.36fr);gap:28px;align-items:start}
+        .demo-inline-content{font-size:17px;line-height:1.75;color:#334155}.demo-inline-content p{margin:0 0 1em}.demo-inline-content .vox-inline-form{margin:1.15rem 0}.demo-two-col .demo-code{margin-top:2.1rem}
         @media(min-width:920px){.demo-widget-grid{grid-template-columns:1fr 1fr}}
-        @media(max-width:760px){.demo-hero,.demo-card-grid{grid-template-columns:1fr}.demo-hero h1{font-size:32px}}
+        @media(max-width:760px){.demo-hero,.demo-card-grid,.demo-feature-grid,.demo-two-col{grid-template-columns:1fr}.demo-hero h1{font-size:32px}}
     </style>
 </head>
 <body>
@@ -2582,20 +2970,64 @@ $demoTitle = html_entity_decode((string)$page->title, ENT_QUOTES, 'UTF-8');
 <?php if ($isRoot): ?>
     <section class="demo-hero">
         <div>
-            <p class="demo-kicker">Community system</p>
-            <h1>Vox is ready to explore.</h1>
-            <p class="demo-lead">Use this self-contained demo to test real implementation patterns: restaurant, hotel and product-experience pages with reviews, Q&A, discussions, moderation, reports, stop words, schemas and gamification.</p>
+            <p class="demo-kicker">Complete demo</p>
+            <h1>Vox in every mode</h1>
+            <p class="demo-lead">A single standalone demo for reviews, Q&A, Answers mode, forum overview, inline forms, block comments, profiles, reputation, moderation and API documentation.</p>
             <div class="demo-actions">
-                <a class="demo-button demo-button--primary" href="<?= $pages->get('/vox-demo/latelier-robuchon-geneva/')->url ?>">Open restaurant demo</a>
-                <a class="demo-button" href="<?= $pages->get('/vox-demo/lindt-home-of-chocolate-zurich/')->url ?>">View product demo</a>
+                <a class="demo-button demo-button--primary" href="#demo-answers">Answers</a>
+                <a class="demo-button" href="#demo-forum">Forum</a>
+                <a class="demo-button" href="#demo-profile">Profile</a>
+                <a class="demo-button" href="#demo-inline">Inline form</a>
             </div>
         </div>
-        <div class="demo-visual"><img src="<?= htmlspecialchars($demoCases['latelier-robuchon-geneva']['image']) ?>" alt="Vox demo preview" loading="lazy"></div>
+        <div class="demo-visual"><img src="<?= htmlspecialchars($demoAssetUrl . 'product.webp') ?>" alt="Vox complete demo" loading="lazy"></div>
     </section>
-    <section class="demo-card-grid">
-        <article class="demo-card"><div class="demo-card__image"><img src="<?= htmlspecialchars($demoCases['latelier-robuchon-geneva']['image']) ?>" alt="<?= htmlspecialchars($demoCases['latelier-robuchon-geneva']['imageAlt']) ?>" loading="lazy"></div><h2>Restaurant</h2><p>Geneva dining reviews, booking questions and best-answer flow.</p><a href="<?= $pages->get('/vox-demo/latelier-robuchon-geneva/')->url ?>">Open</a></article>
-        <article class="demo-card"><div class="demo-card__image"><img src="<?= htmlspecialchars($demoCases['villa-castagnola-lugano']['image']) ?>" alt="<?= htmlspecialchars($demoCases['villa-castagnola-lugano']['imageAlt']) ?>" loading="lazy"></div><h2>Hotel</h2><p>Lugano hospitality reviews, guest questions and moderation examples.</p><a href="<?= $pages->get('/vox-demo/villa-castagnola-lugano/')->url ?>">Open</a></article>
-        <article class="demo-card"><div class="demo-card__image"><img src="<?= htmlspecialchars($demoCases['lindt-home-of-chocolate-zurich']['image']) ?>" alt="<?= htmlspecialchars($demoCases['lindt-home-of-chocolate-zurich']['imageAlt']) ?>" loading="lazy"></div><h2>Product</h2><p>Zurich chocolate experience with taste-profile dot ratings.</p><a href="<?= $pages->get('/vox-demo/lindt-home-of-chocolate-zurich/')->url ?>">Open</a></article>
+
+    <section class="demo-feature-grid">
+        <article class="demo-feature"><strong>Reviews</strong><span>Ratings, dot ratings, recommendations, photos and custom fields.</span></article>
+        <article class="demo-feature"><strong>Questions</strong><span>Classic Q&A widgets with replies and best answers.</span></article>
+        <article class="demo-feature"><strong>Answers mode</strong><span>Q&A platform layout with filters, question detail and contributor sidebar.</span></article>
+        <article class="demo-feature"><strong>Profiles</strong><span>Stats, rank progression, badges, points, activity and leaderboard.</span></article>
+    </section>
+
+    <section class="demo-panel" id="demo-answers">
+        <h2 class="demo-section-title">Answers mode</h2>
+        <p class="demo-muted">A StackOverflow-style Q&A surface built from Vox questions, replies, votes, best answers and reputation.</p>
+        <?php include $voxPath . 'vox.answers.php'; ?>
+    </section>
+
+    <section class="demo-panel" id="demo-profile">
+        <h2 class="demo-section-title">Flexible profile sections</h2>
+        <p class="demo-muted">This uses a seeded ProcessWire user so profile stats, activity, points and badges are real data.</p>
+        <?php $voxProfile = $modules->get('Vox')->getUserProfileData('sofia-keller'); include $voxPath . 'vox.profile.php'; unset($voxProfile); ?>
+    </section>
+
+    <section class="demo-panel" id="demo-inline">
+        <h2 class="demo-section-title">Inline editorial form</h2>
+        <div class="demo-two-col">
+            <div class="demo-inline-content">
+                <p>Vox can place a compact participation block inside long-form content, after the reader has enough context to respond.</p>
+                <?php $voxInlineType = 'question'; $voxInlineTitle = 'Ask about this demo'; $voxInlineIntro = 'This is the same inline form that a Textformatter token can place between article paragraphs.'; $voxInlineButton = 'Send question'; include $voxPath . 'vox.inline-form.php'; unset($voxInlineType, $voxInlineTitle, $voxInlineIntro, $voxInlineButton); ?>
+                <p>The surrounding page keeps flowing normally, so this pattern works well for editorial pages, product explainers and documentation.</p>
+            </div>
+            <pre class="demo-code"><code>[[vox:form type="question"
+  title="Ask about this demo"
+  button="Send question"]]</code></pre>
+        </div>
+    </section>
+
+    <section class="demo-panel" id="demo-forum">
+        <h2 class="demo-section-title">Forum overview</h2>
+    <?php
+    $voxForumTitle = 'Forum';
+    $voxForumIntro = 'Demo discussions grouped by real-world scenarios: restaurant, hotel and product experience.';
+    $voxForumCategories = [
+        ['page' => '/vox-demo/latelier-robuchon-geneva/', 'description' => 'Geneva dining reviews, booking questions and best-answer flow.'],
+        ['page' => '/vox-demo/villa-castagnola-lugano/', 'description' => 'Lugano hospitality reviews, guest questions and moderation examples.'],
+        ['page' => '/vox-demo/lindt-home-of-chocolate-zurich/', 'description' => 'Zurich chocolate experience with product-style discussions and taste-profile ratings.'],
+    ];
+    include $voxPath . 'vox.forum.php';
+    ?>
     </section>
 <?php else: ?>
     <section class="demo-hero">

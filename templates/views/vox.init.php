@@ -44,7 +44,7 @@ $voxJsFileList  = $voxJsModules ?? $voxAllModules;
 // on demand from the authenticated /vox-api/user-stats/ endpoint.
 $isLoggedIn = $user->isLoggedIn();
 ?>
-<link rel="stylesheet" href="<?= $modUrl ?>fontawesome/css/all.min.css?v=<?= $cssVer ?>">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css">
 <link rel="stylesheet" href="<?= $modUrl ?>css/vox.css?v=<?= $cssVer ?>">
 
 <script>

@@ -52,9 +52,22 @@ Vox ships with public template includes:
 | File | Purpose |
 | --- | --- |
 | `templates/views/vox.init.php` | Loads CSS, JavaScript and `window.VoxConfig` |
+| `templates/views/vox.forum.php` | Forum landing with categories, recommended threads and newest threads |
+| `templates/views/vox.answers.php` | Answers mode default assembly |
+| `templates/views/vox.answers.index.php` | Answers mode filtered question list |
+| `templates/views/vox.answers.question.php` | Answers mode single question and answer form |
+| `templates/views/vox.answers.ask.php` | Standalone ask-question form |
+| `templates/views/vox.answers.sidebar.php` | Q&A stats and contributors sidebar |
 | `templates/views/vox.reviews.php` | Ratings and reviews |
 | `templates/views/vox.questions.php` | Questions and answers |
 | `templates/views/vox.discussions.php` | Page discussions and block comments |
+| `templates/views/vox.profile.php` | Default profile page assembly |
+| `templates/views/vox.profile.header.php` | Profile identity and stats section |
+| `templates/views/vox.profile.rank.php` | Rank progression section |
+| `templates/views/vox.profile.badges.php` | Earned and locked badges section |
+| `templates/views/vox.profile.activity.php` | Recent user activity section |
+| `templates/views/vox.profile.points.php` | Points breakdown section |
+| `templates/views/vox.profile.leaderboard.php` | Leaderboard sidebar section |
 | `templates/views/vox.entry.php` | Shared entry renderer |
 
 Minimum review widget:
@@ -81,6 +94,121 @@ include $voxPath . 'vox.discussions.php';
 
 `vox.init.php` should be included once per page.
 
+## Textformatter
+
+Vox includes `TextformatterVox` for embedding widgets directly in textarea or rich-text fields.
+
+Enable it on a ProcessWire text field under field settings, then place one of these tokens in the field content:
+
+| Token | Output |
+| --- | --- |
+| `[[vox:forum]]` | Forum landing |
+| `[[vox:answers]]` | Answers mode default assembly |
+| `[[vox:answers-index]]` | Answers mode filtered question list |
+| `[[vox:answers-ask]]` | Answers mode ask-question form |
+| `[[vox:answers-sidebar]]` | Answers mode Q&A stats and contributors sidebar |
+| `[[vox:reviews]]` | Reviews |
+| `[[vox:questions]]` | Questions and answers |
+| `[[vox:discussions]]` | Discussions and block comments |
+| `[[vox:all]]` | Reviews, questions and discussions |
+| `[[vox:form]]` | Compact inline discussion form |
+| `[[vox:discussion-form]]` | Compact inline discussion form |
+| `[[vox:question-form]]` | Compact inline question form |
+| `[[vox:review-form]]` | Compact inline review form |
+| `[[vox:profile]]` | Default profile page assembly |
+| `[[vox:profile-header]]` | Profile identity and stats |
+| `[[vox:profile-rank]]` | Rank progression |
+| `[[vox:profile-badges]]` | Earned and locked badges |
+| `[[vox:profile-activity]]` | Recent user activity |
+| `[[vox:profile-points]]` | Points breakdown |
+| `[[vox:profile-leaderboard]]` | Leaderboard section |
+
+Forum tokens can set display copy:
+
+```text
+[[vox:forum title="Forum" intro="Community discussions and updates"]]
+```
+
+Inline form tokens can be placed between paragraphs and can set their own copy:
+
+```text
+[[vox:form type="question" title="Ask the editors" intro="We will answer useful questions here." button="Send question"]]
+```
+
+Profile tokens can target a ProcessWire user by name, id or `user_key`:
+
+```text
+[[vox:profile user="Dragonball"]]
+[[vox:profile-activity user="Dragonball"]]
+```
+
+The Textformatter includes `vox.init.php` automatically once per formatted field. To suppress that for advanced layouts, use `init=false`:
+
+```text
+[[vox:reviews init=false]]
+```
+
+Forum-style overview:
+
+```php
+<?php
+$voxPath = $config->paths->Vox . 'templates/views/';
+
+include $voxPath . 'vox.init.php';
+include $voxPath . 'vox.forum.php';
+```
+
+By default, `vox.forum.php` treats the current page's children as forum categories and shows the latest thread entries from each child page. You can override that list:
+
+```php
+$voxForumTitle = 'Forum';
+$voxForumIntro = 'General discussions and community updates.';
+$voxForumCategories = [
+    '/forum/products/',
+    '/forum/shopping/',
+    ['page' => '/forum/general/', 'description' => 'Everything that does not fit elsewhere.'],
+];
+
+include $voxPath . 'vox.forum.php';
+```
+
+Flexible profile page:
+
+```php
+<?php
+$voxPath = $config->paths->Vox . 'templates/views/';
+$vox = $modules->get('Vox');
+$voxProfile = $vox->getUserProfileData('Dragonball');
+
+include $voxPath . 'vox.init.php';
+include $voxPath . 'vox.profile.header.php';
+include $voxPath . 'vox.profile.rank.php';
+include $voxPath . 'vox.profile.badges.php';
+include $voxPath . 'vox.profile.activity.php';
+include $voxPath . 'vox.profile.points.php';
+include $voxPath . 'vox.profile.leaderboard.php';
+```
+
+Use `vox.profile.php` only when you want the default full assembly. For custom pages, include the profile sections individually in any order.
+
+Answers mode:
+
+```php
+<?php
+$voxPath = $config->paths->Vox . 'templates/views/';
+
+include $voxPath . 'vox.init.php';
+include $voxPath . 'vox.answers.php';
+```
+
+`vox.answers.php` shows a filtered question index by default and switches to the single-question view when the URL includes `?question={entry_key}`. For custom layouts, include the smaller sections directly:
+
+```php
+include $voxPath . 'vox.answers.index.php';
+include $voxPath . 'vox.answers.ask.php';
+include $voxPath . 'vox.answers.sidebar.php';
+```
+
 ## Demo Installer
 
 The Embed screen includes an optional demo installer.
@@ -92,7 +220,9 @@ When installed, Vox creates:
 - `/vox-demo/villa-castagnola-lugano/`;
 - `/vox-demo/lindt-home-of-chocolate-zurich/`;
 - a dedicated `vox-demo` template;
+- a complete root showcase for forum overview, Answers mode, profile sections and inline editorial forms;
 - sample reviews, questions, answers, discussions, reports and stop-word rules;
+- seeded demo users with points, badges, profile activity and leaderboard data;
 - review schema fields for the demo template.
 
 The demo template is standalone. Vox sets `noPrependTemplateFile` and `noAppendTemplateFile` on that template, so the site's `_init.php`, `_main.php` and Markup Regions do not reshape the demo output.

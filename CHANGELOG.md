@@ -2,6 +2,49 @@
 
 All notable changes to Vox are documented here.
 
+## [1.6.2] - 2026-06-15
+
+### Added
+
+- Added Answers mode for Q&A-platform style pages with question filters, question detail view, answer form, Q&A stats and contributor sidebar.
+- Added modular Answers views: `vox.answers.php`, `vox.answers.index.php`, `vox.answers.question.php`, `vox.answers.ask.php`, `vox.answers.filters.php` and `vox.answers.sidebar.php`.
+- Added Answers mode Embed options and Textformatter tokens such as `[[vox:answers]]`, `[[vox:answers-index]]`, `[[vox:answers-ask]]` and `[[vox:answers-sidebar]]`.
+- Added modular public profile sections for user header, stats, rank progression, badges, recent activity, points breakdown and leaderboard, with Embed screen options for each section.
+- Added profile Textformatter tokens, including `[[vox:profile]]`, `[[vox:profile-header]]`, `[[vox:profile-rank]]`, `[[vox:profile-badges]]`, `[[vox:profile-activity]]`, `[[vox:profile-points]]` and `[[vox:profile-leaderboard]]`.
+- Added profile data helpers for building flexible user pages from ProcessWire users.
+- Added inline Textformatter forms for editorial inserts inside formatted content, using tokens such as `[[vox:form]]`, `[[vox:discussion-form]]`, `[[vox:question-form]]` and `[[vox:review-form]]`.
+- Added a compact `vox.inline-form.php` view for thread, question and review posting forms between page paragraphs.
+- Added `TextformatterVox` for embedding Vox widgets with text tokens such as `[[vox:forum]]`, `[[vox:reviews]]`, `[[vox:questions]]`, `[[vox:discussions]]` and `[[vox:all]]`.
+- Added optional Textformatter attributes for forum title and intro copy.
+- Added a forum landing template (`vox.forum.php`) with category cards, recommended threads, newest threads, search and a start-discussion form.
+- Added forum landing to the Embed screen and documentation.
+- Added forum overview styling to the public stylesheet.
+- Updated the optional demo root page to showcase the forum-style overview.
+
+### Changed
+
+- Expanded the optional demo into a complete showcase for forum overview, Answers mode, profile sections, inline editorial forms, classic reviews, Q&A and discussions.
+- Added seeded demo users and user-authored demo activity so profile, points, rank, badge and leaderboard sections render with real sample data.
+- Restyled the public frontend toward a Material Design 3 feel with larger base typography, 4px radii and no shadows.
+- Switched public frontend icons from FontAwesome to Remix Icon.
+- Replaced technical demo user names with human demo accounts and display names.
+- Public entry authors now prefer ProcessWire user titles when available.
+
+### Fixed
+
+- Fixed decoded page titles in profile activity and forum category views so names such as `L'Atelier Robuchon Geneva` render correctly.
+- Fixed profile rank progress layering so the track stays behind opaque rank markers.
+- Removed decorative gradients from the demo profile header, demo image overlay, card headers, avatars and rank progress.
+- Fixed profile layout spacing so the sidebar no longer visually collides with the rank and badge sections.
+- Simplified rank progress styling to keep the profile demo cleaner and easier to scan.
+- Improved the complete demo page spacing, panel rhythm and embedded widget width.
+- Refined profile header spacing so usernames, avatars and metadata sit cleanly against the banner.
+- Improved profile sidebar cards and inline form demo spacing for clearer visual presentation.
+- Fixed link-style primary buttons inside Vox wrappers so button text remains visible.
+- Fixed hidden form feedback and stop-word warning elements when forms render outside a direct `.vox-wrap` container.
+- Improved mobile profile stat cards to use a compact two-column layout.
+- Improved profile header and badge sections so they keep full width and readable spacing in narrow layouts.
+
 ## [1.0.0] - 2026-06-11
 
 ### Added

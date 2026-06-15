@@ -15,7 +15,7 @@ It is made for sites where conversation belongs next to the content itself: prod
 - Includes moderation queues, reports and stop-word filtering.
 - Includes points, ranks, badges and leaderboards.
 - Provides a ProcessWire admin area for managing all community content.
-- Includes an optional demo section with restaurant, hotel and product-experience sample data.
+- Includes an optional complete demo section with restaurant, hotel, product-experience, Answers mode, profile and inline-form sample data.
 
 ## Admin Area
 
@@ -36,10 +36,15 @@ Vox includes ready-to-use public views for:
 
 - ratings and reviews;
 - questions and answers;
+- Answers mode for Q&A-platform style pages;
 - discussions;
+- forum landing pages;
+- modular user profile sections;
 - inline block comments.
 
 You can place one widget on a page or combine several into tabs.
+
+Vox also includes a Textformatter, so editors can embed widgets, profile sections or inline posting forms in formatted text fields with tokens such as `[[vox:forum]]`, `[[vox:answers]]`, `[[vox:profile]]`, `[[vox:reviews]]`, `[[vox:form]]` or `[[vox:all]]`.
 
 ## Installation
 

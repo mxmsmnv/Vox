@@ -29,7 +29,7 @@ require_once __DIR__ . '/vox.helpers.php';
     <!-- Ask a question -->
     <div class="vox-card vox-card--mb-16">
         <div class="vox-card__head">
-            <i class="fa-regular fa-circle-question" aria-hidden="true"></i> Ask a question
+            <?= vox_icon('question') ?> Ask a question
         </div>
         <div class="vox-form">
             <form data-vox-form data-entry-list="vox-questions-list">
@@ -51,14 +51,14 @@ require_once __DIR__ . '/vox.helpers.php';
                 <div class="vox-field">
                     <label class="vox-form__label">Attach images <span class="vox-inline-note">(optional, max <?= (int)$vox->cfg('photo_max') ?>)</span></label>
                     <label class="vox-file-link">
-                        <i class="fa-solid fa-paperclip" aria-hidden="true"></i> Attach
+                        <?= vox_icon('paperclip') ?> Attach
                         <input type="file" name="photos[]" multiple accept="image/*" data-vox-photo-input>
                     </label>
                     <div data-vox-photo-preview class="vox-photo-preview"></div>
                 </div>
                 <?php endif ?>
                 <div class="vox-form__actions">
-                    <button type="submit" class="vox-btn vox-btn--primary"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Post question</button>
+                    <button type="submit" class="vox-btn vox-btn--primary"><?= vox_icon('paper-plane') ?> Post question</button>
                 </div>
                 <span data-vox-feedback hidden></span>
             </form>
@@ -72,7 +72,7 @@ require_once __DIR__ . '/vox.helpers.php';
             <?php $depth = 0; include __DIR__ . '/vox.entry.php'; ?>
         <?php endforeach ?>
         <?php if (!$questions): ?>
-            <div class="vox-empty"><i class="fa-regular fa-circle-question" aria-hidden="true"></i> No questions yet. Be the first to ask!</div>
+            <div class="vox-empty"><?= vox_icon('question') ?> No questions yet. Be the first to ask!</div>
         <?php endif ?>
     </div>
 

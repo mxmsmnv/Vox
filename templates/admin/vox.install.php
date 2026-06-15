@@ -55,7 +55,7 @@ $overview = isset($vox) ? $vox->getAdminOverview() : ['version' => Vox::VERSION]
      <span uk-icon="icon:bolt;ratio:0.95" class="uk-text-primary"></span>
      <span>
       <span class="uk-text-bold">Install demo with sample data</span>
-      <span class="uk-text-meta uk-display-block">Creates <code>/vox-demo/</code>, demo child pages, schema fields, entries, reports and stop words.</span>
+      <span class="uk-text-meta uk-display-block">Creates <code>/vox-demo/</code>, demo child pages, schema fields, entries, demo users, reports and stop words.</span>
      </span>
     </label>
     <div class="uk-margin-small-top uk-flex uk-flex-wrap uk-flex-middle" style="gap:8px">
@@ -120,6 +120,23 @@ $overview = isset($vox) ? $vox->getAdminOverview() : ['version' => Vox::VERSION]
    </div>
 
    <div id="vox-empty" class="uk-text-meta uk-text-warning" hidden><span uk-icon="icon:warning;ratio:0.8"></span> Select at least one widget above to generate the snippet.</div>
+  </div>
+
+  <div class="uk-card uk-card-default uk-card-body uk-card-small uk-margin Vox-form-panel">
+   <h3 class="uk-card-title">Textformatter tokens</h3>
+   <p class="uk-text-meta uk-margin-small-top">Enable <strong>Vox Textformatter</strong> on a text field, then place a token in the field content.</p>
+   <pre class="Vox-code"><code>[[vox:forum]]
+[[vox:answers]]
+[[vox:answers-ask]]
+[[vox:reviews]]
+[[vox:questions]]
+[[vox:discussions]]
+[[vox:form]]
+[[vox:question-form]]
+[[vox:review-form]]
+[[vox:profile]]
+[[vox:profile-activity]]
+[[vox:all]]</code></pre>
   </div>
 
  </div>

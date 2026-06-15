@@ -12,7 +12,7 @@ class ProcessVox extends Process {
         return [
             'title'    => 'Vox Admin',
             'summary'  => 'Community discussions admin panel.',
-            'version'  => 100,
+            'version'  => 162,
             'author'   => 'Maxim Semenov',
             'href'     => 'https://smnv.org',
             'icon'     => 'comments',
@@ -550,6 +550,18 @@ class ProcessVox extends Process {
         $demoStatus = $this->vox->getDemoStatus();
         // Front-end widgets a user can drop into a template, in include order.
         $widgets = [
+            'forum'       => ['file' => 'vox.forum.php',       'label' => 'Forum landing',            'icon' => 'list',     'desc' => 'Category overview with recommended and newest threads.'],
+            'answers'     => ['file' => 'vox.answers.php',     'label' => 'Answers mode',             'icon' => 'question', 'desc' => 'Q&A platform layout with filters, question detail and answer form.'],
+            'answers_index' => ['file' => 'vox.answers.index.php', 'label' => 'Answers index',         'icon' => 'list',     'desc' => 'Filtered question list for newest, active, unanswered and solved views.'],
+            'answers_ask' => ['file' => 'vox.answers.ask.php', 'label' => 'Answers ask form',          'icon' => 'plus',     'desc' => 'Standalone ask-question form for Answers pages.'],
+            'answers_sidebar' => ['file' => 'vox.answers.sidebar.php', 'label' => 'Answers sidebar',   'icon' => 'trophy',   'desc' => 'Q&A stats and top contributors sidebar.'],
+            'profile'     => ['file' => 'vox.profile.php',     'label' => 'Profile page',              'icon' => 'user',     'desc' => 'Modular user profile sections for stats, rank, badges and activity.'],
+            'profile_header' => ['file' => 'vox.profile.header.php', 'label' => 'Profile header',      'icon' => 'user',     'desc' => 'User identity, rank, points and contribution counters.'],
+            'profile_rank' => ['file' => 'vox.profile.rank.php', 'label' => 'Profile rank',             'icon' => 'bolt',     'desc' => 'Rank progression and points needed for the next rank.'],
+            'profile_badges' => ['file' => 'vox.profile.badges.php', 'label' => 'Profile badges',      'icon' => 'star',     'desc' => 'Earned and locked badge cards with progress.'],
+            'profile_activity' => ['file' => 'vox.profile.activity.php', 'label' => 'Profile activity', 'icon' => 'clock',    'desc' => 'Recent reviews, questions, replies and threads.'],
+            'profile_points' => ['file' => 'vox.profile.points.php', 'label' => 'Profile points',       'icon' => 'bolt',     'desc' => 'Points total and action breakdown.'],
+            'profile_leaderboard' => ['file' => 'vox.profile.leaderboard.php', 'label' => 'Profile leaderboard', 'icon' => 'trophy', 'desc' => 'Leaderboard block for profile sidebars.'],
             'reviews'     => ['file' => 'vox.reviews.php',     'label' => 'Ratings & reviews',        'icon' => 'star',     'desc' => 'Star ratings, recommendations and review cards.'],
             'questions'   => ['file' => 'vox.questions.php',   'label' => 'Questions & answers',       'icon' => 'question', 'desc' => 'Q&A threads with best-answer marking.'],
             'discussions' => ['file' => 'vox.discussions.php', 'label' => 'Discussions & block comments', 'icon' => 'comments', 'desc' => 'Free threads and inline block comments.'],

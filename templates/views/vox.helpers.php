@@ -79,10 +79,71 @@ function vox_dots(int $rating, int $max = 5): string {
 }
 
 /**
+ * Render a Remix Icon while accepting old FontAwesome-style icon names.
+ */
+function vox_icon(string $icon, string $variant = 'line'): string {
+    $icon = trim($icon);
+    $icon = preg_replace('/\bfa-(solid|regular|brands)\b/', '', $icon);
+    $icon = preg_replace('/\bfa-/', '', (string)$icon);
+    $icon = trim((string)$icon);
+
+    if ($icon === '') $icon = 'star';
+    if (str_starts_with($icon, 'ri-')) {
+        $class = $icon;
+    } else {
+        $map = [
+            'arrow-left' => 'arrow-left',
+            'arrow-right' => 'arrow-right',
+            'bar-chart-line' => 'bar-chart',
+            'bolt' => 'flashlight',
+            'bullseye' => 'focus-3',
+            'camera' => 'camera',
+            'chart-line' => 'line-chart',
+            'chart-simple' => 'bar-chart',
+            'circle-check' => 'checkbox-circle',
+            'circle-plus' => 'add-circle',
+            'circle-question' => 'question',
+            'clock-rotate-left' => 'history',
+            'cloud-arrow-up' => 'upload-cloud',
+            'comment' => 'chat-3',
+            'comment-dots' => 'chat-3',
+            'comments' => 'chat-3',
+            'gem' => 'vip-diamond',
+            'flag' => 'flag',
+            'heart' => 'heart',
+            'location-dot' => 'map-pin',
+            'magnifying-glass' => 'search',
+            'medal' => 'medal',
+            'mug-hot' => 'cup',
+            'paper-plane' => 'send-plane-2',
+            'paperclip' => 'attachment-2',
+            'patch-check' => 'checkbox-circle',
+            'pen-to-square' => 'edit',
+            'pencil' => 'pencil',
+            'pencil-square' => 'edit',
+            'plus' => 'add',
+            'reply' => 'reply',
+            'seedling' => 'seedling',
+            'star' => 'star',
+            'star-half-stroke' => 'star-half',
+            'table-list' => 'list-check',
+            'thumbs-down' => 'thumb-down',
+            'thumbs-up' => 'thumb-up',
+            'trophy' => 'trophy',
+            'user-check' => 'user-follow',
+        ];
+        $base = $map[$icon] ?? $icon;
+        $class = 'ri-' . $base . '-' . ($variant === 'fill' ? 'fill' : 'line');
+    }
+
+    return '<i class="' . htmlspecialchars($class) . '" aria-hidden="true"></i>';
+}
+
+/**
  * Render a rank badge.
  */
 function vox_rank_badge(string $label, string $icon = ''): string {
-    $ic = $icon ? '<i class="fa-solid fa-' . htmlspecialchars($icon) . '" aria-hidden="true"></i> ' : '';
+    $ic = $icon ? vox_icon($icon) . ' ' : '';
     return '<span class="vox-rank-badge">' . $ic . htmlspecialchars($label) . '</span>';
 }
 
@@ -130,9 +191,9 @@ function vox_param_ratings(array $fields, array $values): string {
 function vox_rec_pill($recommend): string {
     if ($recommend === null || $recommend === '') return '';
     if ((int)$recommend === 1) {
-        return '<span class="vox-rec-yes"><i class="fa-solid fa-thumbs-up" aria-hidden="true"></i> Recommends</span>';
+        return '<span class="vox-rec-yes">' . vox_icon('thumbs-up') . ' Recommends</span>';
     }
-    return '<span class="vox-rec-no"><i class="fa-solid fa-thumbs-down" aria-hidden="true"></i> Does not recommend</span>';
+    return '<span class="vox-rec-no">' . vox_icon('thumbs-down') . ' Does not recommend</span>';
 }
 
 /**
