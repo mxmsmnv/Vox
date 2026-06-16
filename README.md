@@ -4,6 +4,8 @@ Vox adds community discussions to ProcessWire pages: reviews, questions and answ
 
 It is made for sites where conversation belongs next to the content itself: product pages, catalogs, articles, collections, directories, knowledge bases and editorial projects.
 
+If this project helps your work, consider supporting future development: [GitHub Sponsors](https://github.com/sponsors/mxmsmnv) or [smnv.org/sponsor](https://smnv.org/sponsor/).  
+
 ## What Vox Does
 
 - Adds reviews with star or dot ratings and optional custom fields.
