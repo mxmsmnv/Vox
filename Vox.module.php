@@ -6,7 +6,7 @@ require_once __DIR__ . '/VoxGamification.php';
 /**
  * Vox - Community discussions module for ProcessWire
  *
- * @author  Maxim Semenov <maxim@smnv.org>
+ * @author  Maxim Semenov <maxim@smnv.org> (smnv.org)
  * @link    https://smnv.org
  * @version 1.6.2
  * @license MIT
