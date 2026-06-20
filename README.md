@@ -2,6 +2,8 @@
 
 Vox adds community discussions to ProcessWire pages: reviews, questions and answers, open threads, replies, ratings, moderation, photos and user reputation.
 
+![Vox](assets/Vox.png)
+
 It is made for sites where conversation belongs next to the content itself: product pages, catalogs, articles, collections, directories, knowledge bases and editorial projects.
 
 **Author:** Maxim Semenov  
