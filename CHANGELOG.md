@@ -2,6 +2,12 @@
 
 All notable changes to Vox are documented here.
 
+## [1.6.3] - 2026-07-02
+
+### Changed
+
+- Added an Olivia-aware `AGENTS.md` module guide with site-building patterns, canonical template includes, Textformatter tokens, REST API routes, safety levels and AI workflow rules.
+
 ## [1.6.2] - 2026-06-15
 
 ### Added
