@@ -356,6 +356,7 @@ Treat these as high risk and require a clear user request plus a rollback plan:
 - `js/vox.bundle.js`: generated bundle. Do not edit by hand.
 - `css/vox.css`: public styles.
 - `css/vox.admin.css`: admin-only styles.
+- `languages/*.csv`: bundled ProcessWire module-translation files for the admin interface (config screen and admin UI strings), following the same format as the Cookie module.
 
 ## Change Risk
 

@@ -1,0 +1,49 @@
+en,et,description,file,hash
+"%d entries deleted.","%d kirjet kustutatud.",,site/modules/Vox/ProcessVox.module.php,deebe0c652e9a9e9a1bd76cd037c2f38
+"Allow guest entries","Luba külaliste postitused",,site/modules/Vox/Vox.module.php,e17b5dceea4debdb4ae478671d56db21
+"Allow via browser fingerprint","Luba brauseri sõrmejälje kaudu",,site/modules/Vox/Vox.module.php,3cabbeff64a04a0d4aaccfafd9fd73c8
+"Block comment panel mode","Ploki kommentaaripaneeli režiim",,site/modules/Vox/Vox.module.php,da0543e88dd5f79a5e121d5a3217bf39
+Disabled,Keelatud,,site/modules/Vox/Vox.module.php,b9f5c797ebbf55adccdd8539a65a0241
+Display,Kuvamine,,site/modules/Vox/Vox.module.php,b9987a246a537f4fe86f1f2e3d10dbdb
+"Enable photo uploads","Luba fotode üleslaadimine",,site/modules/Vox/Vox.module.php,85c1006e14988831815b67534febcd9f
+"Entries approved.","Kirjed kinnitatud.",,site/modules/Vox/ProcessVox.module.php,69dbe1e3aed96f397a75cb8ffad37687
+"Entries marked as spam.","Kirjed märgitud rämpspostiks.",,site/modules/Vox/ProcessVox.module.php,0b2d7760f158e39c5f1990aa79f2181a
+"Gamification — points","Mängustamine — punktid",,site/modules/Vox/Vox.module.php,a1eda4c80ac05aa6b560c493897d1a4a
+General,Üldine,,site/modules/Vox/Vox.module.php,0db377921f4ce762c62526131097968f
+"Guest voting","Külaliste hääletamine",,site/modules/Vox/Vox.module.php,9073e5e4a9bc17d4284d8d5df2256590
+"Guests must provide an email address to post.","Külalised peavad postitamiseks sisestama e-posti aadressi.",,site/modules/Vox/Vox.module.php,d4285691e5240ff907704d6fc752d0b9
+"Helpful / Not helpful (+1 / -1)","Kasulik / Mitte kasulik (+1 / -1)",,site/modules/Vox/Vox.module.php,04c5938b672e72d505cf4a7d26595c29
+"How inline block discussions appear on the page.","Kuidas sisseehitatud ploki arutelud lehel kuvatakse.",,site/modules/Vox/Vox.module.php,f6cf32eb423927b755639e8cc1513c21
+"How new entries are handled before appearing publicly.","Kuidas uusi kirjeid käsitletakse enne avalikult kuvamist.",,site/modules/Vox/Vox.module.php,c0c24e70d255cf2eb4a02e3102dcf33f
+"Immediate publish","Kohene avaldamine",,site/modules/Vox/Vox.module.php,c242540bad5947ac7a20fb523657da29
+"Initial comments shown","Algselt kuvatavad kommentaarid",,site/modules/Vox/Vox.module.php,89c4d1a2b20b6a0b27397508ad1b7c0e
+"Inline — expands below content block","Sisseehitatud — avaneb sisuploki all",,site/modules/Vox/Vox.module.php,d553dc0c1e9ecc36d736987615522711
+"Likes only (+1)","Ainult meeldimised (+1)",,site/modules/Vox/Vox.module.php,df4320991733cefe1147c0e7858fd157
+"Max file size (MB)","Max faili suurus (MB)",,site/modules/Vox/Vox.module.php,80d4bcfbbcca2e8457d3dca436858a87
+"Max photos per entry","Max fotosid kirje kohta",,site/modules/Vox/Vox.module.php,467e8bd698dc4fa50b7c1d82f608726b
+"Max posts per hour","Max postitusi tunnis",,site/modules/Vox/Vox.module.php,181065a3a340a2d970068b086338cd63
+"Min seconds between posts","Min sekundid postituste vahel",,site/modules/Vox/Vox.module.php,df05df3ec0c2501090b66f6446589958
+"Moderation mode",Modereerimisrežiim,,site/modules/Vox/Vox.module.php,f88b9bb526bde709e914d9dfe6c65b19
+No,Ei,,site/modules/Vox/Vox.module.php,bafd7322c6e97d25b6299b5d6fe8920b
+"Non-registered users can post reviews, questions and comments.","Registreerimata kasutajad saavad postitada arvustusi, küsimusi ja kommentaare.",,site/modules/Vox/Vox.module.php,05f92a98e0cbfbc086e40a43b1e0941d
+"Notification email","Teavituse e-post",,site/modules/Vox/Vox.module.php,d5b501407738a0f21e63ea67ed1d64bf
+"Number of comments pre-loaded before ""Show more"".","Eelnevalt laaditud kommentaaride arv enne ""Näita rohkem"".",,site/modules/Vox/Vox.module.php,3ee54d14846ada5583189a1ea00097c3
+"Per user / guest. 0 disables the hourly limit.","Kasutaja / külalise kohta. 0 keelab tunnipiirangu.",,site/modules/Vox/Vox.module.php,00a9e9ddef1151690acca5be0275eb98
+"Per user / guest. 0 disables the interval limit.","Kasutaja / külalise kohta. 0 keelab intervallipiirangu.",,site/modules/Vox/Vox.module.php,dcebde8b054e63de25661df0690d3a13
+"Photo uploads","Fotode üleslaadimine",,site/modules/Vox/Vox.module.php,37cda44b7bd96c5513c8afbcdc0211d0
+"Points for answering a question","Punktid küsimusele vastamise eest",,site/modules/Vox/Vox.module.php,f80c49df6277a81c7c4eddbdc8fe9cb9
+"Points for posting a review / thread / question","Punktid arvustuse / teema / küsimuse postitamise eest",,site/modules/Vox/Vox.module.php,a580c2f15c384b12f69f4db5c12df795
+"Points per like received","Punktid iga saadud meeldimise eest",,site/modules/Vox/Vox.module.php,7dc75b91cc90b430ed42a93b3d5c4201
+"Points when answer is marked best","Punktid, kui vastus märgitakse parimaks",,site/modules/Vox/Vox.module.php,d518bc1248f1277575bfb0a3768041fa
+"Receive alerts for new pending entries and reports. Leave blank to disable.","Saa teavitusi uutest ootel kirjetest ja teadetest. Jäta tühjaks, et keelata.",,site/modules/Vox/Vox.module.php,cd42bcc9bd78b09ba6061cc618df08c9
+"Relative to site root. Directory will be created if it doesn't exist.","Saidi juure suhtes. Kaust luuakse, kui seda pole olemas.",,site/modules/Vox/Vox.module.php,6bf59cc76b24562f9ced838164ddae82
+"Require approval","Nõuab heakskiitu",,site/modules/Vox/Vox.module.php,b7490f1303f1cf4ea53fa18416951173
+"Require email from guests","Nõua külalistelt e-posti",,site/modules/Vox/Vox.module.php,5fb33d2a14c0668bccefa2afd55de6d5
+"Sidebar — floats beside active block","Külgriba — hõljub aktiivse ploki kõrval",,site/modules/Vox/Vox.module.php,18275cd447efd34ad421898af67c9b99
+"Upload path","Üleslaadimise tee",,site/modules/Vox/Vox.module.php,afec020c0ca660ca0b0277509d191888
+"Users can attach images to reviews and questions.","Kasutajad saavad lisada arvustustele ja küsimustele pilte.",,site/modules/Vox/Vox.module.php,41d664be6304a08773f0e0b6d4ab6e3e
+"Vote mode",Hääletusrežiim,,site/modules/Vox/Vox.module.php,2f6173a5d99acc9e8a341230184e95aa
+Voting,Hääletamine,,site/modules/Vox/Vox.module.php,b6fb89142b836f54bb0062e2bdce2e49
+Vox,Vox,,site/modules/Vox/ProcessVox.module.php,baf069ea8ce565674e2bff0c0f0a069a
+Yes,Jah,,site/modules/Vox/Vox.module.php,93cba07454f06a4a960172bbd6e2a435
+"You do not have permission to access this page.","Teil pole selle lehe vaatamiseks õigust.",,site/modules/Vox/ProcessVox.module.php,d9bce6556723f03d444fc08de3ccb4db

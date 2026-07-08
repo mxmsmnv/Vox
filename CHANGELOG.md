@@ -2,6 +2,12 @@
 
 All notable changes to Vox are documented here.
 
+## [1.7.0] - 2026-07-08
+
+### Added
+
+- Added admin interface localization: 29 ready-made ProcessWire module-translation files (`languages/*.csv`) covering Bulgarian, Croatian, Czech, Danish, Dutch, Estonian, Finnish, French, German, Greek, Hungarian, Irish, Italian, Latvian, Lithuanian, Maltese, Norwegian, Polish, Portuguese, Romanian, Russian, Serbian, Slovak, Slovenian, Spanish, Swedish, Turkish and Ukrainian, following the same format used by the Cookie module. Installable via Setup > Modules > Vox > "install translations" once ProcessWire's Language Support module is active.
+
 ## [1.6.3] - 2026-07-02
 
 ### Changed

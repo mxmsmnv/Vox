@@ -1,0 +1,49 @@
+en,cs,description,file,hash
+"%d entries deleted.","%d položek smazáno.",,site/modules/Vox/ProcessVox.module.php,deebe0c652e9a9e9a1bd76cd037c2f38
+"Allow guest entries","Povolit příspěvky hostů",,site/modules/Vox/Vox.module.php,e17b5dceea4debdb4ae478671d56db21
+"Allow via browser fingerprint","Povolit pomocí otisku prohlížeče",,site/modules/Vox/Vox.module.php,3cabbeff64a04a0d4aaccfafd9fd73c8
+"Block comment panel mode","Režim panelu komentářů bloku",,site/modules/Vox/Vox.module.php,da0543e88dd5f79a5e121d5a3217bf39
+Disabled,Zakázáno,,site/modules/Vox/Vox.module.php,b9f5c797ebbf55adccdd8539a65a0241
+Display,Zobrazení,,site/modules/Vox/Vox.module.php,b9987a246a537f4fe86f1f2e3d10dbdb
+"Enable photo uploads","Povolit nahrávání fotografií",,site/modules/Vox/Vox.module.php,85c1006e14988831815b67534febcd9f
+"Entries approved.","Položky schváleny.",,site/modules/Vox/ProcessVox.module.php,69dbe1e3aed96f397a75cb8ffad37687
+"Entries marked as spam.","Položky označeny jako spam.",,site/modules/Vox/ProcessVox.module.php,0b2d7760f158e39c5f1990aa79f2181a
+"Gamification — points","Gamifikace — body",,site/modules/Vox/Vox.module.php,a1eda4c80ac05aa6b560c493897d1a4a
+General,Obecné,,site/modules/Vox/Vox.module.php,0db377921f4ce762c62526131097968f
+"Guest voting","Hlasování hostů",,site/modules/Vox/Vox.module.php,9073e5e4a9bc17d4284d8d5df2256590
+"Guests must provide an email address to post.","Hosté musí pro publikování zadat e-mailovou adresu.",,site/modules/Vox/Vox.module.php,d4285691e5240ff907704d6fc752d0b9
+"Helpful / Not helpful (+1 / -1)","Užitečné / Neužitečné (+1 / -1)",,site/modules/Vox/Vox.module.php,04c5938b672e72d505cf4a7d26595c29
+"How inline block discussions appear on the page.","Jak se na stránce zobrazují diskuse vloženého bloku.",,site/modules/Vox/Vox.module.php,f6cf32eb423927b755639e8cc1513c21
+"How new entries are handled before appearing publicly.","Jak jsou nové položky zpracovávány, než se veřejně zobrazí.",,site/modules/Vox/Vox.module.php,c0c24e70d255cf2eb4a02e3102dcf33f
+"Immediate publish","Okamžité zveřejnění",,site/modules/Vox/Vox.module.php,c242540bad5947ac7a20fb523657da29
+"Initial comments shown","Zobrazené počáteční komentáře",,site/modules/Vox/Vox.module.php,89c4d1a2b20b6a0b27397508ad1b7c0e
+"Inline — expands below content block","Vložené — rozbalí se pod blokem obsahu",,site/modules/Vox/Vox.module.php,d553dc0c1e9ecc36d736987615522711
+"Likes only (+1)","Pouze To se mi líbí (+1)",,site/modules/Vox/Vox.module.php,df4320991733cefe1147c0e7858fd157
+"Max file size (MB)","Maximální velikost souboru (MB)",,site/modules/Vox/Vox.module.php,80d4bcfbbcca2e8457d3dca436858a87
+"Max photos per entry","Maximální počet fotografií na položku",,site/modules/Vox/Vox.module.php,467e8bd698dc4fa50b7c1d82f608726b
+"Max posts per hour","Maximální počet příspěvků za hodinu",,site/modules/Vox/Vox.module.php,181065a3a340a2d970068b086338cd63
+"Min seconds between posts","Minimální počet sekund mezi příspěvky",,site/modules/Vox/Vox.module.php,df05df3ec0c2501090b66f6446589958
+"Moderation mode","Režim moderování",,site/modules/Vox/Vox.module.php,f88b9bb526bde709e914d9dfe6c65b19
+No,Ne,,site/modules/Vox/Vox.module.php,bafd7322c6e97d25b6299b5d6fe8920b
+"Non-registered users can post reviews, questions and comments.","Neregistrovaní uživatelé mohou přidávat recenze, otázky a komentáře.",,site/modules/Vox/Vox.module.php,05f92a98e0cbfbc086e40a43b1e0941d
+"Notification email","E-mail pro upozornění",,site/modules/Vox/Vox.module.php,d5b501407738a0f21e63ea67ed1d64bf
+"Number of comments pre-loaded before ""Show more"".","Počet komentářů předem načtených před „Zobrazit více“.",,site/modules/Vox/Vox.module.php,3ee54d14846ada5583189a1ea00097c3
+"Per user / guest. 0 disables the hourly limit.","Na uživatele / hosta. 0 vypne hodinový limit.",,site/modules/Vox/Vox.module.php,00a9e9ddef1151690acca5be0275eb98
+"Per user / guest. 0 disables the interval limit.","Na uživatele / hosta. 0 vypne limit intervalu.",,site/modules/Vox/Vox.module.php,dcebde8b054e63de25661df0690d3a13
+"Photo uploads","Nahrávání fotografií",,site/modules/Vox/Vox.module.php,37cda44b7bd96c5513c8afbcdc0211d0
+"Points for answering a question","Body za zodpovězení otázky",,site/modules/Vox/Vox.module.php,f80c49df6277a81c7c4eddbdc8fe9cb9
+"Points for posting a review / thread / question","Body za zveřejnění recenze / vlákna / otázky",,site/modules/Vox/Vox.module.php,a580c2f15c384b12f69f4db5c12df795
+"Points per like received","Body za každé obdržené „To se mi líbí“",,site/modules/Vox/Vox.module.php,7dc75b91cc90b430ed42a93b3d5c4201
+"Points when answer is marked best","Body, když je odpověď označena jako nejlepší",,site/modules/Vox/Vox.module.php,d518bc1248f1277575bfb0a3768041fa
+"Receive alerts for new pending entries and reports. Leave blank to disable.","Dostávat upozornění na nové čekající položky a nahlášení. Ponechte prázdné pro vypnutí.",,site/modules/Vox/Vox.module.php,cd42bcc9bd78b09ba6061cc618df08c9
+"Relative to site root. Directory will be created if it doesn't exist.","Relativní ke kořenovému adresáři webu. Adresář bude vytvořen, pokud neexistuje.",,site/modules/Vox/Vox.module.php,6bf59cc76b24562f9ced838164ddae82
+"Require approval","Vyžadovat schválení",,site/modules/Vox/Vox.module.php,b7490f1303f1cf4ea53fa18416951173
+"Require email from guests","Vyžadovat e-mail od hostů",,site/modules/Vox/Vox.module.php,5fb33d2a14c0668bccefa2afd55de6d5
+"Sidebar — floats beside active block","Postranní panel — plave vedle aktivního bloku",,site/modules/Vox/Vox.module.php,18275cd447efd34ad421898af67c9b99
+"Upload path","Cesta pro nahrávání",,site/modules/Vox/Vox.module.php,afec020c0ca660ca0b0277509d191888
+"Users can attach images to reviews and questions.","Uživatelé mohou k recenzím a otázkám přikládat obrázky.",,site/modules/Vox/Vox.module.php,41d664be6304a08773f0e0b6d4ab6e3e
+"Vote mode","Režim hlasování",,site/modules/Vox/Vox.module.php,2f6173a5d99acc9e8a341230184e95aa
+Voting,Hlasování,,site/modules/Vox/Vox.module.php,b6fb89142b836f54bb0062e2bdce2e49
+Vox,Vox,,site/modules/Vox/ProcessVox.module.php,baf069ea8ce565674e2bff0c0f0a069a
+Yes,Ano,,site/modules/Vox/Vox.module.php,93cba07454f06a4a960172bbd6e2a435
+"You do not have permission to access this page.","Nemáte oprávnění k přístupu na tuto stránku.",,site/modules/Vox/ProcessVox.module.php,d9bce6556723f03d444fc08de3ccb4db

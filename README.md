@@ -54,6 +54,23 @@ You can place one widget on a page or combine several into tabs.
 
 Vox also includes a Textformatter, so editors can embed widgets, profile sections or inline posting forms in formatted text fields with tokens such as `[[vox:forum]]`, `[[vox:answers]]`, `[[vox:profile]]`, `[[vox:reviews]]`, `[[vox:form]]` or `[[vox:all]]`.
 
+## Admin interface language
+
+The admin area's own interface (config screen, labels, buttons) ships with
+ready-made translations for 29 European languages — Bulgarian, Croatian,
+Czech, Danish, Dutch, Estonian, Finnish, French, German, Greek, Hungarian,
+Irish, Italian, Latvian, Lithuanian, Maltese, Norwegian, Polish, Portuguese,
+Romanian, Russian, Serbian, Slovak, Slovenian, Spanish, Swedish, Turkish and
+Ukrainian — following ProcessWire's standard module-translation mechanism
+(`languages/*.csv`).
+
+To install one: **Setup > Modules > Vox > "install translations"** (link
+appears once Language Support is installed and at least one non-default
+language page exists) → pick the CSV for each target language → Submit. The
+admin then sees the Vox admin area in their own PW admin language
+automatically. Requires ProcessWire's core **Language Support** module — see
+[processwire.com/modules/language-support](https://processwire.com/modules/language-support/).
+
 ## Installation
 
 1. Copy the `Vox` folder into `/site/modules/`.

@@ -1,0 +1,49 @@
+en,uk,description,file,hash
+"%d entries deleted.","%d записів видалено.",,site/modules/Vox/ProcessVox.module.php,deebe0c652e9a9e9a1bd76cd037c2f38
+"Allow guest entries","Дозволити записи гостей",,site/modules/Vox/Vox.module.php,e17b5dceea4debdb4ae478671d56db21
+"Allow via browser fingerprint","Дозволити за відбитком браузера",,site/modules/Vox/Vox.module.php,3cabbeff64a04a0d4aaccfafd9fd73c8
+"Block comment panel mode","Режим панелі коментарів блоку",,site/modules/Vox/Vox.module.php,da0543e88dd5f79a5e121d5a3217bf39
+Disabled,Вимкнено,,site/modules/Vox/Vox.module.php,b9f5c797ebbf55adccdd8539a65a0241
+Display,Відображення,,site/modules/Vox/Vox.module.php,b9987a246a537f4fe86f1f2e3d10dbdb
+"Enable photo uploads","Увімкнути завантаження фото",,site/modules/Vox/Vox.module.php,85c1006e14988831815b67534febcd9f
+"Entries approved.","Записи схвалено.",,site/modules/Vox/ProcessVox.module.php,69dbe1e3aed96f397a75cb8ffad37687
+"Entries marked as spam.","Записи позначено як спам.",,site/modules/Vox/ProcessVox.module.php,0b2d7760f158e39c5f1990aa79f2181a
+"Gamification — points","Гейміфікація — очки",,site/modules/Vox/Vox.module.php,a1eda4c80ac05aa6b560c493897d1a4a
+General,Загальні,,site/modules/Vox/Vox.module.php,0db377921f4ce762c62526131097968f
+"Guest voting","Голосування гостей",,site/modules/Vox/Vox.module.php,9073e5e4a9bc17d4284d8d5df2256590
+"Guests must provide an email address to post.","Гості повинні вказати адресу email, щоб опублікувати повідомлення.",,site/modules/Vox/Vox.module.php,d4285691e5240ff907704d6fc752d0b9
+"Helpful / Not helpful (+1 / -1)","Корисно / Не корисно (+1 / -1)",,site/modules/Vox/Vox.module.php,04c5938b672e72d505cf4a7d26595c29
+"How inline block discussions appear on the page.","Як обговорення вбудованого блоку відображаються на сторінці.",,site/modules/Vox/Vox.module.php,f6cf32eb423927b755639e8cc1513c21
+"How new entries are handled before appearing publicly.","Як обробляються нові записи перед публічним показом.",,site/modules/Vox/Vox.module.php,c0c24e70d255cf2eb4a02e3102dcf33f
+"Immediate publish","Негайна публікація",,site/modules/Vox/Vox.module.php,c242540bad5947ac7a20fb523657da29
+"Initial comments shown","Показано коментарів спочатку",,site/modules/Vox/Vox.module.php,89c4d1a2b20b6a0b27397508ad1b7c0e
+"Inline — expands below content block","Вбудовано — розгортається під блоком вмісту",,site/modules/Vox/Vox.module.php,d553dc0c1e9ecc36d736987615522711
+"Likes only (+1)","Лише вподобання (+1)",,site/modules/Vox/Vox.module.php,df4320991733cefe1147c0e7858fd157
+"Max file size (MB)","Макс. розмір файлу (МБ)",,site/modules/Vox/Vox.module.php,80d4bcfbbcca2e8457d3dca436858a87
+"Max photos per entry","Макс. фото на запис",,site/modules/Vox/Vox.module.php,467e8bd698dc4fa50b7c1d82f608726b
+"Max posts per hour","Макс. публікацій на годину",,site/modules/Vox/Vox.module.php,181065a3a340a2d970068b086338cd63
+"Min seconds between posts","Мін. секунд між публікаціями",,site/modules/Vox/Vox.module.php,df05df3ec0c2501090b66f6446589958
+"Moderation mode","Режим модерації",,site/modules/Vox/Vox.module.php,f88b9bb526bde709e914d9dfe6c65b19
+No,Ні,,site/modules/Vox/Vox.module.php,bafd7322c6e97d25b6299b5d6fe8920b
+"Non-registered users can post reviews, questions and comments.","Незареєстровані користувачі можуть публікувати відгуки, запитання та коментарі.",,site/modules/Vox/Vox.module.php,05f92a98e0cbfbc086e40a43b1e0941d
+"Notification email","Email для сповіщень",,site/modules/Vox/Vox.module.php,d5b501407738a0f21e63ea67ed1d64bf
+"Number of comments pre-loaded before ""Show more"".","Кількість попередньо завантажених коментарів перед «Показати більше».",,site/modules/Vox/Vox.module.php,3ee54d14846ada5583189a1ea00097c3
+"Per user / guest. 0 disables the hourly limit.","На користувача / гостя. 0 вимикає годинне обмеження.",,site/modules/Vox/Vox.module.php,00a9e9ddef1151690acca5be0275eb98
+"Per user / guest. 0 disables the interval limit.","На користувача / гостя. 0 вимикає обмеження інтервалу.",,site/modules/Vox/Vox.module.php,dcebde8b054e63de25661df0690d3a13
+"Photo uploads","Завантаження фото",,site/modules/Vox/Vox.module.php,37cda44b7bd96c5513c8afbcdc0211d0
+"Points for answering a question","Очки за відповідь на запитання",,site/modules/Vox/Vox.module.php,f80c49df6277a81c7c4eddbdc8fe9cb9
+"Points for posting a review / thread / question","Очки за публікацію відгуку / теми / запитання",,site/modules/Vox/Vox.module.php,a580c2f15c384b12f69f4db5c12df795
+"Points per like received","Очки за кожне отримане вподобання",,site/modules/Vox/Vox.module.php,7dc75b91cc90b430ed42a93b3d5c4201
+"Points when answer is marked best","Очки, коли відповідь позначено як найкращу",,site/modules/Vox/Vox.module.php,d518bc1248f1277575bfb0a3768041fa
+"Receive alerts for new pending entries and reports. Leave blank to disable.","Отримувати сповіщення про нові записи на розгляді та скарги. Залиште порожнім, щоб вимкнути.",,site/modules/Vox/Vox.module.php,cd42bcc9bd78b09ba6061cc618df08c9
+"Relative to site root. Directory will be created if it doesn't exist.","Відносно кореня сайту. Каталог буде створено, якщо не існує.",,site/modules/Vox/Vox.module.php,6bf59cc76b24562f9ced838164ddae82
+"Require approval","Потрібне схвалення",,site/modules/Vox/Vox.module.php,b7490f1303f1cf4ea53fa18416951173
+"Require email from guests","Вимагати email від гостей",,site/modules/Vox/Vox.module.php,5fb33d2a14c0668bccefa2afd55de6d5
+"Sidebar — floats beside active block","Бічна панель — плаває біля активного блоку",,site/modules/Vox/Vox.module.php,18275cd447efd34ad421898af67c9b99
+"Upload path","Шлях завантаження",,site/modules/Vox/Vox.module.php,afec020c0ca660ca0b0277509d191888
+"Users can attach images to reviews and questions.","Користувачі можуть додавати зображення до відгуків і запитань.",,site/modules/Vox/Vox.module.php,41d664be6304a08773f0e0b6d4ab6e3e
+"Vote mode","Режим голосування",,site/modules/Vox/Vox.module.php,2f6173a5d99acc9e8a341230184e95aa
+Voting,Голосування,,site/modules/Vox/Vox.module.php,b6fb89142b836f54bb0062e2bdce2e49
+Vox,Vox,,site/modules/Vox/ProcessVox.module.php,baf069ea8ce565674e2bff0c0f0a069a
+Yes,Так,,site/modules/Vox/Vox.module.php,93cba07454f06a4a960172bbd6e2a435
+"You do not have permission to access this page.","У вас немає прав доступу до цієї сторінки.",,site/modules/Vox/ProcessVox.module.php,d9bce6556723f03d444fc08de3ccb4db
