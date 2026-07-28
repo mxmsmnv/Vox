@@ -2,6 +2,12 @@
 
 All notable changes to Vox are documented here.
 
+## [1.7.1] - 2026-07-28
+
+### Fixed
+
+- Added an embedded Answers mode that uses a neutral content wrapper and nested heading levels, preventing duplicate `<main>` and `<h1>` landmarks when Vox is placed inside an existing page shell.
+
 ## [1.7.0] - 2026-07-08
 
 ### Added

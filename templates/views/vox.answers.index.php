@@ -17,12 +17,14 @@ $questions = $result['entries'];
 $total = $result['total'];
 $totalPages = (int)ceil($total / max(1, $perPage));
 $voxAnswersStats = $vox->getAnswerStats($pageId);
+$voxAnswersTitleTag = !empty($voxEmbedded) ? 'h2' : 'h1';
+$voxAnswersEntryTitleTag = !empty($voxEmbedded) ? 'h3' : 'h2';
 ?>
 
 <section class="vox-wrap vox-answers-index" data-discuss-page-key="<?= htmlspecialchars($pageKey) ?>">
     <div class="vox-answers-hero">
         <div>
-            <h1><?= htmlspecialchars($voxAnswersTitle ?? 'Questions') ?></h1>
+            <<?= $voxAnswersTitleTag ?>><?= htmlspecialchars($voxAnswersTitle ?? 'Questions') ?></<?= $voxAnswersTitleTag ?>>
             <p><?= htmlspecialchars($voxAnswersIntro ?? 'Ask, answer and keep useful knowledge easy to find.') ?></p>
         </div>
         <a class="vox-btn vox-btn--primary" href="#vox-answers-ask"><?= vox_icon('plus') ?> Ask question</a>
@@ -43,7 +45,7 @@ $voxAnswersStats = $vox->getAnswerStats($pageId);
                 <span><strong><?= number_format((int)$entry['answer_count']) ?></strong> answers</span>
             </div>
             <div class="vox-answer-row__body">
-                <h2><a href="<?= htmlspecialchars($questionUrl) ?>"><?= htmlspecialchars($body ?: 'Untitled question') ?></a></h2>
+                <<?= $voxAnswersEntryTitleTag ?>><a href="<?= htmlspecialchars($questionUrl) ?>"><?= htmlspecialchars($body ?: 'Untitled question') ?></a></<?= $voxAnswersEntryTitleTag ?>>
                 <div class="vox-answer-row__meta">
                     <?= !empty($entry['best_count']) ? '<span class="vox-answer-status vox-answer-status--solved">Solved</span>' : '<span class="vox-answer-status">Open</span>' ?>
                     <span>asked by <?= htmlspecialchars($entry['author_name']) ?></span>

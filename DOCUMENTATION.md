@@ -201,6 +201,14 @@ include $voxPath . 'vox.init.php';
 include $voxPath . 'vox.answers.php';
 ```
 
+When Answers mode is rendered inside a page that already owns its `<main>` and
+`<h1>`, enable embedded semantics before including the view:
+
+```php
+$voxEmbedded = true;
+include $voxPath . 'vox.answers.php';
+```
+
 `vox.answers.php` shows a filtered question index by default and switches to the single-question view when the URL includes `?question={entry_key}`. For custom layouts, include the smaller sections directly:
 
 ```php

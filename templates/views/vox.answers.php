@@ -4,10 +4,11 @@
  */
 $vox = $vox ?? wire('modules')->get('Vox');
 $questionKey = wire('input')->get('question');
+$voxAnswersMainTag = !empty($voxEmbedded) ? 'div' : 'main';
 ?>
 
 <div class="vox-answers-layout">
-    <main class="vox-answers-layout__main">
+    <<?= $voxAnswersMainTag ?> class="vox-answers-layout__main">
         <?php
         if ($questionKey) {
             include __DIR__ . '/vox.answers.question.php';
@@ -16,7 +17,7 @@ $questionKey = wire('input')->get('question');
             include __DIR__ . '/vox.answers.ask.php';
         }
         ?>
-    </main>
+    </<?= $voxAnswersMainTag ?>>
     <aside class="vox-answers-layout__side">
         <?php include __DIR__ . '/vox.answers.sidebar.php'; ?>
     </aside>

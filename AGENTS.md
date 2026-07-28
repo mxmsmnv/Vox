@@ -131,6 +131,17 @@ include $voxPath . 'vox.init.php';
 include $voxPath . 'vox.answers.php';
 ```
 
+Answers mode inside an existing page shell:
+
+```php
+<?php
+$voxPath = $config->paths->Vox . 'templates/views/';
+$voxEmbedded = true;
+
+include $voxPath . 'vox.init.php';
+include $voxPath . 'vox.answers.php';
+```
+
 Custom Answers layout:
 
 ```php
