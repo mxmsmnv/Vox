@@ -91,9 +91,13 @@
       btn.addEventListener('click', () => {
         btns.forEach(b => {
           b.classList.remove('vox-rec-btn--active', 'vox-rec-btn--yes', 'vox-rec-btn--no');
+          b.dataset.variant = 'tertiary';
+          b.setAttribute('aria-pressed', 'false');
         });
         btn.classList.add('vox-rec-btn--active');
         btn.classList.add(btn.dataset.recValue === '1' ? 'vox-rec-btn--yes' : 'vox-rec-btn--no');
+        btn.dataset.variant = 'primary';
+        btn.setAttribute('aria-pressed', 'true');
         if (input) input.value = btn.dataset.recValue;
       });
     });

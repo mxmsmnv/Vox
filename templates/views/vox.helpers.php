@@ -61,15 +61,26 @@ function vox_rating_style(array $field): string {
 function vox_rating_picker(string $name, string $label, int $value = 0, string $style = 'stars', bool $required = false, string $class = ''): string {
     $isDots = $style === 'dots';
     $wrapClass = 'vox-stars-wrap' . ($class ? ' ' . $class : '') . ($isDots ? ' vox-dots-wrap' : '');
-    $buttonClass = $isDots ? 'vox-dot-pick' : 'vox-star-pick';
+    $buttonClass = 'ds-button ' . ($isDots ? 'vox-dot-pick' : 'vox-star-pick');
     $glyph = $isDots ? '●' : '★';
     $kind = $isDots ? 'dot' : 'star';
     $html = '<div class="' . htmlspecialchars($wrapClass) . '" data-vox-stars-wrap data-val="' . (int)$value . '" role="radiogroup" aria-label="' . htmlspecialchars($label) . '">';
     for ($i = 1; $i <= 5; $i++) {
-        $html .= '<button type="button" class="' . $buttonClass . '" data-star-value="' . $i . '" role="radio" aria-checked="false" aria-label="' . $i . ' ' . $kind . '">' . $glyph . '</button>';
+        $html .= '<button type="button" class="' . $buttonClass . '" data-variant="tertiary" data-size="sm" data-icon="true" data-star-value="' . $i . '" role="radio" aria-checked="false" aria-label="' . $i . ' ' . $kind . '">' . $glyph . '</button>';
     }
     $html .= '<input type="hidden" name="' . htmlspecialchars($name) . '" data-vox-rating value="' . (int)$value . '"' . ($required ? ' required' : '') . '>';
     return $html . '</div>';
+}
+
+/**
+ * Generate a document-unique form-control id for repeated widgets and
+ * Textformatter inserts.
+ */
+function vox_control_id(string $prefix): string {
+    static $counts = [];
+    $prefix = preg_replace('/[^a-z0-9_-]+/i', '-', trim($prefix)) ?: 'vox-control';
+    $counts[$prefix] = ($counts[$prefix] ?? 0) + 1;
+    return $prefix . '-' . $counts[$prefix];
 }
 
 function vox_dots(int $rating, int $max = 5): string {

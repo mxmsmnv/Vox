@@ -35,6 +35,11 @@ $total   = $result['total'];
 $totalPages   = (int)ceil($total / $perPage);
 
 require_once __DIR__ . '/vox.helpers.php';
+$reviewControlPrefix = vox_control_id('vox-review');
+$reviewNameId = $reviewControlPrefix . '-name';
+$reviewEmailId = $reviewControlPrefix . '-email';
+$reviewBodyId = $reviewControlPrefix . '-body';
+$reviewPhotosId = $reviewControlPrefix . '-photos';
 ?>
 
 <div class="vox-wrap" id="vox-reviews" data-discuss-page-key="<?= htmlspecialchars($pageKey) ?>">
@@ -69,12 +74,13 @@ require_once __DIR__ . '/vox.helpers.php';
     <!-- Sort row -->
     <div class="vox-toolbar vox-toolbar--dense">
         <div class="vox-sort-switch" data-vox-sort-switch>
-            <button type="button" class="vox-sort-btn vox-sort-btn--active" data-vox-sort-btn="newest">Most recent</button>
-            <button type="button" class="vox-sort-btn" data-vox-sort-btn="helpful">Most helpful</button>
-            <button type="button" class="vox-sort-btn" data-vox-sort-btn="highest">Highest rating</button>
-            <button type="button" class="vox-sort-btn" data-vox-sort-btn="lowest">Lowest rating</button>
+            <button type="button" class="ds-button vox-btn vox-btn--sm vox-sort-btn vox-sort-btn--active" data-variant="primary" data-size="sm" data-vox-sort-btn="newest" aria-pressed="true">Most recent</button>
+            <button type="button" class="ds-button vox-btn vox-btn--sm vox-sort-btn" data-variant="tertiary" data-size="sm" data-vox-sort-btn="helpful" aria-pressed="false">Most helpful</button>
+            <button type="button" class="ds-button vox-btn vox-btn--sm vox-sort-btn" data-variant="tertiary" data-size="sm" data-vox-sort-btn="highest" aria-pressed="false">Highest rating</button>
+            <button type="button" class="ds-button vox-btn vox-btn--sm vox-sort-btn" data-variant="tertiary" data-size="sm" data-vox-sort-btn="lowest" aria-pressed="false">Lowest rating</button>
         </div>
-        <select data-vox-sort class="vox-sort-select uk-hidden">
+        <label class="ds-sr-only" for="<?= htmlspecialchars($reviewControlPrefix) ?>-sort">Sort reviews</label>
+        <select id="<?= htmlspecialchars($reviewControlPrefix) ?>-sort" data-vox-sort class="ds-input vox-input vox-sort-select">
             <option value="newest" selected>Most recent</option>
             <option value="helpful">Most helpful</option>
             <option value="highest">Highest rating</option>
@@ -98,7 +104,7 @@ require_once __DIR__ . '/vox.helpers.php';
     <?php if ($totalPages > 1): ?>
     <div class="vox-pagination">
         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-        <a href="?p=<?= $i ?>" class="ds-button vox-btn vox-btn--sm <?= $i === $currPage ? 'vox-btn--primary' : '' ?>" data-variant="<?= $i === $currPage ? 'primary' : 'tertiary' ?>" <?= $i === $currPage ? 'aria-current="page"' : '' ?>><?= $i ?></a>
+        <a href="?p=<?= $i ?>" class="ds-button vox-btn vox-btn--sm <?= $i === $currPage ? 'vox-btn--primary' : '' ?>" data-variant="<?= $i === $currPage ? 'primary' : 'tertiary' ?>" data-size="sm" <?= $i === $currPage ? 'aria-current="page"' : '' ?>><?= $i ?></a>
         <?php endfor ?>
     </div>
     <?php endif ?>
@@ -109,25 +115,25 @@ require_once __DIR__ . '/vox.helpers.php';
             <?= vox_icon('pen-to-square') ?> Write a review
         </div>
         <div class="vox-form">
-            <form data-vox-form data-entry-list="vox-reviews-list">
+            <form class="vox-form__element" data-vox-form data-entry-list="vox-reviews-list">
                 <?= vox_csrf() ?>
                 <input type="hidden" name="page_key" value="<?= htmlspecialchars($pageKey) ?>">
                 <input type="hidden" name="type"    value="review">
 
                 <?php if (!wire('user')->isLoggedIn()): ?>
                 <div class="vox-grid-2">
-                    <div>
-                        <label class="ds-label vox-form__label" for="vox-rn">Your name <span class="vox-inline-note">(optional)</span></label>
-                        <input id="vox-rn" type="text" name="guest_name" class="ds-input vox-input" placeholder="Anonymous-XXX if blank">
+                    <div class="ds-field">
+                        <label class="ds-label vox-form__label" for="<?= htmlspecialchars($reviewNameId) ?>">Your name <span class="vox-inline-note">(optional)</span></label>
+                        <input id="<?= htmlspecialchars($reviewNameId) ?>" type="text" name="guest_name" class="ds-input vox-input" placeholder="Anonymous-XXX if blank">
                     </div>
-                    <div>
-                        <label class="ds-label vox-form__label" for="vox-re">Email <span class="vox-inline-note">(optional)</span></label>
-                        <input id="vox-re" type="email" name="guest_email" class="ds-input vox-input" placeholder="your@email.com">
+                    <div class="ds-field">
+                        <label class="ds-label vox-form__label" for="<?= htmlspecialchars($reviewEmailId) ?>">Email <span class="vox-inline-note">(optional)</span></label>
+                        <input id="<?= htmlspecialchars($reviewEmailId) ?>" type="email" name="guest_email" class="ds-input vox-input" placeholder="your@email.com">
                     </div>
                 </div>
                 <?php endif ?>
 
-                <div class="vox-field">
+                <div class="ds-field vox-field">
                     <label class="ds-label vox-form__label">Overall rating <span class="vox-field__label-required">*</span></label>
                     <?= vox_rating_picker('rating', 'Overall rating', 0, 'stars', true) ?>
                 </div>
@@ -136,7 +142,7 @@ require_once __DIR__ . '/vox.helpers.php';
                 $customRatingFields = array_filter($schema, fn($f) => !($f['builtin'] ?? false) && $f['field_type'] === 'rating');
                 if ($customRatingFields):
                 ?>
-                <div class="vox-field">
+                <div class="ds-field vox-field">
                     <label class="ds-label vox-form__label">Category ratings</label>
                     <div class="vox-params">
                     <?php foreach ($customRatingFields as $f): ?>
@@ -149,27 +155,28 @@ require_once __DIR__ . '/vox.helpers.php';
                 </div>
                 <?php endif ?>
 
-                <div class="vox-field">
-                    <label class="ds-label vox-form__label" for="vox-rb">Your review <span class="vox-field__label-required">*</span></label>
-                    <textarea id="vox-rb" name="body" class="ds-input vox-textarea" rows="5" placeholder="Share your experience&hellip;" required></textarea>
+                <div class="ds-field vox-field">
+                    <label class="ds-label vox-form__label" for="<?= htmlspecialchars($reviewBodyId) ?>">Your review <span class="vox-field__label-required">*</span></label>
+                    <textarea id="<?= htmlspecialchars($reviewBodyId) ?>" name="body" class="ds-input vox-textarea" rows="5" placeholder="Share your experience&hellip;" required></textarea>
                     <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
                 </div>
 
-                <div class="vox-field vox-field--spacious" data-vox-rec>
+                <div class="ds-field vox-field vox-field--spacious" data-vox-rec>
                     <label class="ds-label vox-form__label">Recommendation</label>
                     <div class="vox-recommend-row">
-                        <button type="button" class="ds-button vox-btn" data-variant="tertiary" data-rec-value="1"><?= vox_icon('thumbs-up') ?> I recommend</button>
-                        <button type="button" class="ds-button vox-btn" data-variant="tertiary" data-rec-value="0"><?= vox_icon('thumbs-down') ?> Would not recommend</button>
+                        <button type="button" class="ds-button vox-btn" data-variant="tertiary" data-rec-value="1" aria-pressed="false"><?= vox_icon('thumbs-up') ?> I recommend</button>
+                        <button type="button" class="ds-button vox-btn" data-variant="tertiary" data-rec-value="0" aria-pressed="false"><?= vox_icon('thumbs-down') ?> Would not recommend</button>
                         <input type="hidden" name="recommend" data-vox-rec-input value="">
                     </div>
                 </div>
 
                 <?php if ($vox->cfg('photo_uploads')): ?>
-                <div class="vox-field vox-field--spacious">
-                    <label class="ds-label vox-form__label">Photos <span class="vox-inline-note">(max <?= (int)$vox->cfg('photo_max') ?>)</span></label>
+                <div class="ds-field vox-field vox-field--spacious">
+                    <span class="ds-label vox-form__label" id="<?= htmlspecialchars($reviewPhotosId) ?>-label">Photos <span class="vox-inline-note">(max <?= (int)$vox->cfg('photo_max') ?>)</span></span>
                     <div class="vox-dropzone" data-vox-dropzone>
                         <?= vox_icon('cloud-arrow-up') ?>
-                        <div class="vox-dropzone__line">Drag & drop or <label class="vox-file-link vox-file-link--compact">browse<input type="file" name="photos[]" multiple accept="image/*" data-vox-photo-input data-max="<?= (int)$vox->cfg('photo_max') ?>"></label></div>
+                        <div class="vox-dropzone__line">Drag & drop or <label class="ds-button vox-btn vox-btn--sm vox-file-link vox-file-link--compact" data-variant="tertiary" data-size="sm" for="<?= htmlspecialchars($reviewPhotosId) ?>">browse</label></div>
+                        <input id="<?= htmlspecialchars($reviewPhotosId) ?>" class="ds-input vox-file-input" type="file" name="photos[]" multiple accept="image/*" data-vox-photo-input data-max="<?= (int)$vox->cfg('photo_max') ?>" aria-labelledby="<?= htmlspecialchars($reviewPhotosId) ?>-label">
                         <div class="vox-dropzone__meta">Max <?= (int)$vox->cfg('photo_max_size') ?> MB per image</div>
                         <div data-vox-photo-preview class="vox-photo-preview"></div>
                     </div>

@@ -49,10 +49,14 @@ $intro = trim((string)($voxInlineIntro ?? $copy['intro']));
 $placeholder = trim((string)($voxInlinePlaceholder ?? $copy['placeholder']));
 $button = trim((string)($voxInlineButton ?? $copy['button']));
 $schema = $type === 'review' ? $vox->getSchema((int)$page->template->id, Vox::TYPE_REVIEW) : [];
+$inlinePrefix = vox_control_id('vox-inline-' . $type);
+$inlineNameId = $inlinePrefix . '-name';
+$inlineEmailId = $inlinePrefix . '-email';
+$inlineBodyId = $inlinePrefix . '-body';
 ?>
 
 <aside class="vox-wrap vox-inline-form" data-discuss-page-key="<?= htmlspecialchars($pageKey) ?>">
-    <form data-vox-form>
+    <form class="vox-form__element" data-vox-form>
         <?= vox_csrf() ?>
         <input type="hidden" name="page_key" value="<?= htmlspecialchars($pageKey) ?>">
         <input type="hidden" name="type" value="<?= htmlspecialchars($type) ?>">
@@ -67,15 +71,15 @@ $schema = $type === 'review' ? $vox->getSchema((int)$page->template->id, Vox::TY
 
         <?php if (!wire('user')->isLoggedIn()): ?>
         <div class="vox-grid-2 vox-inline-form__guest">
-            <div><label class="ds-label vox-form__label" for="vox-inline-name">Your name</label><input id="vox-inline-name" type="text" name="guest_name" class="ds-input vox-input" placeholder="Optional"></div>
+            <div class="ds-field"><label class="ds-label vox-form__label" for="<?= htmlspecialchars($inlineNameId) ?>">Your name</label><input id="<?= htmlspecialchars($inlineNameId) ?>" type="text" name="guest_name" class="ds-input vox-input" placeholder="Optional"></div>
             <?php if ($type !== 'thread'): ?>
-            <div><label class="ds-label vox-form__label" for="vox-inline-email">Email</label><input id="vox-inline-email" type="email" name="guest_email" class="ds-input vox-input" placeholder="optional"></div>
+            <div class="ds-field"><label class="ds-label vox-form__label" for="<?= htmlspecialchars($inlineEmailId) ?>">Email</label><input id="<?= htmlspecialchars($inlineEmailId) ?>" type="email" name="guest_email" class="ds-input vox-input" placeholder="optional"></div>
             <?php endif ?>
         </div>
         <?php endif ?>
 
         <?php if ($type === 'review'): ?>
-        <div class="vox-field">
+        <div class="ds-field vox-field">
             <label class="ds-label vox-form__label">Overall rating <span class="vox-field__label-required">*</span></label>
             <?= vox_rating_picker('rating', 'Overall rating', 0, 'stars', true, 'vox-stars-wrap--tight') ?>
         </div>
@@ -83,7 +87,7 @@ $schema = $type === 'review' ? $vox->getSchema((int)$page->template->id, Vox::TY
         $customRatingFields = array_filter($schema, fn($f) => !($f['builtin'] ?? false) && $f['field_type'] === 'rating');
         if ($customRatingFields):
         ?>
-        <div class="vox-field">
+        <div class="ds-field vox-field">
             <label class="ds-label vox-form__label">Category ratings</label>
             <div class="vox-params">
             <?php foreach ($customRatingFields as $f): ?>
@@ -97,16 +101,17 @@ $schema = $type === 'review' ? $vox->getSchema((int)$page->template->id, Vox::TY
         <?php endif ?>
         <?php endif ?>
 
-        <div class="vox-field">
-            <textarea name="body" class="ds-input vox-textarea" aria-label="<?= htmlspecialchars($title) ?>" rows="3" placeholder="<?= htmlspecialchars($placeholder) ?>" required></textarea>
+        <div class="ds-field vox-field">
+            <label class="ds-label vox-form__label" for="<?= htmlspecialchars($inlineBodyId) ?>">Your response</label>
+            <textarea id="<?= htmlspecialchars($inlineBodyId) ?>" name="body" class="ds-input vox-textarea" rows="3" placeholder="<?= htmlspecialchars($placeholder) ?>" required></textarea>
             <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
         </div>
 
         <?php if ($type === 'review'): ?>
-        <div class="vox-field vox-inline-form__recommend" data-vox-rec>
+        <div class="ds-field vox-field vox-inline-form__recommend" data-vox-rec>
             <div class="vox-recommend-row">
-                <button type="button" class="ds-button vox-btn vox-btn--sm" data-variant="tertiary" data-rec-value="1"><?= vox_icon('thumbs-up') ?> I recommend</button>
-                <button type="button" class="ds-button vox-btn vox-btn--sm" data-variant="tertiary" data-rec-value="0"><?= vox_icon('thumbs-down') ?> Would not recommend</button>
+                <button type="button" class="ds-button vox-btn vox-btn--sm" data-variant="tertiary" data-size="sm" data-rec-value="1" aria-pressed="false"><?= vox_icon('thumbs-up') ?> I recommend</button>
+                <button type="button" class="ds-button vox-btn vox-btn--sm" data-variant="tertiary" data-size="sm" data-rec-value="0" aria-pressed="false"><?= vox_icon('thumbs-down') ?> Would not recommend</button>
                 <input type="hidden" name="recommend" data-vox-rec-input value="">
             </div>
         </div>

@@ -1,5 +1,5 @@
 /**
- * Vox — vox.bundle.js (generated 2026-06-11)
+ * Vox — vox.bundle.js (generated 2026-07-29)
  * Source files: vox.core.js, vox.stars.js, vox.vote.js, vox.reply.js, vox.entry.js, vox.blocks.js, vox.filters.js, vox.photos.js, vox.profile.js, vox.init.js
  * Edit the source files, not this bundle.
  */
@@ -235,9 +235,13 @@
       btn.addEventListener('click', () => {
         btns.forEach(b => {
           b.classList.remove('vox-rec-btn--active', 'vox-rec-btn--yes', 'vox-rec-btn--no');
+          b.dataset.variant = 'tertiary';
+          b.setAttribute('aria-pressed', 'false');
         });
         btn.classList.add('vox-rec-btn--active');
         btn.classList.add(btn.dataset.recValue === '1' ? 'vox-rec-btn--yes' : 'vox-rec-btn--no');
+        btn.dataset.variant = 'primary';
+        btn.setAttribute('aria-pressed', 'true');
         if (input) input.value = btn.dataset.recValue;
       });
     });
@@ -612,14 +616,14 @@
       <div class="vox-entry__body">${escHtml(entry.body || '').replace(/\n/g, '<br>')}</div>
       ${photos}
       <div class="vox-entry__actions">
-        <button class="vox-vote-btn" data-entry-key="${entry.id}" data-value="1" aria-label="Like">
+        <button class="ds-button vox-btn vox-btn--sm vox-vote-btn" data-variant="tertiary" data-size="sm" data-entry-key="${entry.id}" data-value="1" aria-label="Like">
           <i class="fa-regular fa-heart" data-vox-heart aria-hidden="true"></i>
           <span data-vox-likes>${entry.likes || 0}</span>
         </button>
-        <button class="vox-reply-btn" data-reply-target="reply-new-${entry.id}" aria-label="Reply">
+        <button class="ds-button vox-btn vox-btn--sm vox-reply-btn" data-variant="tertiary" data-size="sm" data-reply-target="reply-new-${entry.id}" aria-label="Reply">
           <i class="fa-solid fa-reply" aria-hidden="true"></i> Reply
         </button>
-        <button class="vox-report-btn" data-entry-key="${entry.id}" data-reason="inappropriate" aria-label="Report">
+        <button class="ds-button vox-btn vox-btn--sm vox-report-btn" data-variant="tertiary" data-size="sm" data-entry-key="${entry.id}" data-reason="inappropriate" aria-label="Report">
           <i class="fa-regular fa-flag" data-vox-flag aria-hidden="true"></i>
           <span data-vox-report-label>Report</span>
         </button>
@@ -628,19 +632,22 @@
       <div id="reply-new-${entry.id}"
            data-vox-reply-form="reply-new-${entry.id}" hidden
            class="vox-reply-form">
-        <form data-vox-form data-entry-list="replies-${entry.id}">
+        <form class="vox-form__element" data-vox-form data-entry-list="replies-${entry.id}">
           <input type="hidden" name="page_key"  value="${escHtml(String(pageKey))}">
           <input type="hidden" name="block_id"  value="${escHtml(blockId)}">
           <input type="hidden" name="type"      value="comment">
           <input type="hidden" name="parent_key" value="${entry.id}">
-          <textarea name="body" class="vox-textarea" rows="3"
-                    placeholder="Write a reply…"></textarea>
-          <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
+          <div class="ds-field vox-field">
+            <label class="ds-label vox-form__label" for="vox-reply-new-${entry.id}">Reply</label>
+            <textarea id="vox-reply-new-${entry.id}" name="body" class="ds-input vox-textarea" rows="3"
+                      placeholder="Write a reply…"></textarea>
+            <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
+          </div>
           <div class="vox-form__actions">
-            <button type="submit" class="vox-btn vox-btn--primary vox-btn--sm">
+            <button type="submit" class="ds-button vox-btn vox-btn--primary vox-btn--sm" data-variant="primary" data-size="sm">
               <i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Post
             </button>
-            <button type="button" class="vox-btn vox-btn--sm"
+            <button type="button" class="ds-button vox-btn vox-btn--sm" data-variant="tertiary" data-size="sm"
                     onclick="this.closest('[data-vox-reply-form]').hidden=true">Cancel</button>
           </div>
           <span data-vox-feedback hidden></span>
@@ -985,7 +992,12 @@
         btn.addEventListener('click', () => {
           const val = btn.dataset.voxSortBtn;
           if (!val) return;
-          btns.forEach(b => b.classList.toggle('vox-sort-btn--active', b === btn));
+          btns.forEach(b => {
+            const selected = b === btn;
+            b.classList.toggle('vox-sort-btn--active', selected);
+            b.dataset.variant = selected ? 'primary' : 'tertiary';
+            b.setAttribute('aria-pressed', String(selected));
+          });
           if (sel) sel.value = val;
           applySort(val);
         });
@@ -1007,6 +1019,12 @@
         initialVal = btnVal;
       }
     }
+
+    btns.forEach(btn => {
+      const selected = btn.classList.contains('vox-sort-btn--active');
+      btn.dataset.variant = selected ? 'primary' : 'tertiary';
+      btn.setAttribute('aria-pressed', String(selected));
+    });
 
     applySort(initialVal);
   }
@@ -1330,4 +1348,3 @@ function renderLeaderboard(container, rows) {
   window.Vox.init = init;
 
 })();
-

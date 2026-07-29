@@ -106,6 +106,11 @@ $threadUrl = function(array $entry, string $fallbackUrl = '') use ($page, $vox):
     $separator = str_contains($baseUrl, '?') ? '&' : '?';
     return $baseUrl . $separator . 'view=discussions#' . $vox->publicAnchor('entry', (int)$entry['id']);
 };
+$forumFormPrefix = vox_control_id('vox-forum');
+$forumSearchId = $forumFormPrefix . '-search';
+$forumCategoryId = $forumFormPrefix . '-category';
+$forumNameId = $forumFormPrefix . '-name';
+$forumBodyId = $forumFormPrefix . '-body';
 ?>
 
 <div class="vox-wrap vox-forum" id="vox-forum" data-discuss-page-key="<?= htmlspecialchars($firstCategory['page_key'] ?? '') ?>">
@@ -118,10 +123,10 @@ $threadUrl = function(array $entry, string $fallbackUrl = '') use ($page, $vox):
             <a class="ds-button vox-btn vox-btn--primary" data-variant="primary" href="#vox-start-discussion">
                 <?= vox_icon('circle-plus') ?> Start Discussion
             </a>
-            <label class="vox-forum-search">
+            <label class="vox-forum-search" for="<?= htmlspecialchars($forumSearchId) ?>">
                 <?= vox_icon('magnifying-glass') ?>
                 <span class="ds-sr-only">Search discussions</span>
-                <input type="search" class="ds-input vox-input" data-vox-forum-search placeholder="Search discussions">
+                <input id="<?= htmlspecialchars($forumSearchId) ?>" type="search" class="ds-input vox-input" data-vox-forum-search placeholder="Search discussions">
             </label>
         </div>
     </section>
@@ -155,14 +160,14 @@ $threadUrl = function(array $entry, string $fallbackUrl = '') use ($page, $vox):
     <section class="vox-card vox-card--mb-16" id="vox-start-discussion">
         <div class="vox-card__head"><span class="ds-heading" data-size="xs"><?= vox_icon('pen-to-square') ?> Start a discussion</span></div>
         <div class="vox-form">
-            <form data-vox-form data-entry-list="vox-forum-newest-list">
+            <form class="vox-form__element" data-vox-form data-entry-list="vox-forum-newest-list">
                 <?= vox_csrf() ?>
                 <input type="hidden" name="page_key" value="<?= htmlspecialchars($firstCategory['page_key'] ?? '') ?>" data-vox-forum-page-key>
                 <input type="hidden" name="type" value="thread">
                 <?php if (count($categoryRows) > 1): ?>
-                <div class="vox-field">
-                    <label class="ds-label vox-form__label" for="vox-forum-category">Category</label>
-                    <select id="vox-forum-category" class="ds-input vox-input" data-vox-forum-category>
+                <div class="ds-field vox-field">
+                    <label class="ds-label vox-form__label" for="<?= htmlspecialchars($forumCategoryId) ?>">Category</label>
+                    <select id="<?= htmlspecialchars($forumCategoryId) ?>" class="ds-input vox-input" data-vox-forum-category>
                     <?php foreach ($categoryRows as $row): ?>
                         <option value="<?= htmlspecialchars($row['page_key']) ?>"><?= htmlspecialchars($row['title']) ?></option>
                     <?php endforeach ?>
@@ -170,12 +175,16 @@ $threadUrl = function(array $entry, string $fallbackUrl = '') use ($page, $vox):
                 </div>
                 <?php endif ?>
                 <?php if (!wire('user')->isLoggedIn()): ?>
-                <div class="vox-field vox-field--compact">
-                    <input type="text" name="guest_name" class="ds-input vox-input" aria-label="Your name" placeholder="Your name (optional)">
+                <div class="ds-field vox-field vox-field--compact">
+                    <label class="ds-label vox-form__label" for="<?= htmlspecialchars($forumNameId) ?>">Your name</label>
+                    <input id="<?= htmlspecialchars($forumNameId) ?>" type="text" name="guest_name" class="ds-input vox-input" placeholder="Your name (optional)">
                 </div>
                 <?php endif ?>
-                <textarea name="body" class="ds-input vox-textarea" aria-label="Discussion" rows="4" placeholder="What would you like to discuss?" required></textarea>
-                <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
+                <div class="ds-field vox-field">
+                    <label class="ds-label vox-form__label" for="<?= htmlspecialchars($forumBodyId) ?>">Discussion</label>
+                    <textarea id="<?= htmlspecialchars($forumBodyId) ?>" name="body" class="ds-input vox-textarea" rows="4" placeholder="What would you like to discuss?" required></textarea>
+                    <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
+                </div>
                 <div class="vox-form__actions">
                     <button type="submit" class="ds-button vox-btn vox-btn--primary" data-variant="primary"><?= vox_icon('arrow-right') ?> Create Thread</button>
                 </div>
@@ -193,7 +202,7 @@ $threadUrl = function(array $entry, string $fallbackUrl = '') use ($page, $vox):
                         <h2 class="ds-heading" data-size="md"><?= htmlspecialchars($row['title']) ?></h2>
                         <p class="ds-paragraph" data-size="sm"><?= htmlspecialchars($row['description']) ?></p>
                     </div>
-                    <a class="ds-button vox-btn vox-btn--sm" data-variant="tertiary" href="<?= htmlspecialchars($row['page']->url) ?>">Show All</a>
+                    <a class="ds-button vox-btn vox-btn--sm" data-variant="tertiary" data-size="sm" href="<?= htmlspecialchars($row['page']->url) ?>">Show All</a>
                 </div>
 
                 <?php if ($row['threads']): ?>

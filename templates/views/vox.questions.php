@@ -22,6 +22,11 @@ $total     = $result['total'];
 $totalPages     = (int)ceil($total / $perPage);
 
 require_once __DIR__ . '/vox.helpers.php';
+$questionControlPrefix = vox_control_id('vox-question');
+$questionNameId = $questionControlPrefix . '-name';
+$questionEmailId = $questionControlPrefix . '-email';
+$questionBodyId = $questionControlPrefix . '-body';
+$questionPhotosId = $questionControlPrefix . '-photos';
 ?>
 
 <div class="vox-wrap" id="vox-questions" data-discuss-page-key="<?= htmlspecialchars($pageKey) ?>">
@@ -32,28 +37,28 @@ require_once __DIR__ . '/vox.helpers.php';
             <?= vox_icon('question') ?> Ask a question
         </div>
         <div class="vox-form">
-            <form data-vox-form data-entry-list="vox-questions-list">
+            <form class="vox-form__element" data-vox-form data-entry-list="vox-questions-list">
                 <?= vox_csrf() ?>
                 <input type="hidden" name="page_key" value="<?= htmlspecialchars($pageKey) ?>">
                 <input type="hidden" name="type"    value="question">
                 <?php if (!wire('user')->isLoggedIn()): ?>
                 <div class="vox-grid-2">
-                    <div><label class="ds-label vox-form__label" for="vox-question-name">Your name</label><input id="vox-question-name" type="text" name="guest_name" class="ds-input vox-input" placeholder="Anonymous-XXX if blank"></div>
-                    <div><label class="ds-label vox-form__label" for="vox-question-email">Email</label><input id="vox-question-email" type="email" name="guest_email" class="ds-input vox-input" placeholder="optional"></div>
+                    <div class="ds-field"><label class="ds-label vox-form__label" for="<?= htmlspecialchars($questionNameId) ?>">Your name</label><input id="<?= htmlspecialchars($questionNameId) ?>" type="text" name="guest_name" class="ds-input vox-input" placeholder="Anonymous-XXX if blank"></div>
+                    <div class="ds-field"><label class="ds-label vox-form__label" for="<?= htmlspecialchars($questionEmailId) ?>">Email</label><input id="<?= htmlspecialchars($questionEmailId) ?>" type="email" name="guest_email" class="ds-input vox-input" placeholder="optional"></div>
                 </div>
                 <?php endif ?>
-                <div class="vox-field">
-                    <label class="ds-label vox-form__label" for="vox-qb">Your question</label>
-                    <textarea id="vox-qb" name="body" class="ds-input vox-textarea" rows="4" placeholder="What would you like to know?" required></textarea>
+                <div class="ds-field vox-field">
+                    <label class="ds-label vox-form__label" for="<?= htmlspecialchars($questionBodyId) ?>">Your question</label>
+                    <textarea id="<?= htmlspecialchars($questionBodyId) ?>" name="body" class="ds-input vox-textarea" rows="4" placeholder="What would you like to know?" required></textarea>
                     <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
                 </div>
                 <?php if ($vox->cfg('photo_uploads')): ?>
-                <div class="vox-field">
-                    <label class="ds-label vox-form__label">Attach images <span class="vox-inline-note">(optional, max <?= (int)$vox->cfg('photo_max') ?>)</span></label>
-                    <label class="vox-file-link">
+                <div class="ds-field vox-field">
+                    <span class="ds-label vox-form__label" id="<?= htmlspecialchars($questionPhotosId) ?>-label">Attach images <span class="vox-inline-note">(optional, max <?= (int)$vox->cfg('photo_max') ?>)</span></span>
+                    <label class="ds-button vox-btn vox-btn--sm vox-file-link" data-variant="tertiary" data-size="sm" for="<?= htmlspecialchars($questionPhotosId) ?>">
                         <?= vox_icon('paperclip') ?> Attach
-                        <input type="file" name="photos[]" multiple accept="image/*" data-vox-photo-input>
                     </label>
+                    <input id="<?= htmlspecialchars($questionPhotosId) ?>" class="ds-input vox-file-input" type="file" name="photos[]" multiple accept="image/*" data-vox-photo-input aria-labelledby="<?= htmlspecialchars($questionPhotosId) ?>-label">
                     <div data-vox-photo-preview class="vox-photo-preview"></div>
                 </div>
                 <?php endif ?>
@@ -79,7 +84,7 @@ require_once __DIR__ . '/vox.helpers.php';
     <?php if ($totalPages > 1): ?>
     <div class="vox-pagination">
         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-        <a href="?p=<?= $i ?>" class="ds-button vox-btn vox-btn--sm <?= $i === $currPage ? 'vox-btn--primary' : '' ?>" data-variant="<?= $i === $currPage ? 'primary' : 'tertiary' ?>" <?= $i === $currPage ? 'aria-current="page"' : '' ?>><?= $i ?></a>
+        <a href="?p=<?= $i ?>" class="ds-button vox-btn vox-btn--sm <?= $i === $currPage ? 'vox-btn--primary' : '' ?>" data-variant="<?= $i === $currPage ? 'primary' : 'tertiary' ?>" data-size="sm" <?= $i === $currPage ? 'aria-current="page"' : '' ?>><?= $i ?></a>
         <?php endfor ?>
     </div>
     <?php endif ?>

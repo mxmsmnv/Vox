@@ -102,19 +102,19 @@ require_once __DIR__ . '/vox.helpers.php';
 
     <!-- Actions -->
     <div class="vox-entry__actions">
-        <button class="vox-vote-btn<?= $userLiked ? ' vox-vote-btn--liked' : '' ?>" data-entry-key="<?= htmlspecialchars($entryKey) ?>" data-value="1" aria-label="Like">
+        <button class="ds-button vox-btn vox-btn--sm vox-vote-btn<?= $userLiked ? ' vox-vote-btn--liked' : '' ?>" data-variant="tertiary" data-size="sm" data-entry-key="<?= htmlspecialchars($entryKey) ?>" data-value="1" aria-label="Like">
             <?= str_replace('<i ', '<i data-vox-heart ', vox_icon('heart', $userLiked ? 'fill' : 'line')) ?>
             <span data-vox-likes><?= $likeTotal ?></span>
         </button>
 
         <?php if ($showReplyForm && $depth < Vox::MAX_DEPTH): ?>
-        <button class="vox-reply-btn" data-reply-target="reply-<?= htmlspecialchars($entryKey) ?>" aria-label="Reply">
+        <button class="ds-button vox-btn vox-btn--sm vox-reply-btn" data-variant="tertiary" data-size="sm" data-reply-target="reply-<?= htmlspecialchars($entryKey) ?>" aria-label="Reply">
             <?= vox_icon('reply') ?> Reply
         </button>
         <?php endif ?>
 
         <?php if ($entry['type'] === 'review'): ?>
-        <button type="button" class="vox-vote-btn"
+        <button type="button" class="ds-button vox-btn vox-btn--sm vox-vote-btn" data-variant="tertiary" data-size="sm"
                 data-vox-comments-toggle="<?= htmlspecialchars($entryKey) ?>"
                 aria-expanded="false">
             <?= vox_icon('comment') ?>
@@ -123,12 +123,12 @@ require_once __DIR__ . '/vox.helpers.php';
         <?php endif ?>
 
         <?php if ($canBest && !$entry['is_best_answer']): ?>
-        <button class="vox-vote-btn vox-best-btn" data-vox-best-btn data-entry-key="<?= htmlspecialchars($entryKey) ?>">
+        <button class="ds-button vox-btn vox-btn--sm vox-vote-btn vox-best-btn" data-variant="tertiary" data-size="sm" data-vox-best-btn data-entry-key="<?= htmlspecialchars($entryKey) ?>">
             <?= vox_icon('star') ?> Mark as best
         </button>
         <?php endif ?>
 
-        <button class="vox-report-btn" data-entry-key="<?= htmlspecialchars($entryKey) ?>" data-reason="inappropriate">
+        <button class="ds-button vox-btn vox-btn--sm vox-report-btn" data-variant="tertiary" data-size="sm" data-entry-key="<?= htmlspecialchars($entryKey) ?>" data-reason="inappropriate">
             <?= str_replace('<i ', '<i data-vox-flag ', vox_icon('flag')) ?>
             <span data-vox-report-label>Report</span>
         </button>
@@ -138,21 +138,25 @@ require_once __DIR__ . '/vox.helpers.php';
 
     <!-- Reply form -->
     <?php if ($showReplyForm && $depth < Vox::MAX_DEPTH): ?>
+    <?php $replyBodyId = vox_control_id('vox-reply') . '-body'; ?>
     <div class="vox-reply-form" id="reply-<?= htmlspecialchars($entryKey) ?>"
          data-vox-reply-form="reply-<?= htmlspecialchars($entryKey) ?>" hidden>
-        <form data-vox-form data-entry-list="replies-<?= htmlspecialchars($entryKey) ?>">
+        <form class="vox-form__element" data-vox-form data-entry-list="replies-<?= htmlspecialchars($entryKey) ?>">
             <?= vox_csrf() ?>
             <input type="hidden" name="page_key"  value="<?= htmlspecialchars($pageKey) ?>">
             <input type="hidden" name="block_id"  value="<?= htmlspecialchars($entry['block_id'] ?? '') ?>">
             <input type="hidden" name="type"      value="comment">
             <input type="hidden" name="parent_key" value="<?= htmlspecialchars($entryKey) ?>">
-            <textarea name="body" class="ds-input vox-textarea" aria-label="Reply" rows="3" placeholder="Write a reply&hellip;"></textarea>
-            <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
+            <div class="ds-field vox-field">
+                <label class="ds-label vox-form__label" for="<?= htmlspecialchars($replyBodyId) ?>">Reply</label>
+                <textarea id="<?= htmlspecialchars($replyBodyId) ?>" name="body" class="ds-input vox-textarea" rows="3" placeholder="Write a reply&hellip;"></textarea>
+                <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
+            </div>
             <div class="vox-form__actions">
-                <button type="submit" class="ds-button vox-btn vox-btn--primary vox-btn--sm" data-variant="primary">
+                <button type="submit" class="ds-button vox-btn vox-btn--primary vox-btn--sm" data-variant="primary" data-size="sm">
                     <?= vox_icon('paper-plane') ?> Post
                 </button>
-                <button type="button" class="ds-button vox-btn vox-btn--sm" data-variant="tertiary"
+                <button type="button" class="ds-button vox-btn vox-btn--sm" data-variant="tertiary" data-size="sm"
                         onclick="this.closest('[data-vox-reply-form]').hidden=true">Cancel</button>
             </div>
             <span data-vox-feedback hidden></span>
@@ -175,7 +179,7 @@ require_once __DIR__ . '/vox.helpers.php';
     <?php endif ?>
 
     <?php if ($showChildren && $hasMore): ?>
-    <button class="ds-button vox-btn vox-btn--sm vox-entry__show-more" data-variant="tertiary"
+    <button class="ds-button vox-btn vox-btn--sm vox-entry__show-more" data-variant="tertiary" data-size="sm"
             data-vox-show-more
             data-entry-key="<?= htmlspecialchars($entryKey) ?>"
             data-page-key="<?= htmlspecialchars($pageKey) ?>"

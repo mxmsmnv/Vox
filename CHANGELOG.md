@@ -2,6 +2,26 @@
 
 All notable changes to Vox are documented here.
 
+## [1.7.7] - 2026-07-29
+
+### Changed
+
+- Standardized all public composers, filters and entry actions on
+  Designsystemet fields, labels, inputs and button variants.
+- Applied a shared medium-spacing form layout to reviews, questions, answers,
+  discussions, forum and inline Textformatter forms.
+- Replaced legacy review sorting and upload controls with responsive,
+  accessible Designsystemet controls.
+
+### Fixed
+
+- Generated entry actions and reply forms now keep the same component contract
+  as server-rendered entries.
+- Repeated widgets now generate document-unique control IDs and explicit label
+  relationships.
+- Recommendation and sorting buttons now synchronize pressed state and visual
+  variants.
+
 ## [1.7.6] - 2026-07-29
 
 ### Changed

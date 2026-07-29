@@ -63,7 +63,7 @@ $voxAnswersEntryTitleTag = !empty($voxEmbedded) ? 'h3' : 'h2';
         <?php for ($i = 1; $i <= $totalPages; $i++):
             $url = '?' . http_build_query(array_filter(['filter' => $filter === 'active' ? null : $filter, 'p' => $i === 1 ? null : $i]));
         ?>
-        <a href="<?= htmlspecialchars($url) ?>" class="ds-button vox-btn vox-btn--sm <?= $i === $currPage ? 'vox-btn--primary' : '' ?>" data-variant="<?= $i === $currPage ? 'primary' : 'tertiary' ?>" <?= $i === $currPage ? 'aria-current="page"' : '' ?>><?= $i ?></a>
+        <a href="<?= htmlspecialchars($url) ?>" class="ds-button vox-btn vox-btn--sm <?= $i === $currPage ? 'vox-btn--primary' : '' ?>" data-variant="<?= $i === $currPage ? 'primary' : 'tertiary' ?>" data-size="sm" <?= $i === $currPage ? 'aria-current="page"' : '' ?>><?= $i ?></a>
         <?php endfor ?>
     </div>
     <?php endif ?>

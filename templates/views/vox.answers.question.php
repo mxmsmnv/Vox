@@ -20,6 +20,9 @@ $answerCount = $vox->getEntryReplyCount($questionId);
 $pageKey = $vox->publicKey('page', $pageId);
 $questionKey = $vox->publicKey('entry', $questionId);
 $answersBackUrl = trim((string)($voxAnswersBackUrl ?? $page->url)) ?: $page->url;
+$answerFormPrefix = vox_control_id('vox-answer');
+$answerNameId = $answerFormPrefix . '-name';
+$answerBodyId = $answerFormPrefix . '-body';
 ?>
 
 <section class="vox-wrap vox-answers-question" data-discuss-page-key="<?= htmlspecialchars($pageKey) ?>">
@@ -32,16 +35,22 @@ $answersBackUrl = trim((string)($voxAnswersBackUrl ?? $page->url)) ?: $page->url
     <div class="vox-answers-answer-form vox-card">
         <div class="vox-card__head"><?= vox_icon('reply') ?> Your answer</div>
         <div class="vox-form">
-            <form data-vox-form data-entry-list="vox-answer-list">
+            <form class="vox-form__element" data-vox-form data-entry-list="vox-answer-list">
                 <?= vox_csrf() ?>
                 <input type="hidden" name="page_key" value="<?= htmlspecialchars($pageKey) ?>">
                 <input type="hidden" name="type" value="comment">
                 <input type="hidden" name="parent_key" value="<?= htmlspecialchars($questionKey) ?>">
                 <?php if (!wire('user')->isLoggedIn()): ?>
-                <div class="vox-field vox-field--compact"><input type="text" name="guest_name" class="ds-input vox-input" aria-label="Your name" placeholder="Your name (optional)"></div>
+                <div class="ds-field vox-field vox-field--compact">
+                    <label class="ds-label vox-form__label" for="<?= htmlspecialchars($answerNameId) ?>">Your name</label>
+                    <input id="<?= htmlspecialchars($answerNameId) ?>" type="text" name="guest_name" class="ds-input vox-input" placeholder="Your name (optional)">
+                </div>
                 <?php endif ?>
-                <textarea name="body" class="ds-input vox-textarea" aria-label="Your answer" rows="5" placeholder="Write a helpful answer..." required></textarea>
-                <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
+                <div class="ds-field vox-field">
+                    <label class="ds-label vox-form__label" for="<?= htmlspecialchars($answerBodyId) ?>">Your answer</label>
+                    <textarea id="<?= htmlspecialchars($answerBodyId) ?>" name="body" class="ds-input vox-textarea" rows="5" placeholder="Write a helpful answer..." required></textarea>
+                    <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
+                </div>
                 <div class="vox-form__actions">
                     <button type="submit" class="ds-button vox-btn vox-btn--primary" data-variant="primary"><?= vox_icon('paper-plane') ?> Post answer</button>
                     <span data-vox-feedback hidden></span>

@@ -44,6 +44,7 @@ function buildConcat(outFile) {
     out += `/* ── ${file} ${'─'.repeat(Math.max(0, 50 - file.length))} */\n`;
     out += stripped.trimStart() + '\n\n';
   }
+  out = out.trimEnd() + '\n';
   fs.writeFileSync(outFile, out, 'utf8');
   console.log(`built ${path.relative(process.cwd(), outFile)} (${(out.length / 1024).toFixed(1)} KB)`);
 }

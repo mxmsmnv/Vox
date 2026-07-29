@@ -109,7 +109,12 @@
         btn.addEventListener('click', () => {
           const val = btn.dataset.voxSortBtn;
           if (!val) return;
-          btns.forEach(b => b.classList.toggle('vox-sort-btn--active', b === btn));
+          btns.forEach(b => {
+            const selected = b === btn;
+            b.classList.toggle('vox-sort-btn--active', selected);
+            b.dataset.variant = selected ? 'primary' : 'tertiary';
+            b.setAttribute('aria-pressed', String(selected));
+          });
           if (sel) sel.value = val;
           applySort(val);
         });
@@ -131,6 +136,12 @@
         initialVal = btnVal;
       }
     }
+
+    btns.forEach(btn => {
+      const selected = btn.classList.contains('vox-sort-btn--active');
+      btn.dataset.variant = selected ? 'primary' : 'tertiary';
+      btn.setAttribute('aria-pressed', String(selected));
+    });
 
     applySort(initialVal);
   }
