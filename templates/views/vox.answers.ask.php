@@ -19,13 +19,13 @@ $voxAnswersListId = $voxAnswersListId ?? 'vox-answers-list';
             <input type="hidden" name="type" value="question">
             <?php if (!wire('user')->isLoggedIn()): ?>
             <div class="vox-grid-2">
-                <div><label class="ds-label vox-form__label">Your name</label><input type="text" name="guest_name" class="ds-input vox-input" placeholder="Anonymous-XXX if blank"></div>
-                <div><label class="ds-label vox-form__label">Email</label><input type="email" name="guest_email" class="ds-input vox-input" placeholder="optional"></div>
+                <div><label class="ds-label vox-form__label" for="vox-ask-name">Your name</label><input id="vox-ask-name" type="text" name="guest_name" class="ds-input vox-input" placeholder="Anonymous-XXX if blank"></div>
+                <div><label class="ds-label vox-form__label" for="vox-ask-email">Email</label><input id="vox-ask-email" type="email" name="guest_email" class="ds-input vox-input" placeholder="optional"></div>
             </div>
             <?php endif ?>
             <div class="vox-field">
-                <label class="ds-label vox-form__label">Question</label>
-                <textarea name="body" class="ds-input vox-textarea" rows="4" placeholder="What would you like to know?" required></textarea>
+                <label class="ds-label vox-form__label" for="vox-ask-body">Question</label>
+                <textarea id="vox-ask-body" name="body" class="ds-input vox-textarea" rows="4" placeholder="What would you like to know?" required></textarea>
                 <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
             </div>
             <div class="vox-form__actions">

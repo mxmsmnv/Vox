@@ -67,9 +67,9 @@ $schema = $type === 'review' ? $vox->getSchema((int)$page->template->id, Vox::TY
 
         <?php if (!wire('user')->isLoggedIn()): ?>
         <div class="vox-grid-2 vox-inline-form__guest">
-            <div><label class="ds-label vox-form__label">Your name</label><input type="text" name="guest_name" class="ds-input vox-input" placeholder="Optional"></div>
+            <div><label class="ds-label vox-form__label" for="vox-inline-name">Your name</label><input id="vox-inline-name" type="text" name="guest_name" class="ds-input vox-input" placeholder="Optional"></div>
             <?php if ($type !== 'thread'): ?>
-            <div><label class="ds-label vox-form__label">Email</label><input type="email" name="guest_email" class="ds-input vox-input" placeholder="optional"></div>
+            <div><label class="ds-label vox-form__label" for="vox-inline-email">Email</label><input id="vox-inline-email" type="email" name="guest_email" class="ds-input vox-input" placeholder="optional"></div>
             <?php endif ?>
         </div>
         <?php endif ?>

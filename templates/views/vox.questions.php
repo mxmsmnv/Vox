@@ -38,8 +38,8 @@ require_once __DIR__ . '/vox.helpers.php';
                 <input type="hidden" name="type"    value="question">
                 <?php if (!wire('user')->isLoggedIn()): ?>
                 <div class="vox-grid-2">
-                    <div><label class="ds-label vox-form__label">Your name</label><input type="text" name="guest_name" class="ds-input vox-input" placeholder="Anonymous-XXX if blank"></div>
-                    <div><label class="ds-label vox-form__label">Email</label><input type="email" name="guest_email" class="ds-input vox-input" placeholder="optional"></div>
+                    <div><label class="ds-label vox-form__label" for="vox-question-name">Your name</label><input id="vox-question-name" type="text" name="guest_name" class="ds-input vox-input" placeholder="Anonymous-XXX if blank"></div>
+                    <div><label class="ds-label vox-form__label" for="vox-question-email">Email</label><input id="vox-question-email" type="email" name="guest_email" class="ds-input vox-input" placeholder="optional"></div>
                 </div>
                 <?php endif ?>
                 <div class="vox-field">
