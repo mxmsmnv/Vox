@@ -38,19 +38,19 @@ $answersBackUrl = trim((string)($voxAnswersBackUrl ?? $page->url)) ?: $page->url
                 <input type="hidden" name="type" value="comment">
                 <input type="hidden" name="parent_key" value="<?= htmlspecialchars($questionKey) ?>">
                 <?php if (!wire('user')->isLoggedIn()): ?>
-                <div class="vox-field vox-field--compact"><input type="text" name="guest_name" class="vox-input" placeholder="Your name (optional)"></div>
+                <div class="vox-field vox-field--compact"><input type="text" name="guest_name" class="ds-input vox-input" aria-label="Your name" placeholder="Your name (optional)"></div>
                 <?php endif ?>
-                <textarea name="body" class="vox-textarea" rows="5" placeholder="Write a helpful answer..." required></textarea>
+                <textarea name="body" class="ds-input vox-textarea" aria-label="Your answer" rows="5" placeholder="Write a helpful answer..." required></textarea>
                 <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
                 <div class="vox-form__actions">
-                    <button type="submit" class="vox-btn vox-btn--primary"><?= vox_icon('paper-plane') ?> Post answer</button>
+                    <button type="submit" class="ds-button vox-btn vox-btn--primary" data-variant="primary"><?= vox_icon('paper-plane') ?> Post answer</button>
                     <span data-vox-feedback hidden></span>
                 </div>
             </form>
         </div>
     </div>
 
-    <h2 class="vox-answers-subtitle"><?= number_format($answerCount) ?> answer<?= $answerCount === 1 ? '' : 's' ?></h2>
+    <h2 class="ds-heading vox-answers-subtitle" data-size="md"><?= number_format($answerCount) ?> answer<?= $answerCount === 1 ? '' : 's' ?></h2>
     <div id="vox-answer-list" data-vox-entries-list>
     <?php foreach ($answers as $answer): ?>
         <?php $entry = $answer; $depth = 1; include __DIR__ . '/vox.entry.php'; ?>

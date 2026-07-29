@@ -25,7 +25,7 @@ $joined = !empty($user['created']) ? date('F Y', strtotime($user['created'])) : 
         <div class="vox-profile-head__main">
             <?= vox_avatar($user['display_name'], 48, (string)($user['avatar_url'] ?? '')) ?>
             <div>
-                <h1><?= htmlspecialchars($user['display_name']) ?></h1>
+                <h1 class="ds-heading" data-size="lg"><?= htmlspecialchars($user['display_name']) ?></h1>
                 <div class="vox-profile-head__meta">
                     <?php if (!empty($rank['label'])): ?><?= vox_rank_badge((string)$rank['label'], (string)($rank['icon'] ?? '')) ?><?php endif ?>
                     <span><?= vox_icon('bolt') ?> <?= number_format($points) ?> pts</span>

@@ -2,6 +2,18 @@
 
 All notable changes to Vox are documented here.
 
+## [1.7.6] - 2026-07-29
+
+### Changed
+
+- Public views now expose Designsystemet classes and supported variants for
+  headings, buttons, labels, text fields, text areas and pagination controls.
+- Portable frontend tokens now resolve to Designsystemet theme, typography,
+  focus, spacing and sizing tokens when the host site provides them.
+- Vox wrappers fill their parent container instead of enforcing a fixed
+  980-pixel content width.
+- Forum search and composer controls now have explicit accessible labels.
+
 ## [1.7.5] - 2026-07-29
 
 ### Changed

@@ -19,7 +19,7 @@ $labels = [
 
 <section class="vox-wrap vox-profile-section">
     <div class="vox-profile-section__head">
-        <h2><?= vox_icon('clock-rotate-left') ?> Recent activity</h2>
+        <h2 class="ds-heading" data-size="xs"><?= vox_icon('clock-rotate-left') ?> Recent activity</h2>
         <span><?= count($activity) ?> item<?= count($activity) === 1 ? '' : 's' ?></span>
     </div>
 

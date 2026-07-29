@@ -16,7 +16,7 @@ $points = (int)$progress['points'];
 
 <section class="vox-wrap vox-profile-section">
     <div class="vox-profile-section__head">
-        <h2><?= vox_icon('chart-line') ?> Rank progression</h2>
+        <h2 class="ds-heading" data-size="xs"><?= vox_icon('chart-line') ?> Rank progression</h2>
         <?php if (!empty($progress['next'])): ?>
         <span><?= number_format((int)$progress['to_next']) ?> pts to <?= htmlspecialchars($progress['next']['label']) ?></span>
         <?php else: ?>

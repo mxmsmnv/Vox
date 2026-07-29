@@ -10,7 +10,7 @@ $rows = $vox->getLeaderboard('month', 5);
 
 <aside class="vox-wrap vox-answers-sidebar">
     <section class="vox-profile-section vox-profile-section--compact">
-        <div class="vox-profile-section__head"><h2><?= vox_icon('chart-simple') ?> Q&A stats</h2></div>
+        <div class="vox-profile-section__head"><h2 class="ds-heading" data-size="xs"><?= vox_icon('chart-simple') ?> Q&amp;A stats</h2></div>
         <div class="vox-profile-points">
             <div class="vox-profile-points__row"><span>Questions</span><strong><?= number_format((int)$stats['total']) ?></strong></div>
             <div class="vox-profile-points__row"><span>Unanswered</span><strong><?= number_format((int)$stats['unanswered']) ?></strong></div>
@@ -18,7 +18,7 @@ $rows = $vox->getLeaderboard('month', 5);
         </div>
     </section>
     <section class="vox-profile-section vox-profile-section--compact">
-        <div class="vox-profile-section__head"><h2><?= vox_icon('trophy') ?> Top contributors</h2><span>month</span></div>
+        <div class="vox-profile-section__head"><h2 class="ds-heading" data-size="xs"><?= vox_icon('trophy') ?> Top contributors</h2><span>month</span></div>
         <div>
             <?php foreach ($rows as $i => $row): ?>
             <div class="vox-lb-row">

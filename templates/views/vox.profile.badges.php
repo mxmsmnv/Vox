@@ -28,19 +28,19 @@ $badgeCard = function(array $badge, bool $lockedState) use ($vox): string {
 
 <section class="vox-wrap vox-profile-section">
     <div class="vox-profile-section__head">
-        <h2><?= vox_icon('patch-check') ?> Badges</h2>
+        <h2 class="ds-heading" data-size="xs"><?= vox_icon('patch-check') ?> Badges</h2>
         <span><?= count($earned) ?> / <?= count($earned) + count($locked) ?> earned</span>
     </div>
 
     <?php if ($earned): ?>
-    <h3 class="vox-profile-subhead">Earned</h3>
+    <h3 class="ds-heading vox-profile-subhead" data-size="2xs">Earned</h3>
     <div class="vox-profile-badges">
         <?php foreach ($earned as $badge): ?><?= $badgeCard($badge, false) ?><?php endforeach ?>
     </div>
     <?php endif ?>
 
     <?php if ($locked): ?>
-    <h3 class="vox-profile-subhead">Locked</h3>
+    <h3 class="ds-heading vox-profile-subhead" data-size="2xs">Locked</h3>
     <div class="vox-profile-badges">
         <?php foreach ($locked as $badge): ?><?= $badgeCard($badge, true) ?><?php endforeach ?>
     </div>

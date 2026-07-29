@@ -111,23 +111,24 @@ $threadUrl = function(array $entry, string $fallbackUrl = '') use ($page, $vox):
 <div class="vox-wrap vox-forum" id="vox-forum" data-discuss-page-key="<?= htmlspecialchars($firstCategory['page_key'] ?? '') ?>">
     <section class="vox-forum-hero">
         <div>
-            <h1><?= htmlspecialchars($forumTitle) ?></h1>
-            <p><?= htmlspecialchars($forumIntro) ?></p>
+            <h1 class="ds-heading" data-size="xl"><?= htmlspecialchars($forumTitle) ?></h1>
+            <p class="ds-paragraph" data-size="lg"><?= htmlspecialchars($forumIntro) ?></p>
         </div>
         <div class="vox-forum-actions">
-            <a class="vox-btn vox-btn--primary" href="#vox-start-discussion">
+            <a class="ds-button vox-btn vox-btn--primary" data-variant="primary" href="#vox-start-discussion">
                 <?= vox_icon('circle-plus') ?> Start Discussion
             </a>
             <label class="vox-forum-search">
                 <?= vox_icon('magnifying-glass') ?>
-                <input type="search" class="vox-input" data-vox-forum-search placeholder="Search discussions">
+                <span class="ds-sr-only">Search discussions</span>
+                <input type="search" class="ds-input vox-input" data-vox-forum-search placeholder="Search discussions">
             </label>
         </div>
     </section>
 
     <?php if ($recommended): ?>
     <section class="vox-forum-band">
-        <h2>Recommended by us</h2>
+        <h2 class="ds-heading" data-size="lg">Recommended by us</h2>
         <div class="vox-forum-recommended">
         <?php foreach ($recommended as $entry):
             [$replyCount, $likes, $lastActivity] = $threadStats($entry);
@@ -138,7 +139,7 @@ $threadUrl = function(array $entry, string $fallbackUrl = '') use ($page, $vox):
                         <?= vox_avatar((string)$entry['author_name'], 24, (string)($entry['author_avatar'] ?? '')) ?>
                         <span>from <?= htmlspecialchars($entry['author_name']) ?> · <?= vox_time_ago($entry['created']) ?></span>
                     </div>
-                    <h3><?= htmlspecialchars($threadTitle($entry)) ?></h3>
+                    <h3 class="ds-heading" data-size="sm"><?= htmlspecialchars($threadTitle($entry)) ?></h3>
                     <div class="vox-forum-card-stats">
                         <span><?= vox_icon('comment') ?> <?= $replyCount ?></span>
                         <span><?= vox_icon('heart') ?> <?= $likes ?></span>
@@ -152,7 +153,7 @@ $threadUrl = function(array $entry, string $fallbackUrl = '') use ($page, $vox):
     <?php endif ?>
 
     <section class="vox-card vox-card--mb-16" id="vox-start-discussion">
-        <div class="vox-card__head"><?= vox_icon('pen-to-square') ?> Start a discussion</div>
+        <div class="vox-card__head"><span class="ds-heading" data-size="xs"><?= vox_icon('pen-to-square') ?> Start a discussion</span></div>
         <div class="vox-form">
             <form data-vox-form data-entry-list="vox-forum-newest-list">
                 <?= vox_csrf() ?>
@@ -160,8 +161,8 @@ $threadUrl = function(array $entry, string $fallbackUrl = '') use ($page, $vox):
                 <input type="hidden" name="type" value="thread">
                 <?php if (count($categoryRows) > 1): ?>
                 <div class="vox-field">
-                    <label class="vox-form__label" for="vox-forum-category">Category</label>
-                    <select id="vox-forum-category" class="vox-input" data-vox-forum-category>
+                    <label class="ds-label vox-form__label" for="vox-forum-category">Category</label>
+                    <select id="vox-forum-category" class="ds-input vox-input" data-vox-forum-category>
                     <?php foreach ($categoryRows as $row): ?>
                         <option value="<?= htmlspecialchars($row['page_key']) ?>"><?= htmlspecialchars($row['title']) ?></option>
                     <?php endforeach ?>
@@ -170,13 +171,13 @@ $threadUrl = function(array $entry, string $fallbackUrl = '') use ($page, $vox):
                 <?php endif ?>
                 <?php if (!wire('user')->isLoggedIn()): ?>
                 <div class="vox-field vox-field--compact">
-                    <input type="text" name="guest_name" class="vox-input" placeholder="Your name (optional)">
+                    <input type="text" name="guest_name" class="ds-input vox-input" aria-label="Your name" placeholder="Your name (optional)">
                 </div>
                 <?php endif ?>
-                <textarea name="body" class="vox-textarea" rows="4" placeholder="What would you like to discuss?" required></textarea>
+                <textarea name="body" class="ds-input vox-textarea" aria-label="Discussion" rows="4" placeholder="What would you like to discuss?" required></textarea>
                 <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
                 <div class="vox-form__actions">
-                    <button type="submit" class="vox-btn vox-btn--primary"><?= vox_icon('arrow-right') ?> Create Thread</button>
+                    <button type="submit" class="ds-button vox-btn vox-btn--primary" data-variant="primary"><?= vox_icon('arrow-right') ?> Create Thread</button>
                 </div>
                 <span data-vox-feedback hidden></span>
             </form>
@@ -189,10 +190,10 @@ $threadUrl = function(array $entry, string $fallbackUrl = '') use ($page, $vox):
             <section class="vox-forum-category" data-vox-forum-card>
                 <div class="vox-forum-category__head">
                     <div>
-                        <h2><?= htmlspecialchars($row['title']) ?></h2>
-                        <p><?= htmlspecialchars($row['description']) ?></p>
+                        <h2 class="ds-heading" data-size="md"><?= htmlspecialchars($row['title']) ?></h2>
+                        <p class="ds-paragraph" data-size="sm"><?= htmlspecialchars($row['description']) ?></p>
                     </div>
-                    <a class="vox-btn vox-btn--sm" href="<?= htmlspecialchars($row['page']->url) ?>">Show All</a>
+                    <a class="ds-button vox-btn vox-btn--sm" data-variant="tertiary" href="<?= htmlspecialchars($row['page']->url) ?>">Show All</a>
                 </div>
 
                 <?php if ($row['threads']): ?>
@@ -202,7 +203,7 @@ $threadUrl = function(array $entry, string $fallbackUrl = '') use ($page, $vox):
                     ?>
                     <article class="vox-forum-thread" data-vox-forum-card>
                         <a class="vox-forum-card-link" href="<?= htmlspecialchars($threadUrl($entry, (string)$row['page']->url)) ?>">
-                            <h3><?= htmlspecialchars($threadTitle($entry)) ?></h3>
+                            <h3 class="ds-heading" data-size="sm"><?= htmlspecialchars($threadTitle($entry)) ?></h3>
                             <div class="vox-forum-meta">
                                 <?= vox_avatar((string)$entry['author_name'], 24, (string)($entry['author_avatar'] ?? '')) ?>
                                 <span>from <?= htmlspecialchars($entry['author_name']) ?> · <?= vox_time_ago($entry['created']) ?></span>
@@ -225,14 +226,14 @@ $threadUrl = function(array $entry, string $fallbackUrl = '') use ($page, $vox):
 
         <aside class="vox-forum-side">
             <section class="vox-forum-side-card">
-                <h2>Newest threads</h2>
+                <h2 class="ds-heading" data-size="md">Newest threads</h2>
                 <div id="vox-forum-newest-list" data-vox-entries-list>
                 <?php foreach ($newest as $entry):
                     [$replyCount, $likes, $lastActivity] = $threadStats($entry);
                 ?>
                     <article class="vox-forum-mini" data-vox-forum-card>
                         <a class="vox-forum-card-link" href="<?= htmlspecialchars($threadUrl($entry)) ?>">
-                            <h3><?= htmlspecialchars($threadTitle($entry)) ?></h3>
+                            <h3 class="ds-heading" data-size="xs"><?= htmlspecialchars($threadTitle($entry)) ?></h3>
                             <div class="vox-forum-meta"><?= htmlspecialchars($entry['_category_title'] ?? '') ?> · <?= vox_time_ago($entry['created']) ?></div>
                             <div class="vox-forum-card-stats"><span><?= $replyCount ?> replies</span><span><?= $likes ?> likes</span></div>
                         </a>
@@ -242,7 +243,7 @@ $threadUrl = function(array $entry, string $fallbackUrl = '') use ($page, $vox):
             </section>
 
             <section class="vox-forum-side-card">
-                <h2>All Categories</h2>
+                <h2 class="ds-heading" data-size="md">All Categories</h2>
                 <div class="vox-forum-category-list">
                 <?php foreach ($categoryRows as $row): ?>
                     <a href="<?= htmlspecialchars($row['page']->url) ?>">

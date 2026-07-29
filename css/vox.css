@@ -1,38 +1,40 @@
 /**
  * vox.css — Vox frontend base styles
  * Uses CSS custom properties so they can be overridden per-site.
- * @version 1.6.3
+ * @version 1.7.6
  */
 
 /* ── CSS Variables ─────────────────────────────────────────────────────── */
 :root {
-  --vox-wine:       #6750a4;
-  --vox-wine-light: #f4efff;
-  --vox-wine-border:#d0bcff;
-  --vox-gold:       #b26a00;
-  --vox-sage:       #059669;
-  --vox-blue:       #2563eb;
-  --vox-purple:     #7c3aed;
-  --vox-danger:     #b42318;
-  --vox-danger-bg:  #fff1f0;
+  --vox-wine:       var(--ds-color-primary-base-default, #6750a4);
+  --vox-wine-light: var(--ds-color-primary-surface-tinted, #f4efff);
+  --vox-wine-border:var(--ds-color-primary-border-subtle, #d0bcff);
+  --vox-gold:       var(--ds-color-accent-base-default, #b26a00);
+  --vox-sage:       var(--ds-color-success-text-default, #059669);
+  --vox-blue:       var(--ds-color-info-text-default, #2563eb);
+  --vox-purple:     var(--ds-color-accent-text-default, #7c3aed);
+  --vox-danger:     var(--ds-color-danger-text-default, #b42318);
+  --vox-danger-bg:  var(--ds-color-danger-surface-tinted, #fff1f0);
 
-  --vox-text:       #1d1b20;
-  --vox-text-2:     #49454f;
-  --vox-text-3:     #625b71;
-  --vox-text-4:     #79747e;
+  --vox-text:       var(--ds-color-neutral-text-default, #1d1b20);
+  --vox-text-2:     var(--ds-color-neutral-text-subtle, #49454f);
+  --vox-text-3:     var(--ds-color-neutral-text-subtle, #625b71);
+  --vox-text-4:     var(--ds-color-neutral-text-subtle, #79747e);
 
-  --vox-border:     #cac4d0;
-  --vox-bg:         #f7f2fa;
-  --vox-bg-2:       #f3edf7;
-  --vox-white:      #fffbfe;
+  --vox-border:     var(--ds-color-neutral-border-subtle, #cac4d0);
+  --vox-bg:         var(--ds-color-neutral-surface-tinted, #f7f2fa);
+  --vox-bg-2:       var(--ds-color-neutral-surface-default, #f3edf7);
+  --vox-white:      var(--ds-color-neutral-background-default, #fffbfe);
   --vox-shadow:     none;
   --vox-shadow-sm:  none;
 
-  --vox-radius:     4px;
-  --vox-radius-sm:  4px;
-  --vox-font:       -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --vox-font-size:  16px;
-  --vox-line:       1.6;
+  --vox-radius:     var(--ds-border-radius-md, 4px);
+  --vox-radius-sm:  var(--ds-border-radius-sm, 4px);
+  --vox-font:       var(--ds-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+  --vox-font-size:  var(--ds-body-md-font-size, 16px);
+  --vox-line:       var(--ds-body-md-line-height, 1.6);
+  --vox-control-size: var(--ds-size-12, 3rem);
+  --vox-control-size-sm: var(--ds-size-10, 2.5rem);
 
   /* Nesting indent borders */
   --vox-nest-l1-border: 2px solid var(--vox-wine-border);
@@ -46,8 +48,8 @@
   line-height: var(--vox-line);
   color:       var(--vox-text);
   width: 100%;
-  max-width: 980px;
-  margin: 0 auto;
+  max-width: none;
+  margin: 0;
   padding: 8px 0 24px;
 }
 
@@ -547,11 +549,9 @@
 }
 .vox-form__label {
   display:       block;
-  font-size: 15px;
-  font-weight:   700;
-  text-transform:uppercase;
-  letter-spacing:.07em;
-  color:         var(--vox-text-3);
+  font-size: var(--ds-body-sm-font-size, 15px);
+  font-weight: var(--ds-font-weight-medium, 600);
+  color: var(--vox-text);
   margin-bottom: .35rem;
 }
 .vox-textarea,
@@ -559,19 +559,21 @@
   width:      100%;
   border:     1px solid var(--vox-border);
   border-radius: var(--vox-radius-sm);
-  min-height: 40px;
-  padding:    9px 12px;
-  font-size:  14px;
+  min-height: var(--vox-control-size);
+  padding: var(--ds-size-2, 9px) var(--ds-size-3, 12px);
+  font-size: var(--ds-body-md-font-size, 1rem);
   font-family: var(--vox-font);
   color:      var(--vox-text);
   background: var(--vox-white);
   transition: border-color .15s;
   resize:     vertical;
 }
-.vox-textarea:focus,
-.vox-input:focus {
-  outline:    none;
-  border-color: var(--vox-wine);
+.vox-textarea:focus-visible,
+.vox-input:focus-visible {
+  border-color: var(--ds-color-neutral-border-strong, var(--vox-wine));
+  box-shadow: var(--dsc-focus-boxShadow, 0 0 0 3px rgb(103 80 164 / 28%));
+  outline: var(--dsc-focus-outline, 2px solid var(--vox-wine));
+  outline-offset: var(--ds-border-width-focus, 2px);
 }
 .vox-textarea { min-height: 90px; }
 
@@ -668,8 +670,8 @@
   display:     inline-flex;
   align-items: center;
   gap:         .35rem;
-  min-height: 38px;
-  padding:     8px 16px;
+  min-height: var(--vox-control-size);
+  padding: var(--ds-size-2, 8px) var(--ds-size-4, 16px);
   border-radius: var(--vox-radius-sm);
   font-size: 15px;
   font-weight: 600;
@@ -683,20 +685,30 @@
   line-height: 1.1;
   white-space: nowrap;
 }
-.vox-btn:hover { background: var(--vox-bg); border-color: #cbd5e1; text-decoration: none; }
+.vox-btn:hover { background: var(--vox-bg); border-color: var(--ds-color-neutral-border-default, #cbd5e1); text-decoration: none; }
 .vox-btn:focus-visible,
 .vox-vote-btn:focus-visible,
 .vox-reply-btn:focus-visible,
 .vox-report-btn:focus-visible {
-  outline: none;
+  box-shadow: var(--dsc-focus-boxShadow, 0 0 0 3px rgb(103 80 164 / 28%));
+  outline: var(--dsc-focus-outline, 2px solid var(--vox-wine));
+  outline-offset: var(--ds-border-width-focus, 2px);
 }
 .vox-btn--primary {
   background:  var(--vox-wine);
   color:       #fff;
   border-color:var(--vox-wine);
 }
-.vox-btn--primary:hover { background: #1d4ed8; border-color: #1d4ed8; color: #fff; }
-.vox-btn--sm { min-height: 30px; padding: 5px 12px; font-size: 14px; }
+.vox-btn--primary:hover {
+  background: var(--ds-color-primary-base-hover, #1d4ed8);
+  border-color: var(--ds-color-primary-base-hover, #1d4ed8);
+  color: var(--ds-color-primary-base-contrast-default, #fff);
+}
+.vox-btn--sm {
+  min-height: var(--vox-control-size-sm);
+  padding: var(--ds-size-1, 5px) var(--ds-size-3, 12px);
+  font-size: var(--ds-body-sm-font-size, 14px);
+}
 
 /* Recommendation buttons */
 .vox-rec-btn--active.vox-rec-btn--yes {
@@ -1740,8 +1752,9 @@
   border-radius: inherit;
 }
 .vox-forum-card-link:focus-visible {
-  outline: 3px solid var(--vox-wine);
-  outline-offset: 3px;
+  box-shadow: var(--dsc-focus-boxShadow, 0 0 0 3px rgb(103 80 164 / 28%));
+  outline: var(--dsc-focus-outline, 2px solid var(--vox-wine));
+  outline-offset: var(--ds-border-width-focus, 2px);
 }
 .vox-forum-feature {
   border: 1px solid var(--vox-border);

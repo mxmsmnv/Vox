@@ -20,7 +20,7 @@ $filters = [
     <?php foreach ($filters as $key => $label):
         $url = '?' . http_build_query(array_filter(['filter' => $key === 'active' ? null : $key]));
     ?>
-    <a class="<?= $filter === $key ? 'is-active' : '' ?>" href="<?= htmlspecialchars($url) ?>"><?= htmlspecialchars($label) ?></a>
+    <a class="ds-button <?= $filter === $key ? 'is-active' : '' ?>" data-variant="tertiary" href="<?= htmlspecialchars($url) ?>" <?= $filter === $key ? 'aria-current="page"' : '' ?>><?= htmlspecialchars($label) ?></a>
     <?php endforeach ?>
     <span><?= number_format((int)$stats['total']) ?> questions · <?= number_format((int)$stats['unanswered']) ?> unanswered · <?= number_format((int)$stats['solved']) ?> solved</span>
 </nav>

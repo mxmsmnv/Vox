@@ -15,7 +15,7 @@ $currentUserId = (int)$voxProfile['user']['id'];
 
 <section class="vox-wrap vox-profile-section vox-profile-section--compact">
     <div class="vox-profile-section__head">
-        <h2><?= vox_icon('trophy') ?> Leaderboard</h2>
+        <h2 class="ds-heading" data-size="xs"><?= vox_icon('trophy') ?> Leaderboard</h2>
         <span><?= htmlspecialchars($period) ?></span>
     </div>
     <div data-vox-leaderboard>

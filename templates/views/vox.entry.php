@@ -146,13 +146,13 @@ require_once __DIR__ . '/vox.helpers.php';
             <input type="hidden" name="block_id"  value="<?= htmlspecialchars($entry['block_id'] ?? '') ?>">
             <input type="hidden" name="type"      value="comment">
             <input type="hidden" name="parent_key" value="<?= htmlspecialchars($entryKey) ?>">
-            <textarea name="body" class="vox-textarea" rows="3" placeholder="Write a reply&hellip;"></textarea>
+            <textarea name="body" class="ds-input vox-textarea" aria-label="Reply" rows="3" placeholder="Write a reply&hellip;"></textarea>
             <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
             <div class="vox-form__actions">
-                <button type="submit" class="vox-btn vox-btn--primary vox-btn--sm">
+                <button type="submit" class="ds-button vox-btn vox-btn--primary vox-btn--sm" data-variant="primary">
                     <?= vox_icon('paper-plane') ?> Post
                 </button>
-                <button type="button" class="vox-btn vox-btn--sm"
+                <button type="button" class="ds-button vox-btn vox-btn--sm" data-variant="tertiary"
                         onclick="this.closest('[data-vox-reply-form]').hidden=true">Cancel</button>
             </div>
             <span data-vox-feedback hidden></span>
@@ -175,7 +175,7 @@ require_once __DIR__ . '/vox.helpers.php';
     <?php endif ?>
 
     <?php if ($showChildren && $hasMore): ?>
-    <button class="vox-btn vox-btn--sm vox-entry__show-more"
+    <button class="ds-button vox-btn vox-btn--sm vox-entry__show-more" data-variant="tertiary"
             data-vox-show-more
             data-entry-key="<?= htmlspecialchars($entryKey) ?>"
             data-page-key="<?= htmlspecialchars($pageKey) ?>"

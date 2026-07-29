@@ -28,8 +28,8 @@ require_once __DIR__ . '/vox.helpers.php';
 
     <!-- Block discussions -->
     <section class="vox-section">
-        <h2 class="vox-section-title"><?= vox_icon('table-list') ?> Block discussions</h2>
-        <p class="vox-section-subtitle">Click any highlighted section on the page to discuss it.</p>
+        <h2 class="ds-heading vox-section-title" data-size="md"><?= vox_icon('table-list') ?> Block discussions</h2>
+        <p class="ds-paragraph vox-section-subtitle" data-size="sm">Click any highlighted section on the page to discuss it.</p>
 
         <div class="vox-block-list">
         <?php foreach ($blockCounts as $blockId => $cnt):
@@ -42,7 +42,7 @@ require_once __DIR__ . '/vox.helpers.php';
             ])['entries'];
         ?>
         <div class="vox-block-item">
-            <button class="vox-btn" data-vox-block-trigger="<?= htmlspecialchars($blockId) ?>">
+            <button class="ds-button vox-btn" data-variant="tertiary" data-vox-block-trigger="<?= htmlspecialchars($blockId) ?>">
                 <?= vox_icon('comment') ?>
                 <span data-vox-block-count><?= $cnt ?></span> comment<?= $cnt !== 1 ? 's' : '' ?>
                 on <em><?= htmlspecialchars($blockId) ?></em>
@@ -61,13 +61,13 @@ require_once __DIR__ . '/vox.helpers.php';
                         <input type="hidden" name="type"     value="comment">
                         <?php if (!wire('user')->isLoggedIn()): ?>
                         <div class="vox-field vox-field--compact">
-                            <input type="text" name="guest_name" class="vox-input" placeholder="Your name (optional)">
+                            <input type="text" name="guest_name" class="ds-input vox-input" aria-label="Your name" placeholder="Your name (optional)">
                         </div>
                         <?php endif ?>
-                        <textarea name="body" class="vox-textarea" rows="3" placeholder="Comment on this section&hellip;"></textarea>
+                        <textarea name="body" class="ds-input vox-textarea" aria-label="Comment" rows="3" placeholder="Comment on this section&hellip;"></textarea>
                         <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
                         <div class="vox-form__actions">
-                            <button type="submit" class="vox-btn vox-btn--primary vox-btn--sm"><?= vox_icon('paper-plane') ?> Post</button>
+                            <button type="submit" class="ds-button vox-btn vox-btn--primary vox-btn--sm" data-variant="primary"><?= vox_icon('paper-plane') ?> Post</button>
                         </div>
                         <span data-vox-feedback hidden></span>
                     </form>
@@ -80,7 +80,7 @@ require_once __DIR__ . '/vox.helpers.php';
 
     <!-- Free threads -->
     <section>
-        <h2 class="vox-section-title"><?= vox_icon('comment-dots') ?> Free discussions</h2>
+        <h2 class="ds-heading vox-section-title" data-size="md"><?= vox_icon('comment-dots') ?> Free discussions</h2>
 
         <div class="vox-card vox-card--mb-16">
             <div class="vox-card__head">
@@ -93,16 +93,16 @@ require_once __DIR__ . '/vox.helpers.php';
                     <input type="hidden" name="type"    value="thread">
                     <?php if (!wire('user')->isLoggedIn()): ?>
                     <div class="vox-field vox-field--compact">
-                        <input type="text" name="guest_name" class="vox-input" placeholder="Your name (optional)">
+                        <input type="text" name="guest_name" class="ds-input vox-input" aria-label="Your name" placeholder="Your name (optional)">
                     </div>
                     <?php endif ?>
                     <div class="vox-field vox-field--compact">
-                        <input type="text" name="title" class="vox-input" placeholder="Title (optional)">
+                        <input type="text" name="title" class="ds-input vox-input" aria-label="Discussion title" placeholder="Title (optional)">
                     </div>
-                    <textarea name="body" class="vox-textarea" rows="4" placeholder="What&rsquo;s on your mind?" required></textarea>
+                    <textarea name="body" class="ds-input vox-textarea" aria-label="Discussion" rows="4" placeholder="What&rsquo;s on your mind?" required></textarea>
                     <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
                     <div class="vox-form__actions">
-                        <button type="submit" class="vox-btn vox-btn--primary"><?= vox_icon('arrow-right') ?> Create Thread</button>
+                        <button type="submit" class="ds-button vox-btn vox-btn--primary" data-variant="primary"><?= vox_icon('arrow-right') ?> Create Thread</button>
                     </div>
                     <span data-vox-feedback hidden></span>
                 </form>

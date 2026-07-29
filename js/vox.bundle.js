@@ -1331,4 +1331,3 @@ function renderLeaderboard(container, rows) {
 
 })();
 
-

@@ -24,10 +24,10 @@ $voxAnswersEntryTitleTag = !empty($voxEmbedded) ? 'h3' : 'h2';
 <section class="vox-wrap vox-answers-index" data-discuss-page-key="<?= htmlspecialchars($pageKey) ?>">
     <div class="vox-answers-hero">
         <div>
-            <<?= $voxAnswersTitleTag ?>><?= htmlspecialchars($voxAnswersTitle ?? 'Questions') ?></<?= $voxAnswersTitleTag ?>>
-            <p><?= htmlspecialchars($voxAnswersIntro ?? 'Ask, answer and keep useful knowledge easy to find.') ?></p>
+            <<?= $voxAnswersTitleTag ?> class="ds-heading" data-size="lg"><?= htmlspecialchars($voxAnswersTitle ?? 'Questions') ?></<?= $voxAnswersTitleTag ?>>
+            <p class="ds-paragraph" data-size="lg"><?= htmlspecialchars($voxAnswersIntro ?? 'Ask, answer and keep useful knowledge easy to find.') ?></p>
         </div>
-        <a class="vox-btn vox-btn--primary" href="#vox-answers-ask"><?= vox_icon('plus') ?> Ask question</a>
+        <a class="ds-button vox-btn vox-btn--primary" data-variant="primary" href="#vox-answers-ask"><?= vox_icon('plus') ?> Ask question</a>
     </div>
 
     <?php include __DIR__ . '/vox.answers.filters.php'; ?>
@@ -63,7 +63,7 @@ $voxAnswersEntryTitleTag = !empty($voxEmbedded) ? 'h3' : 'h2';
         <?php for ($i = 1; $i <= $totalPages; $i++):
             $url = '?' . http_build_query(array_filter(['filter' => $filter === 'active' ? null : $filter, 'p' => $i === 1 ? null : $i]));
         ?>
-        <a href="<?= htmlspecialchars($url) ?>" class="vox-btn vox-btn--sm <?= $i === $currPage ? 'vox-btn--primary' : '' ?>"><?= $i ?></a>
+        <a href="<?= htmlspecialchars($url) ?>" class="ds-button vox-btn vox-btn--sm <?= $i === $currPage ? 'vox-btn--primary' : '' ?>" data-variant="<?= $i === $currPage ? 'primary' : 'tertiary' ?>" <?= $i === $currPage ? 'aria-current="page"' : '' ?>><?= $i ?></a>
         <?php endfor ?>
     </div>
     <?php endif ?>

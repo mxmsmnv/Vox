@@ -38,18 +38,18 @@ require_once __DIR__ . '/vox.helpers.php';
                 <input type="hidden" name="type"    value="question">
                 <?php if (!wire('user')->isLoggedIn()): ?>
                 <div class="vox-grid-2">
-                    <div><label class="vox-form__label">Your name</label><input type="text" name="guest_name" class="vox-input" placeholder="Anonymous-XXX if blank"></div>
-                    <div><label class="vox-form__label">Email</label><input type="email" name="guest_email" class="vox-input" placeholder="optional"></div>
+                    <div><label class="ds-label vox-form__label">Your name</label><input type="text" name="guest_name" class="ds-input vox-input" placeholder="Anonymous-XXX if blank"></div>
+                    <div><label class="ds-label vox-form__label">Email</label><input type="email" name="guest_email" class="ds-input vox-input" placeholder="optional"></div>
                 </div>
                 <?php endif ?>
                 <div class="vox-field">
-                    <label class="vox-form__label" for="vox-qb">Your question</label>
-                    <textarea id="vox-qb" name="body" class="vox-textarea" rows="4" placeholder="What would you like to know?" required></textarea>
+                    <label class="ds-label vox-form__label" for="vox-qb">Your question</label>
+                    <textarea id="vox-qb" name="body" class="ds-input vox-textarea" rows="4" placeholder="What would you like to know?" required></textarea>
                     <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
                 </div>
                 <?php if ($vox->cfg('photo_uploads')): ?>
                 <div class="vox-field">
-                    <label class="vox-form__label">Attach images <span class="vox-inline-note">(optional, max <?= (int)$vox->cfg('photo_max') ?>)</span></label>
+                    <label class="ds-label vox-form__label">Attach images <span class="vox-inline-note">(optional, max <?= (int)$vox->cfg('photo_max') ?>)</span></label>
                     <label class="vox-file-link">
                         <?= vox_icon('paperclip') ?> Attach
                         <input type="file" name="photos[]" multiple accept="image/*" data-vox-photo-input>
@@ -58,7 +58,7 @@ require_once __DIR__ . '/vox.helpers.php';
                 </div>
                 <?php endif ?>
                 <div class="vox-form__actions">
-                    <button type="submit" class="vox-btn vox-btn--primary"><?= vox_icon('paper-plane') ?> Post question</button>
+                    <button type="submit" class="ds-button vox-btn vox-btn--primary" data-variant="primary"><?= vox_icon('paper-plane') ?> Post question</button>
                 </div>
                 <span data-vox-feedback hidden></span>
             </form>
@@ -79,7 +79,7 @@ require_once __DIR__ . '/vox.helpers.php';
     <?php if ($totalPages > 1): ?>
     <div class="vox-pagination">
         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-        <a href="?p=<?= $i ?>" class="vox-btn vox-btn--sm <?= $i === $currPage ? 'vox-btn--primary' : '' ?>"><?= $i ?></a>
+        <a href="?p=<?= $i ?>" class="ds-button vox-btn vox-btn--sm <?= $i === $currPage ? 'vox-btn--primary' : '' ?>" data-variant="<?= $i === $currPage ? 'primary' : 'tertiary' ?>" <?= $i === $currPage ? 'aria-current="page"' : '' ?>><?= $i ?></a>
         <?php endfor ?>
     </div>
     <?php endif ?>

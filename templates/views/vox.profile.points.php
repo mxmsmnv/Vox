@@ -22,7 +22,7 @@ $labels = [
 
 <section class="vox-wrap vox-profile-section vox-profile-section--compact">
     <div class="vox-profile-section__head">
-        <h2><?= vox_icon('bolt') ?> Points</h2>
+        <h2 class="ds-heading" data-size="xs"><?= vox_icon('bolt') ?> Points</h2>
         <span><?= number_format((int)$points['total']) ?> pts</span>
     </div>
     <div class="vox-profile-points">

@@ -60,23 +60,23 @@ $schema = $type === 'review' ? $vox->getSchema((int)$page->template->id, Vox::TY
         <div class="vox-inline-form__head">
             <div class="vox-inline-form__icon"><?= vox_icon((string)$copy['icon']) ?></div>
             <div>
-                <h2><?= htmlspecialchars($title) ?></h2>
-                <?php if ($intro !== ''): ?><p><?= htmlspecialchars($intro) ?></p><?php endif ?>
+                <h2 class="ds-heading" data-size="md"><?= htmlspecialchars($title) ?></h2>
+                <?php if ($intro !== ''): ?><p class="ds-paragraph" data-size="sm"><?= htmlspecialchars($intro) ?></p><?php endif ?>
             </div>
         </div>
 
         <?php if (!wire('user')->isLoggedIn()): ?>
         <div class="vox-grid-2 vox-inline-form__guest">
-            <div><label class="vox-form__label">Your name</label><input type="text" name="guest_name" class="vox-input" placeholder="Optional"></div>
+            <div><label class="ds-label vox-form__label">Your name</label><input type="text" name="guest_name" class="ds-input vox-input" placeholder="Optional"></div>
             <?php if ($type !== 'thread'): ?>
-            <div><label class="vox-form__label">Email</label><input type="email" name="guest_email" class="vox-input" placeholder="optional"></div>
+            <div><label class="ds-label vox-form__label">Email</label><input type="email" name="guest_email" class="ds-input vox-input" placeholder="optional"></div>
             <?php endif ?>
         </div>
         <?php endif ?>
 
         <?php if ($type === 'review'): ?>
         <div class="vox-field">
-            <label class="vox-form__label">Overall rating <span class="vox-field__label-required">*</span></label>
+            <label class="ds-label vox-form__label">Overall rating <span class="vox-field__label-required">*</span></label>
             <?= vox_rating_picker('rating', 'Overall rating', 0, 'stars', true, 'vox-stars-wrap--tight') ?>
         </div>
         <?php
@@ -84,7 +84,7 @@ $schema = $type === 'review' ? $vox->getSchema((int)$page->template->id, Vox::TY
         if ($customRatingFields):
         ?>
         <div class="vox-field">
-            <label class="vox-form__label">Category ratings</label>
+            <label class="ds-label vox-form__label">Category ratings</label>
             <div class="vox-params">
             <?php foreach ($customRatingFields as $f): ?>
                 <div class="vox-param">
@@ -98,22 +98,22 @@ $schema = $type === 'review' ? $vox->getSchema((int)$page->template->id, Vox::TY
         <?php endif ?>
 
         <div class="vox-field">
-            <textarea name="body" class="vox-textarea" rows="3" placeholder="<?= htmlspecialchars($placeholder) ?>" required></textarea>
+            <textarea name="body" class="ds-input vox-textarea" aria-label="<?= htmlspecialchars($title) ?>" rows="3" placeholder="<?= htmlspecialchars($placeholder) ?>" required></textarea>
             <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
         </div>
 
         <?php if ($type === 'review'): ?>
         <div class="vox-field vox-inline-form__recommend" data-vox-rec>
             <div class="vox-recommend-row">
-                <button type="button" class="vox-btn vox-btn--sm" data-rec-value="1"><?= vox_icon('thumbs-up') ?> I recommend</button>
-                <button type="button" class="vox-btn vox-btn--sm" data-rec-value="0"><?= vox_icon('thumbs-down') ?> Would not recommend</button>
+                <button type="button" class="ds-button vox-btn vox-btn--sm" data-variant="tertiary" data-rec-value="1"><?= vox_icon('thumbs-up') ?> I recommend</button>
+                <button type="button" class="ds-button vox-btn vox-btn--sm" data-variant="tertiary" data-rec-value="0"><?= vox_icon('thumbs-down') ?> Would not recommend</button>
                 <input type="hidden" name="recommend" data-vox-rec-input value="">
             </div>
         </div>
         <?php endif ?>
 
         <div class="vox-form__actions">
-            <button type="submit" class="vox-btn vox-btn--primary"><?= vox_icon('paper-plane') ?> <?= htmlspecialchars($button) ?></button>
+            <button type="submit" class="ds-button vox-btn vox-btn--primary" data-variant="primary"><?= vox_icon('paper-plane') ?> <?= htmlspecialchars($button) ?></button>
             <span data-vox-feedback hidden></span>
         </div>
     </form>

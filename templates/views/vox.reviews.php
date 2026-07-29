@@ -98,7 +98,7 @@ require_once __DIR__ . '/vox.helpers.php';
     <?php if ($totalPages > 1): ?>
     <div class="vox-pagination">
         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-        <a href="?p=<?= $i ?>" class="vox-btn vox-btn--sm <?= $i === $currPage ? 'vox-btn--primary' : '' ?>"><?= $i ?></a>
+        <a href="?p=<?= $i ?>" class="ds-button vox-btn vox-btn--sm <?= $i === $currPage ? 'vox-btn--primary' : '' ?>" data-variant="<?= $i === $currPage ? 'primary' : 'tertiary' ?>" <?= $i === $currPage ? 'aria-current="page"' : '' ?>><?= $i ?></a>
         <?php endfor ?>
     </div>
     <?php endif ?>
@@ -117,18 +117,18 @@ require_once __DIR__ . '/vox.helpers.php';
                 <?php if (!wire('user')->isLoggedIn()): ?>
                 <div class="vox-grid-2">
                     <div>
-                        <label class="vox-form__label" for="vox-rn">Your name <span class="vox-inline-note">(optional)</span></label>
-                        <input id="vox-rn" type="text" name="guest_name" class="vox-input" placeholder="Anonymous-XXX if blank">
+                        <label class="ds-label vox-form__label" for="vox-rn">Your name <span class="vox-inline-note">(optional)</span></label>
+                        <input id="vox-rn" type="text" name="guest_name" class="ds-input vox-input" placeholder="Anonymous-XXX if blank">
                     </div>
                     <div>
-                        <label class="vox-form__label" for="vox-re">Email <span class="vox-inline-note">(optional)</span></label>
-                        <input id="vox-re" type="email" name="guest_email" class="vox-input" placeholder="your@email.com">
+                        <label class="ds-label vox-form__label" for="vox-re">Email <span class="vox-inline-note">(optional)</span></label>
+                        <input id="vox-re" type="email" name="guest_email" class="ds-input vox-input" placeholder="your@email.com">
                     </div>
                 </div>
                 <?php endif ?>
 
                 <div class="vox-field">
-                    <label class="vox-form__label">Overall rating <span class="vox-field__label-required">*</span></label>
+                    <label class="ds-label vox-form__label">Overall rating <span class="vox-field__label-required">*</span></label>
                     <?= vox_rating_picker('rating', 'Overall rating', 0, 'stars', true) ?>
                 </div>
 
@@ -137,7 +137,7 @@ require_once __DIR__ . '/vox.helpers.php';
                 if ($customRatingFields):
                 ?>
                 <div class="vox-field">
-                    <label class="vox-form__label">Category ratings</label>
+                    <label class="ds-label vox-form__label">Category ratings</label>
                     <div class="vox-params">
                     <?php foreach ($customRatingFields as $f): ?>
                     <div class="vox-param">
@@ -150,23 +150,23 @@ require_once __DIR__ . '/vox.helpers.php';
                 <?php endif ?>
 
                 <div class="vox-field">
-                    <label class="vox-form__label" for="vox-rb">Your review <span class="vox-field__label-required">*</span></label>
-                    <textarea id="vox-rb" name="body" class="vox-textarea" rows="5" placeholder="Share your experience&hellip;" required></textarea>
+                    <label class="ds-label vox-form__label" for="vox-rb">Your review <span class="vox-field__label-required">*</span></label>
+                    <textarea id="vox-rb" name="body" class="ds-input vox-textarea" rows="5" placeholder="Share your experience&hellip;" required></textarea>
                     <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
                 </div>
 
                 <div class="vox-field vox-field--spacious" data-vox-rec>
-                    <label class="vox-form__label">Recommendation</label>
+                    <label class="ds-label vox-form__label">Recommendation</label>
                     <div class="vox-recommend-row">
-                        <button type="button" class="vox-btn" data-rec-value="1"><?= vox_icon('thumbs-up') ?> I recommend</button>
-                        <button type="button" class="vox-btn" data-rec-value="0"><?= vox_icon('thumbs-down') ?> Would not recommend</button>
+                        <button type="button" class="ds-button vox-btn" data-variant="tertiary" data-rec-value="1"><?= vox_icon('thumbs-up') ?> I recommend</button>
+                        <button type="button" class="ds-button vox-btn" data-variant="tertiary" data-rec-value="0"><?= vox_icon('thumbs-down') ?> Would not recommend</button>
                         <input type="hidden" name="recommend" data-vox-rec-input value="">
                     </div>
                 </div>
 
                 <?php if ($vox->cfg('photo_uploads')): ?>
                 <div class="vox-field vox-field--spacious">
-                    <label class="vox-form__label">Photos <span class="vox-inline-note">(max <?= (int)$vox->cfg('photo_max') ?>)</span></label>
+                    <label class="ds-label vox-form__label">Photos <span class="vox-inline-note">(max <?= (int)$vox->cfg('photo_max') ?>)</span></label>
                     <div class="vox-dropzone" data-vox-dropzone>
                         <?= vox_icon('cloud-arrow-up') ?>
                         <div class="vox-dropzone__line">Drag & drop or <label class="vox-file-link vox-file-link--compact">browse<input type="file" name="photos[]" multiple accept="image/*" data-vox-photo-input data-max="<?= (int)$vox->cfg('photo_max') ?>"></label></div>
@@ -177,7 +177,7 @@ require_once __DIR__ . '/vox.helpers.php';
                 <?php endif ?>
 
                 <div class="vox-form__actions">
-                    <button type="submit" class="vox-btn vox-btn--primary"><?= vox_icon('paper-plane') ?> Publish Review</button>
+                    <button type="submit" class="ds-button vox-btn vox-btn--primary" data-variant="primary"><?= vox_icon('paper-plane') ?> Publish Review</button>
                 </div>
                 <span data-vox-feedback hidden></span>
             </form>
