@@ -19,10 +19,11 @@ $answers = $vox->getChildEntries($questionId, 50);
 $answerCount = $vox->getEntryReplyCount($questionId);
 $pageKey = $vox->publicKey('page', $pageId);
 $questionKey = $vox->publicKey('entry', $questionId);
+$answersBackUrl = trim((string)($voxAnswersBackUrl ?? $page->url)) ?: $page->url;
 ?>
 
 <section class="vox-wrap vox-answers-question" data-discuss-page-key="<?= htmlspecialchars($pageKey) ?>">
-    <a class="vox-answers-back" href="<?= htmlspecialchars($page->url) ?>"><?= vox_icon('arrow-left') ?> All questions</a>
+    <a class="vox-answers-back" href="<?= htmlspecialchars($answersBackUrl) ?>"><?= vox_icon('arrow-left') ?> All questions</a>
 
     <div class="vox-answers-question__main">
         <?php $entry = $question; $depth = 0; $voxEntryNoChildren = true; $voxEntryNoReplyForm = true; include __DIR__ . '/vox.entry.php'; unset($voxEntryNoChildren, $voxEntryNoReplyForm); ?>

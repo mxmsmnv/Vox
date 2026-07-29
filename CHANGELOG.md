@@ -2,6 +2,12 @@
 
 All notable changes to Vox are documented here.
 
+## [1.7.2] - 2026-07-28
+
+### Fixed
+
+- Added a configurable `$voxAnswersBackUrl` for embedded Answers routes so question detail pages can return to the correct filtered or routed question index.
+
 ## [1.7.1] - 2026-07-28
 
 ### Fixed
