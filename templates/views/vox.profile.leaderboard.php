@@ -24,8 +24,8 @@ $currentUserId = (int)$voxProfile['user']['id'];
         ?>
         <div class="vox-lb-row <?= $isCurrent ? 'vox-lb-row--you' : '' ?>">
             <span class="vox-lb-pos <?= $i === 0 ? 'vox-lb-pos--gold' : ($i === 1 ? 'vox-lb-pos--silver' : 'vox-lb-pos--muted') ?>"><?= $i + 1 ?></span>
-            <?= vox_avatar((string)$row['name'], 24) ?>
-            <span class="vox-lb-name"><?= htmlspecialchars($row['name']) ?><?= $isCurrent ? ' <span class="vox-lb-you">you</span>' : '' ?></span>
+            <?= vox_avatar((string)$row['name'], 24, (string)($row['avatar_url'] ?? '')) ?>
+            <a class="vox-lb-name" href="/community/?profile=<?= rawurlencode((string)$row['user_key']) ?>"><?= htmlspecialchars($row['name']) ?><?= $isCurrent ? ' <span class="vox-lb-you">you</span>' : '' ?></a>
             <?php if (!empty($row['rank']['label'])): ?><span class="vox-rank-badge"><?= htmlspecialchars($row['rank']['label']) ?></span><?php endif ?>
             <span class="vox-lb-pts"><?= number_format((int)$row['points']) ?></span>
         </div>

@@ -2,6 +2,14 @@
 
 All notable changes to Vox are documented here.
 
+## [1.7.5] - 2026-07-29
+
+### Changed
+
+- Leaderboard rows now expose opaque profile keys and resolved avatars.
+- Answers and profile leaderboards render real avatars and link contributor
+  names to their public profiles.
+
 ## [1.7.4] - 2026-07-29
 
 ### Added

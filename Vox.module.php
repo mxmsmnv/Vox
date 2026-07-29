@@ -8,7 +8,7 @@ require_once __DIR__ . '/VoxGamification.php';
  *
  * @author  Maxim Semenov <maxim@smnv.org> (smnv.org)
  * @link    https://smnv.org
- * @version 1.7.4
+ * @version 1.7.5
  * @license MIT
  */
 class Vox extends WireData implements Module, ConfigurableModule {
@@ -33,7 +33,7 @@ class Vox extends WireData implements Module, ConfigurableModule {
         return [
             'title'    => 'Vox',
             'summary'  => 'Community discussions: reviews, Q&A, threads and block comments for any page.',
-            'version'  => 174,
+            'version'  => 175,
             'author'   => 'Maxim Semenov',
             'href'     => 'https://smnv.org',
             'icon'     => 'comments',
@@ -48,7 +48,7 @@ class Vox extends WireData implements Module, ConfigurableModule {
     // Semantic version for display. The integer in getModuleInfo() (used by
     // ProcessWire for upgrade detection) does not round-trip through
     // formatVersion() to this string, so keep this in sync on each release.
-    const VERSION = '1.7.4';
+    const VERSION = '1.7.5';
 
     // ── Table names ───────────────────────────────────────────────────────
 
@@ -1303,7 +1303,9 @@ class Vox extends WireData implements Module, ConfigurableModule {
             if ($rank !== null) $rank['points'] = $points;
             $result[] = [
                 'user_id'  => $userId,
+                'user_key' => $this->publicKey('user', $userId),
                 'name'     => $this->displayUserName($user),
+                'avatar_url' => $this->getUserAvatarUrl($user),
                 'points'   => (int) $row['total'],
                 'rank'     => $rank,
             ];
