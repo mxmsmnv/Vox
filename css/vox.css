@@ -302,6 +302,7 @@
   font-weight:   700;
   flex-shrink:   0;
   user-select:   none;
+  object-fit:    cover;
 }
 .vox-av--sm { width: 24px; height: 24px; font-size: 9px; }
 .vox-av--lg { width: 48px; height: 48px; font-size: 16px; }
@@ -1732,6 +1733,16 @@
 .vox-forum-mini {
   min-width: 0;
 }
+.vox-forum-card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  border-radius: inherit;
+}
+.vox-forum-card-link:focus-visible {
+  outline: 3px solid var(--vox-wine);
+  outline-offset: 3px;
+}
 .vox-forum-feature {
   border: 1px solid var(--vox-border);
   border-radius: var(--vox-radius-sm);
@@ -1784,6 +1795,11 @@
   color: var(--vox-text-4);
   font-size: 14px;
   line-height: 1.35;
+}
+.vox-forum-meta:has(.vox-av) {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
 }
 .vox-forum-card-stats {
   display: flex;

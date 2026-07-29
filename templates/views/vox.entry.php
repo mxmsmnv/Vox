@@ -45,6 +45,7 @@ require_once __DIR__ . '/vox.helpers.php';
 ?>
 
 <div class="vox-entry<?= $nestClass ?><?= $bestClass ?>"
+     id="vox-entry-<?= htmlspecialchars($entryKey) ?>"
      data-vox-entry="<?= htmlspecialchars($entryKey) ?>"
      data-created="<?= htmlspecialchars($entry['created']) ?>"
      data-rating="<?= (int)($fieldVals['rating'] ?? 0) ?>"
@@ -52,8 +53,12 @@ require_once __DIR__ . '/vox.helpers.php';
 
     <!-- Head -->
     <div class="vox-entry__head">
-        <?= vox_avatar($entry['author_name'], $depth === 0 ? 32 : 26) ?>
-        <span class="vox-entry__author"><?= htmlspecialchars($entry['author_name']) ?></span>
+        <?= vox_avatar($entry['author_name'], $depth === 0 ? 32 : 26, (string)($entry['author_avatar'] ?? '')) ?>
+        <?php if (!empty($entry['author_key'])): ?>
+            <a class="vox-entry__author" href="/community/?profile=<?= rawurlencode((string)$entry['author_key']) ?>"><?= htmlspecialchars($entry['author_name']) ?></a>
+        <?php else: ?>
+            <span class="vox-entry__author"><?= htmlspecialchars($entry['author_name']) ?></span>
+        <?php endif ?>
         <?php if ($entry['author_rank']): ?>
             <?= vox_rank_badge($entry['author_rank']) ?>
         <?php endif ?>

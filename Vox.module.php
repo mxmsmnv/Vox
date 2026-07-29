@@ -8,7 +8,7 @@ require_once __DIR__ . '/VoxGamification.php';
  *
  * @author  Maxim Semenov <maxim@smnv.org> (smnv.org)
  * @link    https://smnv.org
- * @version 1.7.2
+ * @version 1.7.3
  * @license MIT
  */
 class Vox extends WireData implements Module, ConfigurableModule {
@@ -33,7 +33,7 @@ class Vox extends WireData implements Module, ConfigurableModule {
         return [
             'title'    => 'Vox',
             'summary'  => 'Community discussions: reviews, Q&A, threads and block comments for any page.',
-            'version'  => 172,
+            'version'  => 173,
             'author'   => 'Maxim Semenov',
             'href'     => 'https://smnv.org',
             'icon'     => 'comments',
@@ -48,7 +48,7 @@ class Vox extends WireData implements Module, ConfigurableModule {
     // Semantic version for display. The integer in getModuleInfo() (used by
     // ProcessWire for upgrade detection) does not round-trip through
     // formatVersion() to this string, so keep this in sync on each release.
-    const VERSION = '1.7.2';
+    const VERSION = '1.7.3';
 
     // ── Table names ───────────────────────────────────────────────────────
 
@@ -1405,6 +1405,37 @@ class Vox extends WireData implements Module, ConfigurableModule {
     }
 
     /**
+     * Resolve a public avatar for a ProcessWire user.
+     *
+     * Image fields named avatar, image or images are preferred. Sites that do
+     * not add a user image field can use the non-schema convention
+     * /site/assets/vox/avatars/{user-name}.{webp|jpg|jpeg|png}.
+     */
+    public function getUserAvatarUrl(mixed $target): string {
+        $user = $this->resolveProfileUser($target);
+        if (!$user) return '';
+
+        foreach (['avatar', 'image', 'images'] as $fieldName) {
+            if (!$user->hasField($fieldName)) continue;
+            $value = $user->get($fieldName);
+            if ($value instanceof Pageimage) return (string)$value->url;
+            if ($value instanceof Pageimages && $value->count()) return (string)$value->first()->url;
+        }
+
+        $name = $this->wire->sanitizer->pageName((string)$user->name);
+        if ($name === '') return '';
+        $relativeDir = 'site/assets/vox/avatars/';
+        foreach (['webp', 'jpg', 'jpeg', 'png'] as $extension) {
+            $relative = $relativeDir . $name . '.' . $extension;
+            if (is_file($this->wire->config->paths->root . $relative)) {
+                return rtrim($this->wire->config->urls->root, '/') . '/' . $relative;
+            }
+        }
+
+        return '';
+    }
+
+    /**
      * Complete data set for modular public profile sections.
      */
     public function getUserProfileData(mixed $target = null, int $activityLimit = 10): array {
@@ -1432,6 +1463,7 @@ class Vox extends WireData implements Module, ConfigurableModule {
                 'user_key' => $this->publicKey('user', $userId),
                 'name' => (string)$user->name,
                 'display_name' => $this->displayUserName($user),
+                'avatar_url' => $this->getUserAvatarUrl($user),
                 'created' => $user->created ? date('Y-m-d H:i:s', (int)$user->created) : '',
             ],
             'stats' => $stats,
@@ -1979,10 +2011,14 @@ class Vox extends WireData implements Module, ConfigurableModule {
             $pwUser = $this->wire->users->get($userId);
             $pwUserName = ($pwUser && $pwUser->id) ? $this->displayUserName($pwUser) : ($entry['user_name'] ?? '');
             $entry['author_name'] = $pwUserName ?: "User #{$userId}";
+            $entry['author_avatar'] = ($pwUser && $pwUser->id) ? $this->getUserAvatarUrl($pwUser) : '';
+            $entry['author_key'] = $this->publicKey('user', $userId);
             $rank = $this->getUserRank($userId);
             $entry['author_rank'] = $rank['label'] ?? '';
         } else {
             $entry['author_name'] = $entry['guest_name'] ?: 'Anonymous';
+            $entry['author_avatar'] = '';
+            $entry['author_key'] = '';
             $entry['author_rank'] = 'Guest';
         }
         // Cast integer fields
@@ -3416,6 +3452,52 @@ PHP;
         }
 
         return $saved;
+    }
+
+    /**
+     * Attach an existing local image to an entry.
+     *
+     * Intended for trusted imports, migrations and reproducible demo data;
+     * browser uploads must continue to use saveEntryPhotos().
+     */
+    public function saveEntryPhotoFromPath(int $entryId, string $sourcePath, string $originalName = ''): array {
+        if (!$entryId || !$this->cfg('photo_uploads') || !is_file($sourcePath) || !is_readable($sourcePath)) return [];
+
+        $size = (int)filesize($sourcePath);
+        $maxBytes = max(1, (int)$this->cfg('photo_max_size')) * 1024 * 1024;
+        if ($size < 1 || $size > $maxBytes) return [];
+
+        $allowed = [
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/gif' => 'gif',
+            'image/webp' => 'webp',
+        ];
+        $mime = (new \finfo(FILEINFO_MIME_TYPE))->file($sourcePath) ?: '';
+        if (!isset($allowed[$mime])) return [];
+
+        $targetDir = $this->getPhotoUploadPath();
+        if (!is_dir($targetDir)) wireMkdir($targetDir, true);
+        if (!is_dir($targetDir) || !is_writable($targetDir)) return [];
+
+        $filename = sprintf('entry-%d-%s.%s', $entryId, bin2hex(random_bytes(8)), $allowed[$mime]);
+        if (!copy($sourcePath, $targetDir . $filename)) return [];
+
+        $sortStmt = $this->wire->database->prepare(
+            'SELECT COALESCE(MAX(sort), -1) + 1 FROM `' . self::TABLE_PHOTOS . '` WHERE entry_id = ?'
+        );
+        $sortStmt->execute([$entryId]);
+        $sort = (int)$sortStmt->fetchColumn();
+        $originalName = $this->wire->sanitizer->text($originalName !== '' ? $originalName : basename($sourcePath));
+
+        $this->wire->database->prepare("
+            INSERT INTO `" . self::TABLE_PHOTOS . "`
+                (entry_id, filename, original_name, mime, filesize, sort, created)
+            VALUES (?, ?, ?, ?, ?, ?, NOW())
+        ")->execute([$entryId, $filename, $originalName, $mime, $size, $sort]);
+        unset($this->entryPhotosCache[$entryId]);
+
+        return $this->getEntryPhotos($entryId);
     }
 
     private function normalizeUploadedPhotos(array $files): array {

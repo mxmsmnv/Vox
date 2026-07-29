@@ -100,6 +100,12 @@ $threadStats = function(array $entry) use ($vox): array {
     $lastActivity = $vox->getEntryLastActivity((int)$entry['id']) ?: (string)$entry['created'];
     return [$replyCount, $likes, $lastActivity];
 };
+$threadUrl = function(array $entry, string $fallbackUrl = '') use ($page, $vox): string {
+    $baseUrl = trim((string)($entry['_category_url'] ?? $fallbackUrl));
+    if ($baseUrl === '') $baseUrl = (string)$page->url;
+    $separator = str_contains($baseUrl, '?') ? '&' : '?';
+    return $baseUrl . $separator . 'view=discussions#vox-entry-' . $vox->publicKey('entry', (int)$entry['id']);
+};
 ?>
 
 <div class="vox-wrap vox-forum" id="vox-forum" data-discuss-page-key="<?= htmlspecialchars($firstCategory['page_key'] ?? '') ?>">
@@ -127,13 +133,18 @@ $threadStats = function(array $entry) use ($vox): array {
             [$replyCount, $likes, $lastActivity] = $threadStats($entry);
         ?>
             <article class="vox-forum-feature" data-vox-forum-card>
-                <div class="vox-forum-meta">from <?= htmlspecialchars($entry['author_name']) ?> · <?= vox_time_ago($entry['created']) ?></div>
-                <h3><?= htmlspecialchars($threadTitle($entry)) ?></h3>
-                <div class="vox-forum-card-stats">
-                    <span><?= vox_icon('comment') ?> <?= $replyCount ?></span>
-                    <span><?= vox_icon('heart') ?> <?= $likes ?></span>
-                    <span>Last activity <?= htmlspecialchars(vox_time_ago($lastActivity)) ?></span>
-                </div>
+                <a class="vox-forum-card-link" href="<?= htmlspecialchars($threadUrl($entry)) ?>">
+                    <div class="vox-forum-meta">
+                        <?= vox_avatar((string)$entry['author_name'], 24, (string)($entry['author_avatar'] ?? '')) ?>
+                        <span>from <?= htmlspecialchars($entry['author_name']) ?> · <?= vox_time_ago($entry['created']) ?></span>
+                    </div>
+                    <h3><?= htmlspecialchars($threadTitle($entry)) ?></h3>
+                    <div class="vox-forum-card-stats">
+                        <span><?= vox_icon('comment') ?> <?= $replyCount ?></span>
+                        <span><?= vox_icon('heart') ?> <?= $likes ?></span>
+                        <span>Last activity <?= htmlspecialchars(vox_time_ago($lastActivity)) ?></span>
+                    </div>
+                </a>
             </article>
         <?php endforeach ?>
         </div>
@@ -190,13 +201,18 @@ $threadStats = function(array $entry) use ($vox): array {
                         [$replyCount, $likes, $lastActivity] = $threadStats($entry);
                     ?>
                     <article class="vox-forum-thread" data-vox-forum-card>
-                        <h3><?= htmlspecialchars($threadTitle($entry)) ?></h3>
-                        <div class="vox-forum-meta">from <?= htmlspecialchars($entry['author_name']) ?> · <?= vox_time_ago($entry['created']) ?></div>
-                        <div class="vox-forum-card-stats">
-                            <span><?= vox_icon('comment') ?> <?= $replyCount ?></span>
-                            <span><?= vox_icon('heart') ?> <?= $likes ?></span>
-                            <span>Last activity <?= htmlspecialchars(vox_time_ago($lastActivity)) ?></span>
-                        </div>
+                        <a class="vox-forum-card-link" href="<?= htmlspecialchars($threadUrl($entry, (string)$row['page']->url)) ?>">
+                            <h3><?= htmlspecialchars($threadTitle($entry)) ?></h3>
+                            <div class="vox-forum-meta">
+                                <?= vox_avatar((string)$entry['author_name'], 24, (string)($entry['author_avatar'] ?? '')) ?>
+                                <span>from <?= htmlspecialchars($entry['author_name']) ?> · <?= vox_time_ago($entry['created']) ?></span>
+                            </div>
+                            <div class="vox-forum-card-stats">
+                                <span><?= vox_icon('comment') ?> <?= $replyCount ?></span>
+                                <span><?= vox_icon('heart') ?> <?= $likes ?></span>
+                                <span>Last activity <?= htmlspecialchars(vox_time_ago($lastActivity)) ?></span>
+                            </div>
+                        </a>
                     </article>
                     <?php endforeach ?>
                 </div>
@@ -215,9 +231,11 @@ $threadStats = function(array $entry) use ($vox): array {
                     [$replyCount, $likes, $lastActivity] = $threadStats($entry);
                 ?>
                     <article class="vox-forum-mini" data-vox-forum-card>
-                        <h3><?= htmlspecialchars($threadTitle($entry)) ?></h3>
-                        <div class="vox-forum-meta"><?= htmlspecialchars($entry['_category_title'] ?? '') ?> · <?= vox_time_ago($entry['created']) ?></div>
-                        <div class="vox-forum-card-stats"><span><?= $replyCount ?> replies</span><span><?= $likes ?> likes</span></div>
+                        <a class="vox-forum-card-link" href="<?= htmlspecialchars($threadUrl($entry)) ?>">
+                            <h3><?= htmlspecialchars($threadTitle($entry)) ?></h3>
+                            <div class="vox-forum-meta"><?= htmlspecialchars($entry['_category_title'] ?? '') ?> · <?= vox_time_ago($entry['created']) ?></div>
+                            <div class="vox-forum-card-stats"><span><?= $replyCount ?> replies</span><span><?= $likes ?> likes</span></div>
+                        </a>
                     </article>
                 <?php endforeach ?>
                 </div>

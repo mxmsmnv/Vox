@@ -2,6 +2,24 @@
 
 All notable changes to Vox are documented here.
 
+## [1.7.3] - 2026-07-29
+
+### Added
+
+- Added public user avatar resolution from common ProcessWire image fields or
+  the schema-free `/site/assets/vox/avatars/{user-name}` convention.
+- Added `saveEntryPhotoFromPath()` for trusted imports, migrations and
+  reproducible fixtures.
+
+### Changed
+
+- Public entry data now includes an opaque author key and avatar URL so host
+  applications can link author identities without exposing user ids.
+- Entry authors link to their public Community profile and entry wrappers have
+  stable public-key anchors.
+- Profile assembly no longer creates a nested `<main>` when embedded in a host
+  page.
+
 ## [1.7.2] - 2026-07-28
 
 ### Fixed

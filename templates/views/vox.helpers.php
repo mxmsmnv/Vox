@@ -18,10 +18,14 @@ if (!function_exists('ProcessWire\\vox_stars')) {
  * Render an avatar with initials.
  * @param string $name
  * @param int    $size  size bucket: 24, 32, 48
+ * @param string $url   optional public image URL
  */
-function vox_avatar(string $name, int $size = 32): string {
+function vox_avatar(string $name, int $size = 32, string $url = ''): string {
     $initials = mb_strtoupper(mb_substr($name, 0, 2));
     $cls = $size <= 24 ? 'vox-av vox-av--sm' : ($size >= 48 ? 'vox-av vox-av--lg' : 'vox-av');
+    if ($url !== '') {
+        return '<img class="' . $cls . '" src="' . htmlspecialchars($url) . '" width="' . $size . '" height="' . $size . '" alt="">';
+    }
     return '<span class="' . $cls . '" aria-hidden="true">' . htmlspecialchars($initials) . '</span>';
 }
 

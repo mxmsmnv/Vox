@@ -23,7 +23,7 @@ $joined = !empty($user['created']) ? date('F Y', strtotime($user['created'])) : 
     <div class="vox-profile-head__banner"></div>
     <div class="vox-profile-head__body">
         <div class="vox-profile-head__main">
-            <?= vox_avatar($user['display_name'], 48) ?>
+            <?= vox_avatar($user['display_name'], 48, (string)($user['avatar_url'] ?? '')) ?>
             <div>
                 <h1><?= htmlspecialchars($user['display_name']) ?></h1>
                 <div class="vox-profile-head__meta">
