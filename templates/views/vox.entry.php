@@ -45,7 +45,7 @@ require_once __DIR__ . '/vox.helpers.php';
 ?>
 
 <div class="vox-entry<?= $nestClass ?><?= $bestClass ?>"
-     id="vox-entry-<?= htmlspecialchars($entryKey) ?>"
+     id="<?= htmlspecialchars($vox->publicAnchor('entry', (int)$entry['id'])) ?>"
      data-vox-entry="<?= htmlspecialchars($entryKey) ?>"
      data-created="<?= htmlspecialchars($entry['created']) ?>"
      data-rating="<?= (int)($fieldVals['rating'] ?? 0) ?>"

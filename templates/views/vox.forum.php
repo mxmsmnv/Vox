@@ -104,7 +104,7 @@ $threadUrl = function(array $entry, string $fallbackUrl = '') use ($page, $vox):
     $baseUrl = trim((string)($entry['_category_url'] ?? $fallbackUrl));
     if ($baseUrl === '') $baseUrl = (string)$page->url;
     $separator = str_contains($baseUrl, '?') ? '&' : '?';
-    return $baseUrl . $separator . 'view=discussions#vox-entry-' . $vox->publicKey('entry', (int)$entry['id']);
+    return $baseUrl . $separator . 'view=discussions#' . $vox->publicAnchor('entry', (int)$entry['id']);
 };
 ?>
 
@@ -184,7 +184,7 @@ $threadUrl = function(array $entry, string $fallbackUrl = '') use ($page, $vox):
     </section>
 
     <div class="vox-forum-layout">
-        <main class="vox-forum-main">
+        <div class="vox-forum-main">
         <?php foreach ($categoryRows as $row): ?>
             <section class="vox-forum-category" data-vox-forum-card>
                 <div class="vox-forum-category__head">
@@ -221,7 +221,7 @@ $threadUrl = function(array $entry, string $fallbackUrl = '') use ($page, $vox):
                 <?php endif ?>
             </section>
         <?php endforeach ?>
-        </main>
+        </div>
 
         <aside class="vox-forum-side">
             <section class="vox-forum-side-card">

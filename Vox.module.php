@@ -8,7 +8,7 @@ require_once __DIR__ . '/VoxGamification.php';
  *
  * @author  Maxim Semenov <maxim@smnv.org> (smnv.org)
  * @link    https://smnv.org
- * @version 1.7.3
+ * @version 1.7.4
  * @license MIT
  */
 class Vox extends WireData implements Module, ConfigurableModule {
@@ -33,7 +33,7 @@ class Vox extends WireData implements Module, ConfigurableModule {
         return [
             'title'    => 'Vox',
             'summary'  => 'Community discussions: reviews, Q&A, threads and block comments for any page.',
-            'version'  => 173,
+            'version'  => 174,
             'author'   => 'Maxim Semenov',
             'href'     => 'https://smnv.org',
             'icon'     => 'comments',
@@ -48,7 +48,7 @@ class Vox extends WireData implements Module, ConfigurableModule {
     // Semantic version for display. The integer in getModuleInfo() (used by
     // ProcessWire for upgrade detection) does not round-trip through
     // formatVersion() to this string, so keep this in sync on each release.
-    const VERSION = '1.7.3';
+    const VERSION = '1.7.4';
 
     // ── Table names ───────────────────────────────────────────────────────
 
@@ -182,6 +182,19 @@ class Vox extends WireData implements Module, ConfigurableModule {
         if ($cipher === false) return '';
         $mac = hash_hmac('sha256', $iv . $cipher, $key, true);
         return 'vox_' . $this->base64UrlEncode($iv . $mac . $cipher);
+    }
+
+    /**
+     * Return a stable, opaque DOM anchor for a record.
+     *
+     * Public keys are intentionally randomized and therefore cannot be used
+     * as repeatable fragment identifiers.
+     */
+    public function publicAnchor(string $scope, int $id): string {
+        if ($id <= 0) return '';
+        $scope = preg_replace('/[^a-z0-9_-]/i', '', $scope) ?: 'id';
+        $digest = hash_hmac('sha256', $scope . '|' . $id, $this->publicIdSecret(), true);
+        return 'vox-' . substr($this->base64UrlEncode($digest), 0, 22);
     }
 
     /**
