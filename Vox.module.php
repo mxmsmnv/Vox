@@ -8,7 +8,7 @@ require_once __DIR__ . '/VoxGamification.php';
  *
  * @author  Maxim Semenov <maxim@smnv.org> (smnv.org)
  * @link    https://smnv.org
- * @version 1.8.0
+ * @version 1.9.0
  * @license MIT
  */
 class Vox extends WireData implements Module, ConfigurableModule {
@@ -33,7 +33,7 @@ class Vox extends WireData implements Module, ConfigurableModule {
         return [
             'title'    => 'Vox',
             'summary'  => 'Community discussions: reviews, Q&A, threads and block comments for any page.',
-            'version'  => 180,
+            'version'  => 190,
             'author'   => 'Maxim Semenov',
             'href'     => 'https://smnv.org',
             'icon'     => 'comments',
@@ -1268,6 +1268,14 @@ class Vox extends WireData implements Module, ConfigurableModule {
     }
 
     /**
+     * Hookable notification that public Vox output for a page changed.
+     *
+     * Full-page cache modules can listen to this event and invalidate the
+     * related document without Vox depending on a specific cache provider.
+     */
+    public function ___contentChanged(int $pageId, string $reason = 'content_changed'): void {}
+
+    /**
      * Get leaderboard: top N users by total points.
      */
     public function getLeaderboard(string $period = 'month', int $limit = 10): array {
@@ -2321,28 +2329,49 @@ class Vox extends WireData implements Module, ConfigurableModule {
      * Update entry status (approve/reject/spam).
      */
     public function setEntryStatus(int $entryId, string $status): bool {
-        return $this->repository()->setEntryStatus($entryId, $status);
+        $entry = $this->getEntry($entryId);
+        $saved = $this->repository()->setEntryStatus($entryId, $status);
+        if ($saved && $entry) $this->contentChanged((int)$entry['page_id'], 'status_changed');
+        return $saved;
     }
 
     /**
      * Bulk-update status for multiple entries.
      */
     public function setEntriesStatus(array $ids, string $status): bool {
-        return $this->repository()->setEntriesStatus($ids, $status);
+        $pageIds = [];
+        foreach (array_values(array_unique(array_filter(array_map('intval', $ids)))) as $id) {
+            $entry = $this->getEntry($id);
+            if ($entry) $pageIds[(int)$entry['page_id']] = true;
+        }
+        $saved = $this->repository()->setEntriesStatus($ids, $status);
+        if ($saved) {
+            foreach (array_keys($pageIds) as $pageId) {
+                $this->contentChanged((int)$pageId, 'status_changed');
+            }
+        }
+        return $saved;
     }
 
     /**
      * Delete one entry with its nested replies and dependent rows.
      */
     public function deleteEntry(int $entryId): bool {
-        return $this->repository()->deleteEntry($entryId);
+        $entry = $this->getEntry($entryId);
+        $deleted = $this->repository()->deleteEntry($entryId);
+        if ($deleted && $entry) $this->contentChanged((int)$entry['page_id'], 'entry_deleted');
+        return $deleted;
     }
 
     /**
      * Delete multiple entries with their descendants.
      */
     public function deleteEntries(array $ids): int {
-        return $this->repository()->deleteEntries($ids);
+        $count = 0;
+        foreach (array_values(array_unique(array_filter(array_map('intval', $ids)))) as $id) {
+            if ($this->deleteEntry($id)) $count++;
+        }
+        return $count;
     }
 
     /**
@@ -3180,6 +3209,8 @@ PHP;
         $this->wire->database
              ->prepare("UPDATE `" . self::TABLE_ENTRIES . "` SET status = ?, body = ?, recommend = ? WHERE id = ?")
              ->execute([$status, $body, $recommend, $entryId]);
+        $entry = $this->getEntry($entryId);
+        if ($entry) $this->contentChanged((int)$entry['page_id'], 'entry_edited');
         return true;
     }
 
@@ -3579,7 +3610,10 @@ PHP;
         $stmt = $db->prepare($totalSql);
         $stmt->execute([$entryId]);
 
-        return ['total' => (int)$stmt->fetchColumn(), 'user_vote' => $newValue, 'prev_vote' => $prevValue];
+        $result = ['total' => (int)$stmt->fetchColumn(), 'user_vote' => $newValue, 'prev_vote' => $prevValue];
+        $entry = $this->getEntry($entryId);
+        if ($entry) $this->contentChanged((int)$entry['page_id'], 'vote_changed');
+        return $result;
     }
 
     /**
@@ -3645,6 +3679,7 @@ PHP;
         $db->prepare("UPDATE `" . self::TABLE_ENTRIES . "` SET is_best_answer = 1 WHERE id = ?")
            ->execute([$entryId]);
 
+        $this->contentChanged((int)$entry['page_id'], 'best_answer_changed');
         return true;
     }
 

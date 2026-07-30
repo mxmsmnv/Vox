@@ -2,6 +2,19 @@
 
 All notable changes to Vox are documented here.
 
+## [1.9.0] - 2026-07-30
+
+### Added
+
+- Added the hookable `Vox::contentChanged()` event for cache integrations.
+
+### Changed
+
+- Public entry creation, editing, moderation, deletion, voting, and best-answer
+  changes now identify the affected ProcessWire page.
+- Cache providers can invalidate public HTML without Vox depending on a
+  specific full-page cache module.
+
 ## [1.8.0] - 2026-07-30
 
 ### Added

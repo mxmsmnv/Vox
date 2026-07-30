@@ -12,7 +12,7 @@ class VoxApi extends WireData implements Module {
         return [
             'title'    => 'Vox API',
             'summary'  => 'REST API for Vox discussions module.',
-            'version'  => 180,
+            'version'  => 190,
             'author'   => 'Maxim Semenov',
             'href'     => 'https://smnv.org',
             'icon'     => 'plug',
@@ -299,6 +299,10 @@ class VoxApi extends WireData implements Module {
             if ($val !== '') {
                 $this->vox->saveEntryFieldValue($entryId, (int)$field['id'], $val);
             }
+        }
+
+        if ($status === Vox::STATUS_PUBLISHED) {
+            $this->vox->contentChanged($pageId, 'entry_added');
         }
 
         // Gamification
