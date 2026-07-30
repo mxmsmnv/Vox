@@ -2,6 +2,16 @@
 
 All notable changes to Vox are documented here.
 
+## [1.9.1] - 2026-07-30
+
+### Changed
+
+- CSRF bootstrap is now fully lazy and runs only when a visitor performs a
+  protected action.
+- Anonymous readers no longer receive a ProcessWire session cookie merely by
+  opening a page with Vox, preserving Cloudflare and static-cache eligibility
+  across subsequent navigation.
+
 ## [1.9.0] - 2026-07-30
 
 ### Added

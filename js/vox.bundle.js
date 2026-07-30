@@ -172,10 +172,6 @@
     initDataBars,
   });
 
-  if (qsa('[data-vox-csrf]').length) {
-    ensureCsrf().catch(() => {});
-  }
-
 })();
 
 
