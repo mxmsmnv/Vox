@@ -7,7 +7,7 @@
   'use strict';
 
   const {
-    cfg, API, CSRF_NAME, CSRF_VALUE,
+    cfg, API, appendCsrf,
     qs, qsa,
     get, escHtml,
     renderStars, timeAgo,
@@ -45,7 +45,7 @@
       if (warning && !warning.hidden) return;
 
       const fd = new FormData(form);
-      if (CSRF_NAME) fd.set(CSRF_NAME, CSRF_VALUE);
+      await appendCsrf(fd);
 
       if (submitBtn) submitBtn.disabled = true;
 

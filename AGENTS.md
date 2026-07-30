@@ -266,7 +266,9 @@ Main routes:
 | `GET` | `/vox-api/leaderboard/` | Leaderboard rows |
 | `GET` | `/vox-api/user-stats/` | Current logged-in user's stats |
 
-All public POST endpoints require a valid ProcessWire CSRF token. Public templates get the token through `window.VoxConfig` from `vox.init.php`.
+All public POST endpoints require a valid ProcessWire CSRF token. Public
+templates hydrate it from the private/no-store `/vox-api/csrf/` endpoint so
+full-page caches never persist a visitor token.
 
 External modules may hook after new entries:
 
@@ -286,7 +288,9 @@ When asked to build a ProcessWire site with Vox:
 3. Use template includes for developer-owned layouts.
 4. Use Textformatter tokens for editor-owned content placement.
 5. Use profile section includes for account pages instead of a monolithic profile if the design is custom.
-6. Exclude Vox-rendered pages from full-page caching, or render `vox.init.php` outside cached fragments.
+6. Vox 1.8+ can live in anonymous full-page cached documents because CSRF is
+   bootstrapped at runtime. The `/vox-api/` routes themselves must always bypass
+   cache, and authenticated requests must bypass at the edge by session cookie.
 7. If the site uses `_main.php` or Markup Regions, follow existing ProcessWire layout conventions and include Vox views where the actual content should render.
 
 For editorial/article pages, prefer an inline form after meaningful context instead of placing all participation only at the end:

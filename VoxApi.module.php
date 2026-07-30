@@ -12,7 +12,7 @@ class VoxApi extends WireData implements Module {
         return [
             'title'    => 'Vox API',
             'summary'  => 'REST API for Vox discussions module.',
-            'version'  => 177,
+            'version'  => 180,
             'author'   => 'Maxim Semenov',
             'href'     => 'https://smnv.org',
             'icon'     => 'plug',
@@ -54,6 +54,11 @@ class VoxApi extends WireData implements Module {
 
         // Base URL — hide the discovery document unless explicitly permitted.
         if ($resource === '') return $this->apiIndex();
+
+        if ($resource === 'csrf' && $action === '') {
+            if ($method === 'GET') return $this->apiCsrf();
+            return $this->methodNotAllowed(['GET']);
+        }
 
         if ($resource === 'blocks' && $action === '') {
             if ($method === 'GET') return $this->apiBlocks();
@@ -105,6 +110,23 @@ class VoxApi extends WireData implements Module {
 
     public function ___upgrade($fromVersion, $toVersion): void {
         $this->cleanupLegacyProcessPage();
+    }
+
+    // ── GET /vox-api/csrf/ ───────────────────────────────────────────────
+
+    /**
+     * Return a request-local CSRF token for cache-safe frontend bootstrapping.
+     *
+     * Full-page caches may safely store Vox markup because no token needs to be
+     * embedded in the document. The endpoint itself is always private/no-store.
+     */
+    private function apiCsrf(): string {
+        $csrf = $this->wire->session->CSRF;
+        return $this->json([
+            'name' => $csrf->getTokenName(),
+            'value' => $csrf->getTokenValue(),
+            'loggedIn' => $this->wire->user->isLoggedIn(),
+        ]);
     }
 
     // ── GET /vox-api/blocks/ ──────────────────────────────────────────────
@@ -562,6 +584,7 @@ class VoxApi extends WireData implements Module {
             'endpoints' => [
                 ['method' => 'GET',  'path' => $base . 'blocks/',        'auth' => 'public', 'desc' => 'Comment counts for block ids on a page.'],
                 ['method' => 'GET',  'path' => $base . 'entries/',       'auth' => 'public', 'desc' => 'Paginated list of published entries and replies.'],
+                ['method' => 'GET',  'path' => $base . 'csrf/',         'auth' => 'public', 'desc' => 'Request-local CSRF token for cache-safe forms.'],
                 ['method' => 'POST', 'path' => $base . 'entries/add',    'auth' => 'csrf',   'desc' => 'Create a review, question, thread or comment.'],
                 ['method' => 'POST', 'path' => $base . 'entries/vote',   'auth' => 'csrf',   'desc' => 'Toggle a like / helpful vote on an entry.'],
                 ['method' => 'POST', 'path' => $base . 'entries/report', 'auth' => 'csrf',   'desc' => 'Report an entry for moderation.'],

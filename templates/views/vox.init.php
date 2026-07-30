@@ -18,7 +18,6 @@
 $vox     = wire('modules')->get('Vox');
 $cfg     = wire('config');
 $user    = wire('user');
-$csrf    = wire('session')->CSRF;
 $modUrl  = $cfg->urls->Vox;
 $cssPath = __DIR__ . '/../../css/vox.css';
 $cssVer  = is_file($cssPath) ? filemtime($cssPath) : time();
@@ -50,8 +49,7 @@ $isLoggedIn = $user->isLoggedIn();
 <script>
 window.VoxConfig = {
     apiUrl:      "<?= wire('config')->urls->root ?>vox-api/",
-    csrfName:    "<?= $csrf->getTokenName() ?>",
-    csrfValue:   "<?= $csrf->getTokenValue() ?>",
+    csrfUrl:     "<?= wire('config')->urls->root ?>vox-api/csrf/",
     panelMode:   "<?= $vox->cfg('panel_mode') ?>",
     photoMax:    <?= (int)$vox->cfg('photo_max') ?>,
     allowGuests: <?= $vox->cfg('allow_guests') ? 'true' : 'false' ?>,

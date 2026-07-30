@@ -232,8 +232,7 @@ function vox_entry_photos(array $photos): string {
  * Render the hidden CSRF input.
  */
 function vox_csrf(): string {
-    $csrf = wire('session')->CSRF;
-    return '<input type="hidden" name="' . $csrf->getTokenName() . '" value="' . $csrf->getTokenValue() . '">';
+    return '<input type="hidden" data-vox-csrf>';
 }
 
 /**

@@ -2,6 +2,19 @@
 
 All notable changes to Vox are documented here.
 
+## [1.8.0] - 2026-07-30
+
+### Added
+
+- Added `GET /vox-api/csrf/`, a private/no-store endpoint for request-local
+  frontend CSRF bootstrap.
+
+### Changed
+
+- Public Vox markup no longer embeds a visitor session token in cacheable HTML.
+  Forms hydrate their hidden CSRF input at runtime and all JavaScript POST
+  helpers obtain a current token before submitting.
+
 ## [1.7.7] - 2026-07-29
 
 ### Changed

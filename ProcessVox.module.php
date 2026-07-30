@@ -12,7 +12,7 @@ class ProcessVox extends Process {
         return [
             'title'    => 'Vox Admin',
             'summary'  => 'Community discussions admin panel.',
-            'version'  => 177,
+            'version'  => 180,
             'author'   => 'Maxim Semenov',
             'href'     => 'https://smnv.org',
             'icon'     => 'comments',

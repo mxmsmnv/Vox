@@ -1,5 +1,5 @@
 /**
- * Vox — vox.bundle.js (generated 2026-07-29)
+ * Vox — vox.bundle.js (generated 2026-07-30)
  * Source files: vox.core.js, vox.stars.js, vox.vote.js, vox.reply.js, vox.entry.js, vox.blocks.js, vox.filters.js, vox.photos.js, vox.profile.js, vox.init.js
  * Edit the source files, not this bundle.
  */
@@ -12,8 +12,8 @@
   const cfg = window.VoxConfig || {};
 
   const API        = cfg.apiUrl    || '/vox-api/';
-  const CSRF_NAME  = cfg.csrfName  || '';
-  const CSRF_VALUE = cfg.csrfValue || '';
+  let csrfToken = null;
+  let csrfRequest = null;
 
   // ── DOM helpers ───────────────────────────────────────────────────────
 
@@ -22,15 +22,44 @@
 
   // ── Fetch ─────────────────────────────────────────────────────────────
 
-  function csrfBody(extra) {
+  async function ensureCsrf() {
+    if (csrfToken && csrfToken.name && csrfToken.value) return csrfToken;
+    if (!csrfRequest) {
+      const url = cfg.csrfUrl || (API + 'csrf/');
+      csrfRequest = fetch(url, {
+        credentials: 'same-origin',
+        headers: { Accept: 'application/json' },
+        cache: 'no-store',
+      }).then(parseResponse).then(data => {
+        csrfToken = { name: data.name || '', value: data.value || '' };
+        if (!csrfToken.name || !csrfToken.value) throw new Error('CSRF token unavailable');
+        qsa('[data-vox-csrf]').forEach(input => {
+          input.name = csrfToken.name;
+          input.value = csrfToken.value;
+        });
+        return csrfToken;
+      }).catch(error => {
+        csrfRequest = null;
+        throw error;
+      });
+    }
+    return csrfRequest;
+  }
+
+  async function appendCsrf(formData) {
+    const token = await ensureCsrf();
+    formData.set(token.name, token.value);
+    return formData;
+  }
+
+  async function csrfBody(extra) {
     const fd = new FormData();
-    if (CSRF_NAME) fd.append(CSRF_NAME, CSRF_VALUE);
     if (extra) Object.entries(extra).forEach(([k, v]) => fd.append(k, v));
-    return fd;
+    return appendCsrf(fd);
   }
 
   async function post(endpoint, data) {
-    const fd  = csrfBody(data);
+    const fd  = await csrfBody(data);
     const res = await fetch(API + endpoint, { method: 'POST', body: fd });
     return parseResponse(res);
   }
@@ -126,8 +155,8 @@
   Object.assign(window.Vox, {
     cfg,
     API,
-    CSRF_NAME,
-    CSRF_VALUE,
+    ensureCsrf,
+    appendCsrf,
     // DOM
     qs,
     qsa,
@@ -142,6 +171,10 @@
     showFeedback,
     initDataBars,
   });
+
+  if (qsa('[data-vox-csrf]').length) {
+    ensureCsrf().catch(() => {});
+  }
 
 })();
 
@@ -493,7 +526,7 @@
   'use strict';
 
   const {
-    cfg, API, CSRF_NAME, CSRF_VALUE,
+    cfg, API, appendCsrf,
     qs, qsa,
     get, escHtml,
     renderStars, timeAgo,
@@ -531,7 +564,7 @@
       if (warning && !warning.hidden) return;
 
       const fd = new FormData(form);
-      if (CSRF_NAME) fd.set(CSRF_NAME, CSRF_VALUE);
+      await appendCsrf(fd);
 
       if (submitBtn) submitBtn.disabled = true;
 
