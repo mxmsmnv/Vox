@@ -81,9 +81,15 @@ require_once __DIR__ . '/vox.helpers.php';
     <?php endif ?>
 
     <!-- Body -->
+    <?php if (!empty($voxEntryTitleOverride)): ?>
+    <h2 class="ds-heading vox-entry__title" data-size="md"><?= htmlspecialchars((string)$voxEntryTitleOverride) ?></h2>
+    <?php endif ?>
+    <?php $voxEntryDisplayBody = isset($voxEntryBodyOverride) ? (string)$voxEntryBodyOverride : (string)$entry['body']; ?>
+    <?php if (trim($voxEntryDisplayBody) !== ''): ?>
     <div class="vox-entry__body">
-        <?= nl2br(htmlspecialchars($entry['body'])) ?>
+        <?= nl2br(htmlspecialchars($voxEntryDisplayBody)) ?>
     </div>
+    <?php endif ?>
 
     <?= vox_entry_photos($entry['photos'] ?? []) ?>
 

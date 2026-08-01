@@ -23,17 +23,44 @@ $answersBackUrl = trim((string)($voxAnswersBackUrl ?? $page->url)) ?: $page->url
 $answerFormPrefix = vox_control_id('vox-answer');
 $answerNameId = $answerFormPrefix . '-name';
 $answerBodyId = $answerFormPrefix . '-body';
+$questionText = trim(strip_tags((string)$question['body']));
+$questionTitle = '';
+$questionDetailBody = $questionText;
+if (preg_match('/^(.{1,220}\?)(?:\s+|$)(.*)$/us', $questionText, $questionParts)) {
+    $questionTitle = trim((string)$questionParts[1]);
+    $questionDetailBody = trim((string)$questionParts[2]);
+}
+$isSolved = !empty($question['best_count']);
 ?>
 
 <section class="vox-wrap vox-answers-question" data-discuss-page-key="<?= htmlspecialchars($pageKey) ?>">
     <a class="vox-answers-back" href="<?= htmlspecialchars($answersBackUrl) ?>"><?= vox_icon('arrow-left') ?> All questions</a>
 
     <div class="vox-answers-question__main">
-        <?php $entry = $question; $depth = 0; $voxEntryNoChildren = true; $voxEntryNoReplyForm = true; include __DIR__ . '/vox.entry.php'; unset($voxEntryNoChildren, $voxEntryNoReplyForm); ?>
+        <div class="vox-answers-question__statusbar">
+            <span class="ds-tag vox-answer-status <?= $isSolved ? 'vox-answer-status--solved' : '' ?>" data-color="<?= $isSolved ? 'success' : 'neutral' ?>" data-size="sm"><?= $isSolved ? vox_icon('circle-check') . ' Solved' : 'Open question' ?></span>
+            <span><?= number_format($answerCount) ?> answer<?= $answerCount === 1 ? '' : 's' ?></span>
+        </div>
+        <?php
+        $entry = $question;
+        $depth = 0;
+        $voxEntryNoChildren = true;
+        $voxEntryNoReplyForm = true;
+        $voxEntryTitleOverride = $questionTitle;
+        $voxEntryBodyOverride = $questionDetailBody;
+        include __DIR__ . '/vox.entry.php';
+        unset($voxEntryNoChildren, $voxEntryNoReplyForm, $voxEntryTitleOverride, $voxEntryBodyOverride);
+        ?>
     </div>
 
-    <div class="vox-answers-answer-form vox-card">
-        <div class="vox-card__head"><?= vox_icon('reply') ?> Your answer</div>
+    <div class="vox-answers-answer-form">
+        <div class="vox-answers-answer-form__intro">
+            <span class="vox-answers-answer-form__icon" aria-hidden="true"><?= vox_icon('reply') ?></span>
+            <div>
+                <h2 class="ds-heading" data-size="sm">Write an answer</h2>
+                <p>Share practical experience, explain your reasoning, and cite a source when a fact needs verification.</p>
+            </div>
+        </div>
         <div class="vox-form">
             <form class="vox-form__element" data-vox-form data-entry-list="vox-answer-list">
                 <?= vox_csrf() ?>
@@ -47,8 +74,8 @@ $answerBodyId = $answerFormPrefix . '-body';
                 </div>
                 <?php endif ?>
                 <div class="ds-field vox-field">
-                    <label class="ds-label vox-form__label" for="<?= htmlspecialchars($answerBodyId) ?>">Your answer</label>
-                    <textarea id="<?= htmlspecialchars($answerBodyId) ?>" name="body" class="ds-input vox-textarea" rows="5" placeholder="Write a helpful answer..." required></textarea>
+                    <label class="ds-label vox-form__label" for="<?= htmlspecialchars($answerBodyId) ?>">Answer</label>
+                    <textarea id="<?= htmlspecialchars($answerBodyId) ?>" name="body" class="ds-input vox-textarea" rows="6" placeholder="Write a clear, helpful answer…" required></textarea>
                     <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
                 </div>
                 <div class="vox-form__actions">
@@ -59,11 +86,14 @@ $answerBodyId = $answerFormPrefix . '-body';
         </div>
     </div>
 
-    <h2 class="ds-heading vox-answers-subtitle" data-size="md"><?= number_format($answerCount) ?> answer<?= $answerCount === 1 ? '' : 's' ?></h2>
+    <div class="vox-answers-heading">
+        <h2 class="ds-heading vox-answers-subtitle" data-size="md">Answers</h2>
+        <span><?= number_format($answerCount) ?></span>
+    </div>
     <div id="vox-answer-list" data-vox-entries-list>
     <?php foreach ($answers as $answer): ?>
-        <?php $entry = $answer; $depth = 1; include __DIR__ . '/vox.entry.php'; ?>
+        <?php $entry = $answer; $depth = 0; include __DIR__ . '/vox.entry.php'; ?>
     <?php endforeach ?>
-    <?php if (!$answers): ?><div class="vox-empty"><?= vox_icon('comment') ?> No answers yet.</div><?php endif ?>
+    <?php if (!$answers): ?><div class="vox-empty vox-answers-empty"><?= vox_icon('comment') ?><strong>No answers yet</strong><span>Be the first to share a useful answer with the community.</span></div><?php endif ?>
     </div>
 </section>

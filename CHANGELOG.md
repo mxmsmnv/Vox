@@ -2,6 +2,15 @@
 
 All notable changes to Vox are documented here.
 
+## [1.9.3] - 2026-08-01
+
+### Changed
+
+- Redesigned the public question detail view with a distinct question title,
+  readable content hierarchy, answer composer, answer count and empty state.
+- Removed unnecessary indentation from top-level answers and improved the
+  detail layout on narrow screens.
+
 ## [1.9.2] - 2026-08-01
 
 ### Changed
