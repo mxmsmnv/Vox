@@ -2,6 +2,17 @@
 
 All notable changes to Vox are documented here.
 
+## [1.9.5] - 2026-08-01
+
+### Changed
+
+- Unified field spacing, control sizing, action rows and button icon alignment
+  across every public Vox composer and entry action.
+- Standardized public action labels to sentence case for discussions, comments,
+  reviews and forum navigation.
+- Added consistent disabled states and resilient Remix Icon alignment to the
+  portable Designsystemet button contract.
+
 ## [1.9.4] - 2026-08-01
 
 ### Changed

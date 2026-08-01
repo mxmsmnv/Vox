@@ -74,7 +74,7 @@ require_once __DIR__ . '/vox.helpers.php';
                             <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
                         </div>
                         <div class="vox-form__actions">
-                            <button type="submit" class="ds-button vox-btn vox-btn--primary vox-btn--sm" data-variant="primary" data-size="sm"><?= vox_icon('paper-plane') ?> Post</button>
+                            <button type="submit" class="ds-button vox-btn vox-btn--primary vox-btn--sm" data-variant="primary" data-size="sm"><?= vox_icon('paper-plane') ?> Post comment</button>
                         </div>
                         <span data-vox-feedback hidden></span>
                     </form>
@@ -120,7 +120,7 @@ require_once __DIR__ . '/vox.helpers.php';
                         <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
                     </div>
                     <div class="vox-form__actions">
-                        <button type="submit" class="ds-button vox-btn vox-btn--primary" data-variant="primary"><?= vox_icon('arrow-right') ?> Create Thread</button>
+                        <button type="submit" class="ds-button vox-btn vox-btn--primary" data-variant="primary"><?= vox_icon('arrow-right') ?> Create discussion</button>
                     </div>
                     <span data-vox-feedback hidden></span>
                 </form>

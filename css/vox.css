@@ -1,7 +1,7 @@
 /**
  * vox.css — Vox frontend base styles
  * Uses CSS custom properties so they can be overridden per-site.
- * @version 1.7.7
+ * @version 1.9.5
  */
 
 /* ── CSS Variables ─────────────────────────────────────────────────────── */
@@ -35,6 +35,8 @@
   --vox-line:       var(--ds-body-md-line-height, 1.6);
   --vox-control-size: var(--ds-size-12, 3rem);
   --vox-control-size-sm: var(--ds-size-10, 2.5rem);
+  --vox-form-gap: var(--ds-size-4, 1rem);
+  --vox-field-gap: var(--ds-size-2, .5rem);
 
   /* Nesting indent borders */
   --vox-nest-l1-border: 2px solid var(--vox-wine-border);
@@ -251,12 +253,14 @@
 }
 
 .vox-field {
+  display: grid;
+  gap: var(--vox-field-gap);
   margin: 0;
   min-width: 0;
 }
 
 .vox-field--spacious {
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
 
 .vox-field__label-required {
@@ -264,7 +268,7 @@
 }
 
 .vox-field--compact {
-  margin-bottom: .6rem;
+  margin-bottom: 0;
 }
 
 .vox-rating-label {
@@ -528,7 +532,9 @@
 }
 .vox-form__element {
   display: grid;
-  gap: var(--ds-size-4, 1rem);
+  gap: var(--vox-form-gap);
+  width: 100%;
+  margin: 0;
 }
 .vox-form__label {
   display:       block;
@@ -549,7 +555,7 @@
   color:      var(--vox-text);
   background: var(--vox-white);
   transition: border-color .15s;
-  resize:     vertical;
+  line-height: var(--ds-line-height-md, 1.5);
 }
 .vox-textarea:focus-visible,
 .vox-input:focus-visible {
@@ -558,11 +564,15 @@
   outline: var(--dsc-focus-outline, 2px solid var(--vox-wine));
   outline-offset: var(--ds-border-width-focus, 2px);
 }
-.vox-textarea { min-height: 90px; }
+.vox-textarea {
+  min-height: 7.5rem;
+  resize: vertical;
+}
 
 .vox-form__actions {
   display:     flex;
-  gap:         .5rem;
+  align-items: center;
+  gap:         var(--ds-size-2, .5rem);
   margin: 0;
   flex-wrap: wrap;
 }
@@ -652,7 +662,8 @@
 .vox-btn {
   display:     inline-flex;
   align-items: center;
-  gap:         .35rem;
+  justify-content: center;
+  gap:         var(--ds-size-2, .5rem);
   min-height: var(--vox-control-size);
   padding: var(--ds-size-2, 8px) var(--ds-size-4, 16px);
   border-radius: var(--vox-radius-sm);
@@ -665,8 +676,35 @@
   font-family: var(--vox-font);
   transition:  background-color .15s, border-color .15s, color .15s;
   text-decoration: none;
-  line-height: 1.1;
+  line-height: var(--ds-line-height-sm, 1.25);
   white-space: nowrap;
+  vertical-align: middle;
+}
+.vox-btn > :is(i, svg) {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  font-size: 1em;
+  line-height: 1;
+  vertical-align: middle;
+}
+.vox-btn > i::before {
+  display: block;
+  line-height: 1;
+}
+.vox-btn:disabled,
+.vox-btn[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: .55;
+}
+.vox-btn:disabled:hover,
+.vox-btn[aria-disabled="true"]:hover {
+  border-color: var(--vox-border);
+  background: var(--vox-white);
+  color: var(--vox-text-2);
 }
 .vox-btn:hover { background: var(--vox-bg); border-color: var(--ds-color-neutral-border-default, #cbd5e1); text-decoration: none; }
 .vox-btn:focus-visible,

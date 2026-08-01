@@ -121,7 +121,7 @@ $forumBodyId = $forumFormPrefix . '-body';
         </div>
         <div class="vox-forum-actions">
             <a class="ds-button vox-btn vox-btn--primary" data-variant="primary" href="#vox-start-discussion">
-                <?= vox_icon('circle-plus') ?> Start Discussion
+                <?= vox_icon('circle-plus') ?> Start a discussion
             </a>
             <label class="vox-forum-search" for="<?= htmlspecialchars($forumSearchId) ?>">
                 <?= vox_icon('magnifying-glass') ?>
@@ -186,7 +186,7 @@ $forumBodyId = $forumFormPrefix . '-body';
                     <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
                 </div>
                 <div class="vox-form__actions">
-                    <button type="submit" class="ds-button vox-btn vox-btn--primary" data-variant="primary"><?= vox_icon('arrow-right') ?> Create Thread</button>
+                    <button type="submit" class="ds-button vox-btn vox-btn--primary" data-variant="primary"><?= vox_icon('arrow-right') ?> Create discussion</button>
                 </div>
                 <span data-vox-feedback hidden></span>
             </form>
@@ -202,7 +202,7 @@ $forumBodyId = $forumFormPrefix . '-body';
                         <h2 class="ds-heading" data-size="md"><?= htmlspecialchars($row['title']) ?></h2>
                         <p class="ds-paragraph" data-size="sm"><?= htmlspecialchars($row['description']) ?></p>
                     </div>
-                    <a class="ds-button vox-btn vox-btn--sm" data-variant="tertiary" data-size="sm" href="<?= htmlspecialchars($row['page']->url) ?>">Show All</a>
+                    <a class="ds-button vox-btn vox-btn--sm" data-variant="tertiary" data-size="sm" href="<?= htmlspecialchars($row['page']->url) ?>">Show all</a>
                 </div>
 
                 <?php if ($row['threads']): ?>

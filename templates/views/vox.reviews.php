@@ -184,7 +184,7 @@ $reviewPhotosId = $reviewControlPrefix . '-photos';
                 <?php endif ?>
 
                 <div class="vox-form__actions">
-                    <button type="submit" class="ds-button vox-btn vox-btn--primary" data-variant="primary"><?= vox_icon('paper-plane') ?> Publish Review</button>
+                    <button type="submit" class="ds-button vox-btn vox-btn--primary" data-variant="primary"><?= vox_icon('paper-plane') ?> Publish review</button>
                 </div>
                 <span data-vox-feedback hidden></span>
             </form>
