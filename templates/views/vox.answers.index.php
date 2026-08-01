@@ -37,20 +37,44 @@ $voxAnswersEntryTitleTag = !empty($voxEmbedded) ? 'h3' : 'h2';
         $entryKey = $vox->publicKey('entry', (int)$entry['id']);
         $questionUrl = '?' . http_build_query(['question' => $entryKey]);
         $body = trim(preg_replace('/\s+/', ' ', strip_tags((string)$entry['body'])));
-        if (mb_strlen($body) > 180) $body = mb_substr($body, 0, 177) . '...';
+        $title = trim((string)($entry['title'] ?? ''));
+        $excerpt = $body;
+        if ($title === '') {
+            $questionMark = mb_strpos($body, '?');
+            if ($questionMark !== false && $questionMark < 180) {
+                $title = trim(mb_substr($body, 0, $questionMark + 1));
+                $excerpt = trim(mb_substr($body, $questionMark + 1));
+            } else {
+                $title = mb_strlen($body) > 110 ? rtrim(mb_substr($body, 0, 107)) . '…' : $body;
+                $excerpt = '';
+            }
+        } elseif ($excerpt === $title) {
+            $excerpt = '';
+        }
+        if (mb_strlen($excerpt) > 210) {
+            $excerpt = trim(mb_substr($excerpt, 0, 207));
+            $excerpt = preg_replace('/\s+\S*$/u', '', $excerpt) ?: $excerpt;
+            $excerpt = rtrim($excerpt, " \t\n\r\0\x0B,.;:!?") . '…';
+        }
+        $isSolved = !empty($entry['best_count']);
     ?>
-        <article class="vox-answer-row <?= !empty($entry['best_count']) ? 'vox-answer-row--solved' : '' ?>">
-            <div class="vox-answer-row__stats">
-                <span><strong><?= number_format((int)$entry['votes']) ?></strong> votes</span>
-                <span><strong><?= number_format((int)$entry['answer_count']) ?></strong> answers</span>
-            </div>
+        <article class="vox-answer-row <?= $isSolved ? 'vox-answer-row--solved' : '' ?>">
             <div class="vox-answer-row__body">
-                <<?= $voxAnswersEntryTitleTag ?>><a href="<?= htmlspecialchars($questionUrl) ?>"><?= htmlspecialchars($body ?: 'Untitled question') ?></a></<?= $voxAnswersEntryTitleTag ?>>
+                <div class="vox-answer-row__topline">
+                    <span class="ds-tag vox-answer-status <?= $isSolved ? 'vox-answer-status--solved' : '' ?>" data-color="<?= $isSolved ? 'success' : 'neutral' ?>" data-size="sm"><?= $isSolved ? vox_icon('circle-check') . ' Solved' : 'Open question' ?></span>
+                    <span>Active <?= vox_time_ago((string)$entry['last_activity']) ?></span>
+                </div>
+                <<?= $voxAnswersEntryTitleTag ?>><a href="<?= htmlspecialchars($questionUrl) ?>"><?= htmlspecialchars($title ?: 'Untitled question') ?></a></<?= $voxAnswersEntryTitleTag ?>>
+                <?php if ($excerpt !== ''): ?><p class="vox-answer-row__excerpt"><?= htmlspecialchars($excerpt) ?></p><?php endif ?>
                 <div class="vox-answer-row__meta">
-                    <?= !empty($entry['best_count']) ? '<span class="vox-answer-status vox-answer-status--solved">Solved</span>' : '<span class="vox-answer-status">Open</span>' ?>
-                    <span>asked by <?= htmlspecialchars($entry['author_name']) ?></span>
-                    <span><?= vox_time_ago((string)$entry['created']) ?></span>
-                    <span>active <?= vox_time_ago((string)$entry['last_activity']) ?></span>
+                    <span class="vox-answer-row__author">
+                        <?= vox_avatar((string)$entry['author_name'], 28, (string)($entry['author_avatar'] ?? $entry['avatar_url'] ?? '')) ?>
+                        <span>Asked by <strong><?= htmlspecialchars((string)$entry['author_name']) ?></strong> · <?= vox_time_ago((string)$entry['created']) ?></span>
+                    </span>
+                    <span class="vox-answer-row__signals" aria-label="Question activity">
+                        <span><?= vox_icon('arrow-up') ?> <strong><?= number_format((int)$entry['votes']) ?></strong> vote<?= (int)$entry['votes'] === 1 ? '' : 's' ?></span>
+                        <span><?= vox_icon('comment') ?> <strong><?= number_format((int)$entry['answer_count']) ?></strong> answer<?= (int)$entry['answer_count'] === 1 ? '' : 's' ?></span>
+                    </span>
                 </div>
             </div>
         </article>

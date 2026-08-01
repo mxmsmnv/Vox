@@ -2,6 +2,15 @@
 
 All notable changes to Vox are documented here.
 
+## [1.9.2] - 2026-08-01
+
+### Changed
+
+- Redesigned the public Answers index as a readable card feed with distinct
+  question titles, excerpts, author identity, status, activity and compact
+  vote/answer signals.
+- Improved responsive behavior for question cards on narrow screens.
+
 ## [1.9.1] - 2026-07-30
 
 ### Changed
