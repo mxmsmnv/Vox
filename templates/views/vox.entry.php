@@ -167,7 +167,7 @@ require_once __DIR__ . '/vox.helpers.php';
             </div>
             <div class="vox-form__actions">
                 <button type="submit" class="ds-button vox-btn vox-btn--primary vox-btn--sm" data-variant="primary" data-size="sm">
-                    <?= vox_icon('paper-plane') ?> Post
+                    <?= vox_icon('paper-plane') ?> Post reply
                 </button>
                 <button type="button" class="ds-button vox-btn vox-btn--sm" data-variant="tertiary" data-size="sm"
                         onclick="this.closest('[data-vox-reply-form]').hidden=true">Cancel</button>
