@@ -23,6 +23,11 @@ $answersBackUrl = trim((string)($voxAnswersBackUrl ?? $page->url)) ?: $page->url
 $answerFormPrefix = vox_control_id('vox-answer');
 $answerNameId = $answerFormPrefix . '-name';
 $answerBodyId = $answerFormPrefix . '-body';
+$questionTitleTagCandidate = (string)($voxAnswerQuestionHeadingTag ?? 'h2');
+$questionTitleTag = in_array($questionTitleTagCandidate, ['h1', 'h2', 'h3'], true)
+    ? $questionTitleTagCandidate
+    : 'h2';
+$questionTitleId = 'vox-question-title';
 $questionText = trim(strip_tags((string)$question['body']));
 $questionTitle = '';
 $questionDetailBody = $questionText;
@@ -36,7 +41,7 @@ $isSolved = !empty($question['best_count']);
 <section class="vox-wrap vox-answers-question" data-discuss-page-key="<?= htmlspecialchars($pageKey) ?>">
     <a class="vox-answers-back" href="<?= htmlspecialchars($answersBackUrl) ?>"><?= vox_icon('arrow-left') ?> All questions</a>
 
-    <div class="vox-answers-question__main">
+    <article class="vox-answers-question__main" aria-labelledby="<?= htmlspecialchars($questionTitleId) ?>">
         <div class="vox-answers-question__statusbar">
             <span class="ds-tag vox-answer-status <?= $isSolved ? 'vox-answer-status--solved' : '' ?>" data-color="<?= $isSolved ? 'success' : 'neutral' ?>" data-size="sm"><?= $isSolved ? vox_icon('circle-check') . ' Solved' : 'Open question' ?></span>
             <span><?= number_format($answerCount) ?> answer<?= $answerCount === 1 ? '' : 's' ?></span>
@@ -47,11 +52,13 @@ $isSolved = !empty($question['best_count']);
         $voxEntryNoChildren = true;
         $voxEntryNoReplyForm = true;
         $voxEntryTitleOverride = $questionTitle;
+        $voxEntryTitleTag = $questionTitleTag;
+        $voxEntryTitleId = $questionTitleId;
         $voxEntryBodyOverride = $questionDetailBody;
         include __DIR__ . '/vox.entry.php';
-        unset($voxEntryNoChildren, $voxEntryNoReplyForm, $voxEntryTitleOverride, $voxEntryBodyOverride);
+        unset($voxEntryNoChildren, $voxEntryNoReplyForm, $voxEntryTitleOverride, $voxEntryTitleTag, $voxEntryTitleId, $voxEntryBodyOverride);
         ?>
-    </div>
+    </article>
 
     <div class="vox-answers-answer-form">
         <div class="vox-answers-answer-form__intro">

@@ -2,6 +2,17 @@
 
 All notable changes to Vox are documented here.
 
+## [1.9.4] - 2026-08-01
+
+### Changed
+
+- Added a configurable semantic heading level and optional heading ID for
+  embedded question detail views.
+- Marked the question detail surface as an article with an accessible heading
+  relationship.
+- Preserved all-uppercase abbreviations in generated display names and added
+  SVG avatar discovery alongside raster formats.
+
 ## [1.9.3] - 2026-08-01
 
 ### Changed

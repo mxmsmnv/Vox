@@ -8,7 +8,7 @@ require_once __DIR__ . '/VoxGamification.php';
  *
  * @author  Maxim Semenov <maxim@smnv.org> (smnv.org)
  * @link    https://smnv.org
- * @version 1.9.3
+ * @version 1.9.4
  * @license MIT
  */
 class Vox extends WireData implements Module, ConfigurableModule {
@@ -33,7 +33,7 @@ class Vox extends WireData implements Module, ConfigurableModule {
         return [
             'title'    => 'Vox',
             'summary'  => 'Community discussions: reviews, Q&A, threads and block comments for any page.',
-            'version'  => 193,
+            'version'  => 194,
             'author'   => 'Maxim Semenov',
             'href'     => 'https://smnv.org',
             'icon'     => 'comments',
@@ -48,7 +48,7 @@ class Vox extends WireData implements Module, ConfigurableModule {
     // Semantic version for display. The integer in getModuleInfo() (used by
     // ProcessWire for upgrade detection) does not round-trip through
     // formatVersion() to this string, so keep this in sync on each release.
-    const VERSION = '1.9.3';
+    const VERSION = '1.9.4';
 
     // ── Table names ───────────────────────────────────────────────────────
 
@@ -1324,7 +1324,8 @@ class Vox extends WireData implements Module, ConfigurableModule {
     private function displayUserName(User $user): string {
         $display = trim((string)($user->title ?: ''));
         if ($display !== '') return $display;
-        return ucwords(str_replace(['-', '_'], ' ', (string)$user->name));
+        $display = ucwords(str_replace(['-', '_'], ' ', (string)$user->name));
+        return preg_replace('/\bLqrs\b/', 'LQRS', $display) ?: $display;
     }
 
     public function displayText(string $text): string {
@@ -1448,7 +1449,7 @@ class Vox extends WireData implements Module, ConfigurableModule {
         $name = $this->wire->sanitizer->pageName((string)$user->name);
         if ($name === '') return '';
         $relativeDir = 'site/assets/vox/avatars/';
-        foreach (['webp', 'jpg', 'jpeg', 'png'] as $extension) {
+        foreach (['webp', 'jpg', 'jpeg', 'png', 'svg'] as $extension) {
             $relative = $relativeDir . $name . '.' . $extension;
             if (is_file($this->wire->config->paths->root . $relative)) {
                 return rtrim($this->wire->config->urls->root, '/') . '/' . $relative;

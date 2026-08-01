@@ -82,7 +82,14 @@ require_once __DIR__ . '/vox.helpers.php';
 
     <!-- Body -->
     <?php if (!empty($voxEntryTitleOverride)): ?>
-    <h2 class="ds-heading vox-entry__title" data-size="md"><?= htmlspecialchars((string)$voxEntryTitleOverride) ?></h2>
+    <?php
+    $voxEntryTitleTagCandidate = (string)($voxEntryTitleTag ?? 'h2');
+    $voxEntryTitleTag = in_array($voxEntryTitleTagCandidate, ['h1', 'h2', 'h3'], true)
+        ? $voxEntryTitleTagCandidate
+        : 'h2';
+    $voxEntryTitleId = trim((string)($voxEntryTitleId ?? ''));
+    ?>
+    <<?= $voxEntryTitleTag ?> class="ds-heading vox-entry__title" data-size="md"<?= $voxEntryTitleId !== '' ? ' id="' . htmlspecialchars($voxEntryTitleId) . '"' : '' ?>><?= htmlspecialchars((string)$voxEntryTitleOverride) ?></<?= $voxEntryTitleTag ?>>
     <?php endif ?>
     <?php $voxEntryDisplayBody = isset($voxEntryBodyOverride) ? (string)$voxEntryBodyOverride : (string)$entry['body']; ?>
     <?php if (trim($voxEntryDisplayBody) !== ''): ?>
