@@ -1,7 +1,7 @@
 /**
  * vox.css — Vox frontend base styles
  * Uses CSS custom properties so they can be overridden per-site.
- * @version 1.9.5
+ * @version 1.9.10
  */
 
 /* ── CSS Variables ─────────────────────────────────────────────────────── */
@@ -43,6 +43,259 @@
   --vox-nest-l2-border: 2px solid #cbd5e1;
 }
 
+/* LQRS discussion detail -------------------------------------------------
+ * The public thread view follows the same borderless conversation pattern as
+ * Support while keeping the generic Vox entry and AJAX contracts unchanged.
+ */
+.lqrs-discussion-detail {
+  display: grid;
+  gap: var(--ds-size-6, 1.5rem);
+  width: 100%;
+  padding-block: var(--ds-size-3, .75rem) var(--ds-size-8, 2rem);
+}
+
+.lqrs-discussion-detail__topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-size-4, 1rem);
+}
+
+.lqrs-discussion-detail__topbar .lqrs-discussion-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-size-2, .5rem);
+}
+
+.lqrs-discussion-detail__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--ds-size-6, 1.5rem);
+  align-items: end;
+  padding: var(--ds-size-6, 1.5rem) 0;
+  border-top: 1px solid var(--ds-color-neutral-border-subtle, #ddd);
+  border-bottom: 1px solid var(--ds-color-neutral-border-subtle, #ddd);
+}
+
+.lqrs-discussion-detail__copy {
+  display: grid;
+  gap: var(--ds-size-3, .75rem);
+  min-width: 0;
+}
+
+.lqrs-discussion-detail__copy > :is(h1, p),
+.lqrs-discussion-conversation__header :is(h2, p) {
+  margin: 0;
+}
+
+.lqrs-discussion-detail__copy h1 {
+  max-width: 28ch;
+  font-size: clamp(2.15rem, 4vw, 3.5rem);
+  line-height: 1.08;
+  letter-spacing: -.035em;
+  text-wrap: balance;
+}
+
+.lqrs-discussion-detail__identity {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ds-size-3, .75rem);
+  padding-top: var(--ds-size-2, .5rem);
+}
+
+.lqrs-discussion-detail__identity > .vox-av {
+  width: var(--ds-size-11, 3rem);
+  height: var(--ds-size-11, 3rem);
+  border-radius: 50%;
+}
+
+.lqrs-discussion-detail__identity > div {
+  display: grid;
+  gap: 2px;
+}
+
+.lqrs-discussion-detail__identity :is(a, strong) {
+  color: var(--ds-color-neutral-text-default, #222);
+  font-weight: var(--ds-font-weight-medium, 600);
+}
+
+.lqrs-discussion-detail__identity > div > span {
+  color: var(--ds-color-neutral-text-subtle, #666);
+  font-size: var(--ds-font-size-1, .875rem);
+}
+
+.lqrs-discussion-detail__metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(6rem, 1fr));
+  gap: var(--ds-size-2, .5rem);
+  margin: 0;
+}
+
+.lqrs-discussion-detail__metrics > div {
+  display: grid;
+  gap: var(--ds-size-1, .25rem);
+  min-width: 7rem;
+  padding: var(--ds-size-4, 1rem);
+  border-radius: var(--ds-border-radius-md, .5rem);
+  background: var(--ds-color-neutral-background-tinted, #f4f4f4);
+}
+
+.lqrs-discussion-detail__metrics dt {
+  color: var(--ds-color-neutral-text-subtle, #666);
+  font-size: var(--ds-font-size-1, .875rem);
+}
+
+.lqrs-discussion-detail__metrics dd {
+  margin: 0;
+  font-size: var(--ds-font-size-6, 2rem);
+  font-weight: var(--ds-font-weight-medium, 600);
+  line-height: 1;
+}
+
+.lqrs-discussion-conversation {
+  display: grid;
+  gap: var(--ds-size-5, 1.25rem);
+  width: 100%;
+}
+
+.lqrs-discussion-conversation__header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--ds-size-4, 1rem);
+  padding-top: var(--ds-size-3, .75rem);
+}
+
+.lqrs-discussion-conversation__header > div {
+  display: grid;
+  gap: var(--ds-size-2, .5rem);
+}
+
+.lqrs-discussion-conversation__header > div > p:last-child {
+  color: var(--ds-color-neutral-text-subtle, #666);
+}
+
+.lqrs-discussion-conversation > .vox-entry {
+  margin: 0;
+  padding: var(--ds-size-6, 1.5rem);
+  border: 0;
+  border-radius: var(--ds-border-radius-md, .5rem);
+  background: var(--ds-color-neutral-background-tinted, #f4f4f4);
+  box-shadow: none;
+}
+
+.lqrs-discussion-conversation > .vox-entry > .vox-entry__head {
+  display: none;
+}
+
+.lqrs-discussion-conversation .vox-entry__body {
+  max-width: 78rem;
+  margin: 0;
+  color: var(--ds-color-neutral-text-default, #222);
+  font-size: var(--ds-font-size-3, 1rem);
+  line-height: 1.65;
+}
+
+.lqrs-discussion-conversation .vox-entry__actions {
+  gap: var(--ds-size-1, .25rem);
+  margin-top: var(--ds-size-5, 1.25rem);
+  padding-top: var(--ds-size-3, .75rem);
+  border-top: 1px solid var(--ds-color-neutral-border-subtle, #ddd);
+}
+
+.lqrs-discussion-conversation .vox-entry__actions .vox-btn {
+  border-color: transparent;
+  background: transparent;
+}
+
+.lqrs-discussion-conversation .vox-entry__replies {
+  display: grid;
+  gap: var(--ds-size-3, .75rem);
+  margin-top: var(--ds-size-5, 1.25rem);
+}
+
+.lqrs-discussion-conversation .vox-entry__replies .vox-entry {
+  margin: 0 0 0 var(--ds-size-8, 2rem);
+  padding: var(--ds-size-4, 1rem) var(--ds-size-5, 1.25rem);
+  border: 0;
+  border-radius: var(--ds-border-radius-md, .5rem);
+  background: var(--ds-color-neutral-surface-default, #fff);
+  box-shadow: none;
+}
+
+.lqrs-discussion-conversation .vox-entry__replies .vox-entry__body {
+  font-size: var(--ds-font-size-2, .9375rem);
+}
+
+.lqrs-discussion-conversation .vox-entry__photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(14rem, 100%), 22rem));
+  gap: var(--ds-size-3, .75rem);
+  max-width: none;
+  margin-block: var(--ds-size-4, 1rem);
+}
+
+.lqrs-discussion-conversation .vox-entry__photo {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: 0;
+  border-radius: var(--ds-border-radius-sm, .375rem);
+}
+
+.lqrs-discussion-conversation .vox-reply-form {
+  margin: var(--ds-size-4, 1rem) 0 0;
+  padding: var(--ds-size-4, 1rem) 0 0;
+  border-top: 1px solid var(--ds-color-neutral-border-subtle, #ddd);
+  border-left: 0;
+}
+
+.lqrs-discussion-conversation .vox-reply-form .vox-textarea {
+  min-height: 9rem;
+  background: var(--ds-color-neutral-surface-default, #fff);
+}
+
+@media (max-width: 43.99rem) {
+  .lqrs-discussion-detail {
+    gap: var(--ds-size-5, 1.25rem);
+  }
+
+  .lqrs-discussion-detail__header {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
+    padding-block: var(--ds-size-5, 1.25rem);
+  }
+
+  .lqrs-discussion-detail__copy h1 {
+    font-size: clamp(2rem, 11vw, 3rem);
+  }
+
+  .lqrs-discussion-detail__metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lqrs-discussion-detail__metrics > div {
+    min-width: 0;
+    padding: var(--ds-size-3, .75rem);
+  }
+
+  .lqrs-discussion-conversation__header {
+    align-items: flex-start;
+  }
+
+  .lqrs-discussion-conversation > .vox-entry {
+    padding: var(--ds-size-4, 1rem);
+  }
+
+  .lqrs-discussion-conversation .vox-entry__replies .vox-entry {
+    margin-left: var(--ds-size-3, .75rem);
+    padding: var(--ds-size-4, 1rem);
+  }
+
+  .lqrs-discussion-conversation .vox-entry__actions {
+    align-items: stretch;
+  }
+}
 
 /* ── Base wrapper ──────────────────────────────────────────────────────── */
 .vox-wrap {
@@ -171,19 +424,29 @@
 }
 
 .vox-card__head {
-  padding: .9rem 1.15rem;
+  padding: var(--ds-size-5, 1.25rem);
   border-bottom: 1px solid var(--vox-border);
-  font-size: 14px;
-  font-weight: 800;
-  color: var(--vox-text);
+  font-size: var(--ds-font-size-1, .875rem);
+  font-weight: 600;
+  color: var(--ds-color-neutral-text-subtle, var(--vox-text-3));
   display: flex;
   align-items: center;
-  gap: .5rem;
+  gap: var(--ds-size-1, .25rem);
   background: var(--vox-white);
+  letter-spacing: .05em;
+  line-height: var(--ds-line-height-md, 1.5);
+  text-transform: uppercase;
 }
 
 .vox-card__head i {
-  color: var(--vox-wine);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  color: inherit;
+  font-size: 1em;
+  line-height: 1;
 }
 
 .vox-count-row,
@@ -429,10 +692,16 @@
 .vox-star-pick:focus-visible {
   outline: none;
 }
+.vox-star-pick__glyph {
+  display: block;
+  line-height: 1;
+  transform: translateY(-0.08em);
+}
 .vox-star-pick--lg {
-  width: 28px;
-  height: 28px;
-  font-size: 19px;
+  width: var(--ds-size-12, 3rem);
+  height: var(--ds-size-12, 3rem);
+  font-size: 2.25rem;
+  font-weight: 900;
 }
 .vox-dot,
 .vox-dot-pick {
@@ -734,6 +1003,59 @@
   padding: var(--ds-size-1, 5px) var(--ds-size-3, 12px);
   font-size: var(--ds-body-sm-font-size, 14px);
 }
+
+/* When Designsystemet is present it is the single visual owner of buttons.
+   Vox keeps its portable fallback above for installations without ds-button,
+   but must not overwrite Designsystemet sizing, variants or states. */
+.vox-btn.ds-button {
+  display: flex;
+  width: fit-content;
+  min-width: var(--dsc-button-size);
+  min-height: var(--dsc-button-size);
+  height: fit-content;
+  padding: var(--dsc-button-padding);
+  border-color: var(--dsc-button-border-color);
+  border-style: var(--dsc-button-border-style);
+  border-width: var(--dsc-button-border-width);
+  border-radius: var(--dsc-button-border-radius);
+  background: var(--dsc-button-background);
+  color: var(--dsc-button-color);
+  gap: var(--dsc-button-gap);
+  flex-shrink: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: var(--ds-font-weight-medium);
+  line-height: var(--ds-line-height-sm);
+  text-align: inherit;
+}
+
+.vox-btn.ds-button > i {
+  width: var(--ds-icon-size);
+  height: var(--ds-icon-size);
+  font-size: var(--ds-icon-size);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .vox-btn.ds-button:where(:not(:disabled, [aria-disabled="true"], [aria-busy="true"])):hover {
+    border-color: var(--dsc-button-border-color);
+    background: var(--dsc-button-background--hover);
+    color: var(--dsc-button-color--hover);
+  }
+}
+
+.vox-btn.ds-button:where(:not(:disabled, [aria-disabled="true"], [aria-busy="true"])):active {
+  background: var(--dsc-button-background--active);
+  color: var(--dsc-button-color--active);
+}
+
+.vox-btn.ds-button:is(:disabled, [aria-disabled="true"]),
+.vox-btn.ds-button:is(:disabled, [aria-disabled="true"]):hover {
+  border-color: var(--dsc-button-border-color);
+  background: var(--dsc-button-background);
+  color: var(--dsc-button-color);
+  opacity: var(--ds-opacity-disabled);
+}
+
 .vox-btn.vox-sort-btn--active {
   border-color: var(--vox-wine);
   background: var(--vox-wine);
@@ -2266,5 +2588,72 @@
     top: 8vh;
     width: auto;
     border-radius: var(--vox-radius);
+  }
+}
+
+/* Keep thread-specific conversation styling after the generic Vox rules. */
+.lqrs-discussion-conversation > .vox-entry {
+  margin: 0;
+  padding: var(--ds-size-6, 1.5rem);
+  border: 0;
+  border-radius: var(--ds-border-radius-md, .5rem);
+  background: var(--ds-color-neutral-background-tinted, #f4f4f4);
+  box-shadow: none;
+}
+
+.lqrs-discussion-conversation > .vox-entry > .vox-entry__head {
+  display: none;
+}
+
+.lqrs-discussion-conversation .vox-entry__body {
+  max-width: 78rem;
+  margin: 0;
+  color: var(--ds-color-neutral-text-default, #222);
+  font-size: var(--ds-font-size-3, 1rem);
+  line-height: 1.65;
+}
+
+.lqrs-discussion-conversation .vox-entry__actions {
+  gap: var(--ds-size-1, .25rem);
+  margin-top: var(--ds-size-5, 1.25rem);
+  padding-top: var(--ds-size-3, .75rem);
+  border-top: 1px solid var(--ds-color-neutral-border-subtle, #ddd);
+}
+
+.lqrs-discussion-conversation .vox-entry__actions .vox-btn {
+  border-color: transparent;
+  background: transparent;
+}
+
+.lqrs-discussion-conversation .vox-entry__replies {
+  display: grid;
+  gap: var(--ds-size-3, .75rem);
+  margin-top: var(--ds-size-5, 1.25rem);
+}
+
+.lqrs-discussion-conversation .vox-entry__replies .vox-entry {
+  margin: 0 0 0 var(--ds-size-8, 2rem);
+  padding: var(--ds-size-4, 1rem) var(--ds-size-5, 1.25rem);
+  border: 0;
+  border-radius: var(--ds-border-radius-md, .5rem);
+  background: var(--ds-color-neutral-surface-default, #fff);
+  box-shadow: none;
+}
+
+.lqrs-discussion-conversation .vox-reply-form {
+  margin: var(--ds-size-4, 1rem) 0 0;
+  padding: var(--ds-size-4, 1rem) 0 0;
+  border-top: 1px solid var(--ds-color-neutral-border-subtle, #ddd);
+  border-left: 0;
+}
+
+@media (max-width: 43.99rem) {
+  .lqrs-discussion-conversation > .vox-entry,
+  .lqrs-discussion-conversation .vox-entry__replies .vox-entry {
+    padding: var(--ds-size-4, 1rem);
+  }
+
+  .lqrs-discussion-conversation .vox-entry__replies .vox-entry {
+    margin-left: var(--ds-size-3, .75rem);
   }
 }

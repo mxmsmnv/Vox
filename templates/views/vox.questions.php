@@ -37,14 +37,14 @@ $questionPhotosId = $questionControlPrefix . '-photos';
             <?= vox_icon('question') ?> Ask a question
         </div>
         <div class="vox-form">
-            <form class="vox-form__element" data-vox-form data-entry-list="vox-questions-list">
+            <form class="vox-form__element" data-vox-form data-entry-list="vox-questions-list" aria-label="Ask a question">
                 <?= vox_csrf() ?>
                 <input type="hidden" name="page_key" value="<?= htmlspecialchars($pageKey) ?>">
                 <input type="hidden" name="type"    value="question">
                 <?php if (!wire('user')->isLoggedIn()): ?>
                 <div class="vox-grid-2">
-                    <div class="ds-field"><label class="ds-label vox-form__label" for="<?= htmlspecialchars($questionNameId) ?>">Your name</label><input id="<?= htmlspecialchars($questionNameId) ?>" type="text" name="guest_name" class="ds-input vox-input" placeholder="Anonymous-XXX if blank"></div>
-                    <div class="ds-field"><label class="ds-label vox-form__label" for="<?= htmlspecialchars($questionEmailId) ?>">Email</label><input id="<?= htmlspecialchars($questionEmailId) ?>" type="email" name="guest_email" class="ds-input vox-input" placeholder="optional"></div>
+                    <div class="ds-field vox-field"><label class="ds-label vox-form__label" for="<?= htmlspecialchars($questionNameId) ?>">Your name</label><input id="<?= htmlspecialchars($questionNameId) ?>" type="text" name="guest_name" class="ds-input vox-input" placeholder="Anonymous-XXX if blank"></div>
+                    <div class="ds-field vox-field"><label class="ds-label vox-form__label" for="<?= htmlspecialchars($questionEmailId) ?>">Email</label><input id="<?= htmlspecialchars($questionEmailId) ?>" type="email" name="guest_email" class="ds-input vox-input" placeholder="optional"></div>
                 </div>
                 <?php endif ?>
                 <div class="ds-field vox-field">

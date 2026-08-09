@@ -110,6 +110,7 @@ $forumFormPrefix = vox_control_id('vox-forum');
 $forumSearchId = $forumFormPrefix . '-search';
 $forumCategoryId = $forumFormPrefix . '-category';
 $forumNameId = $forumFormPrefix . '-name';
+$forumTitleId = $forumFormPrefix . '-title';
 $forumBodyId = $forumFormPrefix . '-body';
 ?>
 
@@ -158,9 +159,9 @@ $forumBodyId = $forumFormPrefix . '-body';
     <?php endif ?>
 
     <section class="vox-card vox-card--mb-16" id="vox-start-discussion">
-        <div class="vox-card__head"><span class="ds-heading" data-size="xs"><?= vox_icon('pen-to-square') ?> Start a discussion</span></div>
+        <div class="vox-card__head"><?= vox_icon('pen-to-square') ?> Start a discussion</div>
         <div class="vox-form">
-            <form class="vox-form__element" data-vox-form data-entry-list="vox-forum-newest-list">
+            <form class="vox-form__element" data-vox-form data-entry-list="vox-forum-newest-list" aria-label="Start a discussion">
                 <?= vox_csrf() ?>
                 <input type="hidden" name="page_key" value="<?= htmlspecialchars($firstCategory['page_key'] ?? '') ?>" data-vox-forum-page-key>
                 <input type="hidden" name="type" value="thread">
@@ -181,8 +182,12 @@ $forumBodyId = $forumFormPrefix . '-body';
                 </div>
                 <?php endif ?>
                 <div class="ds-field vox-field">
+                    <label class="ds-label vox-form__label" for="<?= htmlspecialchars($forumTitleId) ?>">Discussion title</label>
+                    <input id="<?= htmlspecialchars($forumTitleId) ?>" type="text" name="title" class="ds-input vox-input" placeholder="Write a clear, specific title" required>
+                </div>
+                <div class="ds-field vox-field">
                     <label class="ds-label vox-form__label" for="<?= htmlspecialchars($forumBodyId) ?>">Discussion</label>
-                    <textarea id="<?= htmlspecialchars($forumBodyId) ?>" name="body" class="ds-input vox-textarea" rows="4" placeholder="What would you like to discuss?" required></textarea>
+                    <textarea id="<?= htmlspecialchars($forumBodyId) ?>" name="body" class="ds-input vox-textarea" rows="4" placeholder="Add context that helps others respond…" required></textarea>
                     <span data-vox-stopword-warning hidden class="vox-stopword-warn"></span>
                 </div>
                 <div class="vox-form__actions">

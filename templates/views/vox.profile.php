@@ -12,13 +12,13 @@ if (!$voxProfile) return;
 
 <div class="vox-profile-layout">
     <div class="vox-profile-layout__full"><?php include __DIR__ . '/vox.profile.header.php'; ?></div>
+    <div class="vox-profile-layout__full"><?php include __DIR__ . '/vox.profile.rank.php'; ?></div>
     <div class="vox-profile-layout__main">
-        <?php include __DIR__ . '/vox.profile.rank.php'; ?>
-        <?php include __DIR__ . '/vox.profile.badges.php'; ?>
         <?php include __DIR__ . '/vox.profile.activity.php'; ?>
     </div>
-    <aside class="vox-profile-layout__side">
+    <aside class="vox-profile-layout__side" aria-label="Community standing">
         <?php include __DIR__ . '/vox.profile.points.php'; ?>
         <?php include __DIR__ . '/vox.profile.leaderboard.php'; ?>
     </aside>
+    <div class="vox-profile-layout__full"><?php include __DIR__ . '/vox.profile.badges.php'; ?></div>
 </div>

@@ -56,7 +56,7 @@ $inlineBodyId = $inlinePrefix . '-body';
 ?>
 
 <aside class="vox-wrap vox-inline-form" data-discuss-page-key="<?= htmlspecialchars($pageKey) ?>">
-    <form class="vox-form__element" data-vox-form>
+    <form class="vox-form__element" data-vox-form aria-label="<?= htmlspecialchars($button) ?>">
         <?= vox_csrf() ?>
         <input type="hidden" name="page_key" value="<?= htmlspecialchars($pageKey) ?>">
         <input type="hidden" name="type" value="<?= htmlspecialchars($type) ?>">
@@ -71,9 +71,9 @@ $inlineBodyId = $inlinePrefix . '-body';
 
         <?php if (!wire('user')->isLoggedIn()): ?>
         <div class="vox-grid-2 vox-inline-form__guest">
-            <div class="ds-field"><label class="ds-label vox-form__label" for="<?= htmlspecialchars($inlineNameId) ?>">Your name</label><input id="<?= htmlspecialchars($inlineNameId) ?>" type="text" name="guest_name" class="ds-input vox-input" placeholder="Optional"></div>
+            <div class="ds-field vox-field"><label class="ds-label vox-form__label" for="<?= htmlspecialchars($inlineNameId) ?>">Your name</label><input id="<?= htmlspecialchars($inlineNameId) ?>" type="text" name="guest_name" class="ds-input vox-input" placeholder="Optional"></div>
             <?php if ($type !== 'thread'): ?>
-            <div class="ds-field"><label class="ds-label vox-form__label" for="<?= htmlspecialchars($inlineEmailId) ?>">Email</label><input id="<?= htmlspecialchars($inlineEmailId) ?>" type="email" name="guest_email" class="ds-input vox-input" placeholder="optional"></div>
+            <div class="ds-field vox-field"><label class="ds-label vox-form__label" for="<?= htmlspecialchars($inlineEmailId) ?>">Email</label><input id="<?= htmlspecialchars($inlineEmailId) ?>" type="email" name="guest_email" class="ds-input vox-input" placeholder="optional"></div>
             <?php endif ?>
         </div>
         <?php endif ?>

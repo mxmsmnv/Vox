@@ -154,7 +154,7 @@ require_once __DIR__ . '/vox.helpers.php';
     <?php $replyBodyId = vox_control_id('vox-reply') . '-body'; ?>
     <div class="vox-reply-form" id="reply-<?= htmlspecialchars($entryKey) ?>"
          data-vox-reply-form="reply-<?= htmlspecialchars($entryKey) ?>" hidden>
-        <form class="vox-form__element" data-vox-form data-entry-list="replies-<?= htmlspecialchars($entryKey) ?>">
+        <form class="vox-form__element" data-vox-form data-entry-list="replies-<?= htmlspecialchars($entryKey) ?>" aria-label="Reply">
             <?= vox_csrf() ?>
             <input type="hidden" name="page_key"  value="<?= htmlspecialchars($pageKey) ?>">
             <input type="hidden" name="block_id"  value="<?= htmlspecialchars($entry['block_id'] ?? '') ?>">

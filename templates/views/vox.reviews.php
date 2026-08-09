@@ -115,18 +115,18 @@ $reviewPhotosId = $reviewControlPrefix . '-photos';
             <?= vox_icon('pen-to-square') ?> Write a review
         </div>
         <div class="vox-form">
-            <form class="vox-form__element" data-vox-form data-entry-list="vox-reviews-list">
+            <form class="vox-form__element" data-vox-form data-entry-list="vox-reviews-list" aria-label="Write a review">
                 <?= vox_csrf() ?>
                 <input type="hidden" name="page_key" value="<?= htmlspecialchars($pageKey) ?>">
                 <input type="hidden" name="type"    value="review">
 
                 <?php if (!wire('user')->isLoggedIn()): ?>
                 <div class="vox-grid-2">
-                    <div class="ds-field">
+                    <div class="ds-field vox-field">
                         <label class="ds-label vox-form__label" for="<?= htmlspecialchars($reviewNameId) ?>">Your name <span class="vox-inline-note">(optional)</span></label>
                         <input id="<?= htmlspecialchars($reviewNameId) ?>" type="text" name="guest_name" class="ds-input vox-input" placeholder="Anonymous-XXX if blank">
                     </div>
-                    <div class="ds-field">
+                    <div class="ds-field vox-field">
                         <label class="ds-label vox-form__label" for="<?= htmlspecialchars($reviewEmailId) ?>">Email <span class="vox-inline-note">(optional)</span></label>
                         <input id="<?= htmlspecialchars($reviewEmailId) ?>" type="email" name="guest_email" class="ds-input vox-input" placeholder="your@email.com">
                     </div>

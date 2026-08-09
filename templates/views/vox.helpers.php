@@ -62,7 +62,9 @@ function vox_rating_picker(string $name, string $label, int $value = 0, string $
     $isDots = $style === 'dots';
     $wrapClass = 'vox-stars-wrap' . ($class ? ' ' . $class : '') . ($isDots ? ' vox-dots-wrap' : '');
     $buttonClass = 'ds-button ' . ($isDots ? 'vox-dot-pick' : 'vox-star-pick');
-    $glyph = $isDots ? '●' : '★';
+    $glyph = $isDots
+        ? '●'
+        : '<span class="vox-star-pick__glyph" aria-hidden="true">★</span>';
     $kind = $isDots ? 'dot' : 'star';
     $html = '<div class="' . htmlspecialchars($wrapClass) . '" data-vox-stars-wrap data-val="' . (int)$value . '" role="radiogroup" aria-label="' . htmlspecialchars($label) . '">';
     for ($i = 1; $i <= 5; $i++) {

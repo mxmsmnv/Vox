@@ -2,6 +2,47 @@
 
 All notable changes to Vox are documented here.
 
+## [1.9.10] - 2026-08-01
+
+### Changed
+
+- Applied the shared Community forms contract to every public Vox form,
+  including discussions, questions, answers, reviews, replies, inline embeds,
+  filters and video comments.
+- Standardized compact form headings, field wrappers, action buttons and
+  accessible form names across all public render paths.
+- Added the explicit discussion title field to the forum composer.
+
+## [1.9.9] - 2026-08-01
+
+### Fixed
+
+- Optically centered the star glyph inside its rating target without moving
+  the hover or focus surface.
+
+## [1.9.8] - 2026-08-01
+
+### Changed
+
+- Increased the large rating picker to a 48px target with a 36px, heavier star
+  for stronger visual emphasis.
+
+## [1.9.7] - 2026-08-01
+
+### Changed
+
+- Increased the Overall rating star picker to a 44px interactive target with
+  a larger, more legible star while preserving hover and focus behavior.
+
+## [1.9.6] - 2026-08-01
+
+### Changed
+
+- Made `ds-button` the single visual owner of Vox buttons when Designsystemet
+  is available, while retaining the portable Vox fallback for other stacks.
+- Aligned button height, padding, radius, typography, variants, disabled states
+  and icon sizing with the native Designsystemet contract.
+
 ## [1.9.5] - 2026-08-01
 
 ### Changed

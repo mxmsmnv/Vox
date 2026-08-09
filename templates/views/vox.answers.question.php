@@ -69,7 +69,7 @@ $isSolved = !empty($question['best_count']);
             </div>
         </div>
         <div class="vox-form">
-            <form class="vox-form__element" data-vox-form data-entry-list="vox-answer-list">
+            <form class="vox-form__element" data-vox-form data-entry-list="vox-answer-list" aria-label="Write an answer">
                 <?= vox_csrf() ?>
                 <input type="hidden" name="page_key" value="<?= htmlspecialchars($pageKey) ?>">
                 <input type="hidden" name="type" value="comment">

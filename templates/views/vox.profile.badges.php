@@ -40,9 +40,11 @@ $badgeCard = function(array $badge, bool $lockedState) use ($vox): string {
     <?php endif ?>
 
     <?php if ($locked): ?>
-    <h3 class="ds-heading vox-profile-subhead" data-size="2xs">Locked</h3>
-    <div class="vox-profile-badges">
-        <?php foreach ($locked as $badge): ?><?= $badgeCard($badge, true) ?><?php endforeach ?>
-    </div>
+    <details class="vox-profile-locked-badges">
+        <summary class="ds-button" data-variant="tertiary">View <?= count($locked) ?> locked badge<?= count($locked) === 1 ? '' : 's' ?></summary>
+        <div class="vox-profile-badges">
+            <?php foreach ($locked as $badge): ?><?= $badgeCard($badge, true) ?><?php endforeach ?>
+        </div>
+    </details>
     <?php endif ?>
 </section>
