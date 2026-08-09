@@ -2,6 +2,20 @@
 
 All notable changes to Vox are documented here.
 
+## [1.10.0] - 2026-08-08
+
+### Added
+
+- Added stable readable profile slugs and root-relative profile URL generation
+  while preserving opaque `user_key` resolution for legacy links.
+
+### Changed
+
+- Updated public author and leaderboard links to use readable profile URLs.
+- Improved profile hierarchy and restored comfortable body, metadata, metric,
+  activity, rank and badge typography across desktop and mobile layouts.
+- Corrected profile-stat styling to target its semantic `dt` and `dd` markup.
+
 ## [1.9.10] - 2026-08-01
 
 ### Changed

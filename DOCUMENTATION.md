@@ -191,6 +191,19 @@ include $voxPath . 'vox.profile.leaderboard.php';
 
 Use `vox.profile.php` only when you want the default full assembly. For custom pages, include the profile sections individually in any order.
 
+Readable profile routes can use the ProcessWire user name as their stable
+slug. Vox resolves both that slug and the legacy opaque `user_key`:
+
+```php
+$slug = $vox->profileSlug($userKey); // e.g. "dragonball"
+$url = $vox->profileUrl($userKey);   // /community/profile/dragonball/
+$profileUser = $vox->resolveProfileUser($slug);
+```
+
+`profileUrl()` accepts an optional local root-relative base path. Absolute,
+protocol-relative and otherwise unsafe bases fall back to
+`/community/profile/`.
+
 Answers mode:
 
 ```php

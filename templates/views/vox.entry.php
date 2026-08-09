@@ -55,7 +55,7 @@ require_once __DIR__ . '/vox.helpers.php';
     <div class="vox-entry__head">
         <?= vox_avatar($entry['author_name'], $depth === 0 ? 32 : 26, (string)($entry['author_avatar'] ?? '')) ?>
         <?php if (!empty($entry['author_key'])): ?>
-            <a class="vox-entry__author" href="/community/?profile=<?= rawurlencode((string)$entry['author_key']) ?>"><?= htmlspecialchars($entry['author_name']) ?></a>
+            <a class="vox-entry__author" href="<?= htmlspecialchars($vox->profileUrl((string)$entry['author_key'])) ?>"><?= htmlspecialchars($entry['author_name']) ?></a>
         <?php else: ?>
             <span class="vox-entry__author"><?= htmlspecialchars($entry['author_name']) ?></span>
         <?php endif ?>

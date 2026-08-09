@@ -8,7 +8,7 @@ require_once __DIR__ . '/VoxGamification.php';
  *
  * @author  Maxim Semenov <maxim@smnv.org> (smnv.org)
  * @link    https://smnv.org
- * @version 1.9.10
+ * @version 1.10.0
  * @license MIT
  */
 class Vox extends WireData implements Module, ConfigurableModule {
@@ -33,7 +33,7 @@ class Vox extends WireData implements Module, ConfigurableModule {
         return [
             'title'    => 'Vox',
             'summary'  => 'Community discussions: reviews, Q&A, threads and block comments for any page.',
-            'version'  => 1910,
+            'version'  => 1100,
             'author'   => 'Maxim Semenov',
             'href'     => 'https://smnv.org',
             'icon'     => 'comments',
@@ -48,7 +48,7 @@ class Vox extends WireData implements Module, ConfigurableModule {
     // Semantic version for display. The integer in getModuleInfo() (used by
     // ProcessWire for upgrade detection) does not round-trip through
     // formatVersion() to this string, so keep this in sync on each release.
-    const VERSION = '1.9.10';
+    const VERSION = '1.10.0';
 
     // ── Table names ───────────────────────────────────────────────────────
 
@@ -1429,6 +1429,34 @@ class Vox extends WireData implements Module, ConfigurableModule {
     }
 
     /**
+     * Return the stable, readable public slug for a community member.
+     *
+     * Opaque user keys remain accepted by resolveProfileUser() so existing
+     * links can be redirected without exposing internal ProcessWire ids.
+     */
+    public function profileSlug(mixed $target = null): string {
+        $user = $this->resolveProfileUser($target);
+        if (!$user) return '';
+
+        return $this->wire->sanitizer->pageName((string)$user->name);
+    }
+
+    /**
+     * Build a readable profile URL beneath a local root-relative base path.
+     */
+    public function profileUrl(mixed $target = null, string $basePath = '/community/profile/'): string {
+        $slug = $this->profileSlug($target);
+        if ($slug === '') return '';
+
+        $basePath = trim($basePath);
+        if (!preg_match('#^/(?!/)#', $basePath)) {
+            $basePath = '/community/profile/';
+        }
+
+        return rtrim($basePath, '/') . '/' . rawurlencode($slug) . '/';
+    }
+
+    /**
      * Resolve a public avatar for a ProcessWire user.
      *
      * Image fields named avatar, image or images are preferred. Sites that do
@@ -1487,6 +1515,8 @@ class Vox extends WireData implements Module, ConfigurableModule {
                 'user_key' => $this->publicKey('user', $userId),
                 'name' => (string)$user->name,
                 'display_name' => $this->displayUserName($user),
+                'profile_slug' => $this->profileSlug($user),
+                'profile_url' => $this->profileUrl($user),
                 'avatar_url' => $this->getUserAvatarUrl($user),
                 'created' => $user->created ? date('Y-m-d H:i:s', (int)$user->created) : '',
             ],

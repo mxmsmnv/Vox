@@ -63,7 +63,7 @@ $threadBody = static function (array $entry): string {
                         <?= vox_avatar((string)$selectedThread['author_name'], 48, (string)($selectedThread['author_avatar'] ?? '')) ?>
                         <div>
                             <?php if (!empty($selectedThread['author_key'])): ?>
-                                <a href="/community/?profile=<?= rawurlencode((string)$selectedThread['author_key']) ?>"><?= htmlspecialchars((string)$selectedThread['author_name']) ?></a>
+                                <a href="<?= htmlspecialchars($vox->profileUrl((string)$selectedThread['author_key'])) ?>"><?= htmlspecialchars((string)$selectedThread['author_name']) ?></a>
                             <?php else: ?>
                                 <strong><?= htmlspecialchars((string)$selectedThread['author_name']) ?></strong>
                             <?php endif; ?>
@@ -213,7 +213,7 @@ $threadBody = static function (array $entry): string {
                         <div class="lqrs-discussion-list-item__copy">
                             <div class="lqrs-discussion-list-item__byline">
                                 <?php if (!empty($thread['author_key'])): ?>
-                                    <a href="/community/?profile=<?= rawurlencode((string)$thread['author_key']) ?>"><?= htmlspecialchars((string)$thread['author_name']) ?></a>
+                                    <a href="<?= htmlspecialchars($vox->profileUrl((string)$thread['author_key'])) ?>"><?= htmlspecialchars((string)$thread['author_name']) ?></a>
                                 <?php else: ?>
                                     <strong><?= htmlspecialchars((string)$thread['author_name']) ?></strong>
                                 <?php endif; ?>

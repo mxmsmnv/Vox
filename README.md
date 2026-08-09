@@ -48,6 +48,7 @@ Vox includes ready-to-use public views for:
 - discussions;
 - forum landing pages;
 - modular user profile sections;
+- readable profile URL helpers with legacy opaque-key resolution;
 - inline block comments.
 
 You can place one widget on a page or combine several into tabs.
