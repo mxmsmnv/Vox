@@ -80,6 +80,13 @@ automatically. Requires ProcessWire's core **Language Support** module — see
 4. Open the Vox admin section and adjust the settings.
 5. Use the Embed screen to add Vox widgets to your templates or install the optional demo.
 
+## MCP Server integration
+
+When the optional first-party MCP Server is installed, Vox contributes the
+read-only `vox_public_entries` tool. It returns a bounded page of published
+entries for one public, viewable ProcessWire page, replaces internal numeric
+identities with public keys, and removes guest and moderation-sensitive fields.
+
 ## Documentation
 
 See [DOCUMENTATION.md](DOCUMENTATION.md) for setup, configuration and template integration.

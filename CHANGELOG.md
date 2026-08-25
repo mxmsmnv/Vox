@@ -2,6 +2,14 @@
 
 All notable changes to Vox are documented here.
 
+## [1.10.1] - 2026-08-25
+
+### Added
+
+- Added an explicit MCP provider for bounded published Vox entries on one
+  public, viewable ProcessWire page, using public keys and stripping guest and
+  moderation-sensitive fields.
+
 ## [1.10.0] - 2026-08-08
 
 ### Added
