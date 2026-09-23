@@ -129,7 +129,7 @@ class VoxRepository {
             $photoStmt->execute($ids);
             $photoFiles = $photoStmt->fetchAll(\PDO::FETCH_COLUMN);
 
-            foreach ([Vox::TABLE_VALUES, Vox::TABLE_PHOTOS, Vox::TABLE_VOTES, Vox::TABLE_REPORTS, Vox::TABLE_POINTS] as $table) {
+            foreach ([Vox::TABLE_VALUES, Vox::TABLE_PHOTOS, Vox::TABLE_VOTES, Vox::TABLE_REPORTS, Vox::TABLE_POINTS, Vox::TABLE_MOD_NOTES] as $table) {
                 $db->prepare("DELETE FROM `{$table}` WHERE entry_id IN ({$in})")->execute($ids);
             }
             $db->prepare("DELETE FROM `" . Vox::TABLE_ENTRIES . "` WHERE id IN ({$in})")->execute($ids);
