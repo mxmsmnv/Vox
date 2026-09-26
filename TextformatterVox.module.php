@@ -25,7 +25,7 @@ class TextformatterVox extends Textformatter {
         return [
             'title'    => 'Vox Textformatter',
             'summary'  => 'Render Vox widgets from text tokens like [[vox:forum]], [[vox:form]] or [[vox:reviews]].',
-            'version'  => '1.10.1',
+            'version'  => '1.10.3',
             'author'   => 'Maxim Semenov',
             'href'     => 'https://smnv.org',
             'icon'     => 'comments',

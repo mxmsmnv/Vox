@@ -4,9 +4,10 @@ Vox is a ProcessWire module for adding community discussion features to site con
 
 ## Requirements
 
-- ProcessWire 3.0.200 or newer
+- ProcessWire 3.0.200 or newer; ProcessWire 3.0.274+ is required for the
+  experimental SQLite and PostgreSQL database drivers
 - PHP 8.2 or newer
-- MySQL 5.7+ or MariaDB 10.3+
+- MySQL 5.7+, MariaDB 10.3+, or a ProcessWire-supported SQLite/PostgreSQL driver
 
 ## Installation
 

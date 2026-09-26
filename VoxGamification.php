@@ -56,11 +56,11 @@ class VoxGamification extends Wire {
         $stmt = $db->prepare("
             SELECT
                 COUNT(*) AS total,
-                SUM(type = 'review')   AS reviews,
-                SUM(type = 'question') AS questions,
-                SUM(type = 'comment')  AS answers,
-                SUM(type = 'thread')   AS threads,
-                SUM(is_best_answer = 1) AS best_answers,
+                SUM(CASE WHEN type = 'review' THEN 1 ELSE 0 END)   AS reviews,
+                SUM(CASE WHEN type = 'question' THEN 1 ELSE 0 END) AS questions,
+                SUM(CASE WHEN type = 'comment' THEN 1 ELSE 0 END)  AS answers,
+                SUM(CASE WHEN type = 'thread' THEN 1 ELSE 0 END)   AS threads,
+                SUM(CASE WHEN is_best_answer = 1 THEN 1 ELSE 0 END) AS best_answers,
                 COUNT(DISTINCT page_id) AS unique_pages
             FROM `{$et}`
             WHERE user_id = ? AND status = 'published'

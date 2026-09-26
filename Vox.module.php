@@ -10,7 +10,7 @@ require_once __DIR__ . '/VoxGamification.php';
  *
  * @author  Maxim Semenov <maxim@smnv.org> (smnv.org)
  * @link    https://smnv.org
- * @version 1.10.1
+ * @version 1.10.3
  * @license MIT
  */
 class Vox extends WireData implements Module, ConfigurableModule {
@@ -37,7 +37,7 @@ class Vox extends WireData implements Module, ConfigurableModule {
         return [
             'title'    => 'Vox',
             'summary'  => 'Community discussions: reviews, Q&A, threads and block comments for any page.',
-            'version'  => '1.10.1',
+            'version'  => '1.10.3',
             'author'   => 'Maxim Semenov',
             'href'     => 'https://smnv.org',
             'icon'     => 'comments',
@@ -53,7 +53,7 @@ class Vox extends WireData implements Module, ConfigurableModule {
     // Semantic version for display. The integer in getModuleInfo() (used by
     // ProcessWire for upgrade detection) does not round-trip through
     // formatVersion() to this string, so keep this in sync on each release.
-    const VERSION = '1.10.1';
+    const VERSION = '1.10.3';
 
     // ── Table names ───────────────────────────────────────────────────────
 
@@ -1715,8 +1715,8 @@ class Vox extends WireData implements Module, ConfigurableModule {
         $bestSql = "(SELECT COUNT(*) FROM `" . self::TABLE_ENTRIES . "` b WHERE b.status = 'published' AND b.is_best_answer = 1 AND (b.parent_id = q.id OR b.root_id = q.id))";
         $stmt = $this->wire->database->prepare("
             SELECT COUNT(*) AS total,
-                   SUM({$replyCountSql} = 0) AS unanswered,
-                   SUM({$bestSql} > 0) AS solved
+                   SUM(CASE WHEN {$replyCountSql} = 0 THEN 1 ELSE 0 END) AS unanswered,
+                   SUM(CASE WHEN {$bestSql} > 0 THEN 1 ELSE 0 END) AS solved
             FROM `" . self::TABLE_ENTRIES . "` q
             WHERE {$ws}
         ");
@@ -2012,7 +2012,7 @@ class Vox extends WireData implements Module, ConfigurableModule {
         $db = $this->wire->database;
         if ($pageId) {
             $stmt = $db->prepare("
-                SELECT SUM(recommend = 1) AS yes, COUNT(recommend) AS total
+                SELECT SUM(CASE WHEN recommend = 1 THEN 1 ELSE 0 END) AS yes, COUNT(recommend) AS total
                 FROM `" . self::TABLE_ENTRIES . "`
                 WHERE page_id = ? AND type = 'review'
                   AND status = 'published' AND recommend IS NOT NULL
@@ -2020,7 +2020,7 @@ class Vox extends WireData implements Module, ConfigurableModule {
             $stmt->execute([$pageId]);
         } else {
             $stmt = $db->query("
-                SELECT SUM(recommend = 1) AS yes, COUNT(recommend) AS total
+                SELECT SUM(CASE WHEN recommend = 1 THEN 1 ELSE 0 END) AS yes, COUNT(recommend) AS total
                 FROM `" . self::TABLE_ENTRIES . "`
                 WHERE type = 'review' AND status = 'published' AND recommend IS NOT NULL
             ");
@@ -2140,9 +2140,9 @@ class Vox extends WireData implements Module, ConfigurableModule {
 
         $stmt = $db->query("
             SELECT
-                SUM(status = 'pending')                    AS pending,
-                SUM(status = 'pending' AND type = 'review') AS pending_reviews,
-                SUM(status = 'pending' AND type = 'comment') AS pending_comments
+                SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) AS pending,
+                SUM(CASE WHEN status = 'pending' AND type = 'review' THEN 1 ELSE 0 END) AS pending_reviews,
+                SUM(CASE WHEN status = 'pending' AND type = 'comment' THEN 1 ELSE 0 END) AS pending_comments
             FROM `{$et}`
         ");
         $p = $stmt->fetch(\PDO::FETCH_ASSOC);

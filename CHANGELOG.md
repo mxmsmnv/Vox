@@ -2,6 +2,17 @@
 
 All notable changes to Vox are documented here.
 
+## [1.10.3] - 2026-09-26
+
+### Fixed
+
+- Made gamification, answer, recommendation, and dashboard conditional counts
+  portable to PostgreSQL by using explicit `CASE WHEN` aggregates.
+
+### Changed
+
+- Documented ProcessWire's experimental SQLite and PostgreSQL driver support.
+
 ## [1.10.1] - 2026-08-25
 
 ### Added
