@@ -2,6 +2,14 @@
 
 All notable changes to Vox are documented here.
 
+## [1.10.4] - 2026-09-26
+
+### Fixed
+
+- Seed default ranks with a portable `INSERT ... SELECT ... WHERE NOT EXISTS`
+  statement instead of MySQL's `FROM DUAL`, allowing installation on SQLite
+  and PostgreSQL while retaining idempotent retries.
+
 ## [1.10.3] - 2026-09-26
 
 ### Fixed
