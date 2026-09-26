@@ -13,6 +13,15 @@ All notable changes to Vox are documented here.
 
 - Documented ProcessWire's experimental SQLite and PostgreSQL driver support.
 
+## [1.10.2] - 2026-09-23
+
+### Fixed
+
+- Delete moderator notes in the same transaction as a deleted entry or thread,
+  so dependent private notes do not remain orphaned.
+- Require `vox-moderate` to open and submit the single-entry editor; `vox-view`
+  continues to permit the read-only entries list.
+
 ## [1.10.1] - 2026-08-25
 
 ### Added

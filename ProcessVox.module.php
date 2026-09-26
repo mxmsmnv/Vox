@@ -161,7 +161,9 @@ class ProcessVox extends Process {
     // ── 3. Edit single entry ──────────────────────────────────────────────
 
     public function executeEntry(): string {
-        $this->requirePermission('vox-view');
+        // This route renders the edit form and accepts status, body, rating and
+        // private-note changes; read-only access belongs to the entries list.
+        $this->requirePermission('vox-moderate');
         $input   = $this->wire->input;
         $entryId = (int)($input->get('id') ?? 0);
 
