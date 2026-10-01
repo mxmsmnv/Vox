@@ -35,7 +35,7 @@ function vox_avatar(string $name, int $size = 32, string $url = ''): string {
  * @param int $max
  */
 function vox_stars(int $rating, int $max = 5): string {
-    $html = '<span class="vox-stars" aria-label="' . $rating . ' out of ' . $max . '">';
+    $html = '<span class="vox-stars" role="img" aria-label="' . $rating . ' out of ' . $max . '">';
     for ($i = 1; $i <= $max; $i++) {
         $html .= $i <= $rating
             ? '<span class="vox-star vox-star-on" aria-hidden="true">★</span>'
@@ -86,7 +86,7 @@ function vox_control_id(string $prefix): string {
 }
 
 function vox_dots(int $rating, int $max = 5): string {
-    $html = '<span class="vox-dots" aria-label="' . $rating . ' out of ' . $max . '">';
+    $html = '<span class="vox-dots" role="img" aria-label="' . $rating . ' out of ' . $max . '">';
     for ($i = 1; $i <= $max; $i++) {
         $html .= $i <= $rating
             ? '<span class="vox-dot vox-dot-on" aria-hidden="true"></span>'

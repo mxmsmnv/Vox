@@ -2,6 +2,13 @@
 
 All notable changes to Vox are documented here.
 
+## [1.10.5] - 2026-09-30
+
+### Fixed
+
+- Give static star and dot rating groups an explicit image role so their
+  accessible labels are valid and no longer trigger `aria-prohibited-attr`.
+
 ## [1.10.4] - 2026-09-26
 
 ### Fixed

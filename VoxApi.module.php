@@ -12,7 +12,7 @@ class VoxApi extends WireData implements Module {
         return [
             'title'    => 'Vox API',
             'summary'  => 'REST API for Vox discussions module.',
-            'version'  => '1.10.4',
+            'version'  => '1.10.5',
             'author'   => 'Maxim Semenov',
             'href'     => 'https://smnv.org',
             'icon'     => 'plug',
