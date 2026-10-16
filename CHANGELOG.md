@@ -2,6 +2,19 @@
 
 All notable changes to Vox are documented here.
 
+## [1.10.6] - 2026-10-16
+
+### Added
+
+- Added an opt-in PocketWire provider for bounded published entries using the
+  existing public DTO projection and no actions.
+
+### Security
+
+- Evaluate the MCP and PocketWire public-page gate against the ProcessWire
+  guest account, preventing privileged request users from exposing entries on
+  a page that is not publicly viewable.
+
 ## [1.10.5] - 2026-09-30
 
 ### Fixed

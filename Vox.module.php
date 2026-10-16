@@ -10,7 +10,7 @@ require_once __DIR__ . '/VoxGamification.php';
  *
  * @author  Maxim Semenov <maxim@smnv.org> (smnv.org)
  * @link    https://smnv.org
- * @version 1.10.5
+ * @version 1.10.6
  * @license MIT
  */
 class Vox extends WireData implements Module, ConfigurableModule {
@@ -37,12 +37,13 @@ class Vox extends WireData implements Module, ConfigurableModule {
         return [
             'title'    => 'Vox',
             'summary'  => 'Community discussions: reviews, Q&A, threads and block comments for any page.',
-            'version'  => '1.10.5',
+            'version'  => '1.10.6',
             'author'   => 'Maxim Semenov',
             'href'     => 'https://smnv.org',
             'icon'     => 'comments',
             'autoload' => true,
             'mcpProvider' => true,
+            'pocketWireProvider' => true,
             'singular' => true,
             'requires' => ['PHP>=8.2', 'ProcessWire>=3.0.200'],
             'installs' => ['ProcessVox', 'VoxApi', 'TextformatterVox'],
@@ -53,7 +54,7 @@ class Vox extends WireData implements Module, ConfigurableModule {
     // Semantic version for display. The integer in getModuleInfo() (used by
     // ProcessWire for upgrade detection) does not round-trip through
     // formatVersion() to this string, so keep this in sync on each release.
-    const VERSION = '1.10.5';
+    const VERSION = '1.10.6';
 
     // ── Table names ───────────────────────────────────────────────────────
 

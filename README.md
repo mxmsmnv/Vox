@@ -87,6 +87,11 @@ read-only `vox_public_entries` tool. It returns a bounded page of published
 entries for one public, viewable ProcessWire page, replaces internal numeric
 identities with public keys, and removes guest and moderation-sensitive fields.
 
+Vox 1.10.6 also opts into PocketWire with the same bounded public-entry
+projection. PocketWire checks the request actor, evaluates page visibility as
+the guest account, and exposes no create, vote, report, moderation, or settings
+action.
+
 ## Documentation
 
 See [DOCUMENTATION.md](DOCUMENTATION.md) for setup, configuration and template integration.

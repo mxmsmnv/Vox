@@ -1,5 +1,13 @@
 # Vox Documentation
 
+## PocketWire provider
+
+Vox 1.10.6 declares an opt-in PocketWire provider. Its only resource lists up
+to 25 published entries from a ProcessWire page that is published, outside the
+trash, and viewable to the guest account. Results use the existing public DTO
+projection and expose no internal numeric identity, guest email/fingerprint,
+IP address, moderator note, report, or mutation action.
+
 Vox is a ProcessWire module for adding community discussion features to site content. It includes public widgets, moderation tools, configurable review fields, photos, votes, reports, ranks, badges and a small public API.
 
 ## Requirements
